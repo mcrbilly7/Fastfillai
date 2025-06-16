@@ -72,6 +72,35 @@
       font-size: 1.1rem;
       line-height: 1.6;
     }
+    .pricing-table {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-around;
+      margin-top: 2rem;
+    }
+    .pricing-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      padding: 2rem;
+      flex: 1 1 250px;
+      max-width: 300px;
+      text-align: center;
+    }
+    .pricing-card h4 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    .pricing-card p {
+      font-size: 1rem;
+      color: #555;
+    }
+    .pricing-card .price {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 1rem 0;
+    }
     footer {
       background-color: #0a0a23;
       color: white;
@@ -104,48 +133,25 @@
   </header>  <section class="hero">
     <h2>Automate your data entry — instantly, intelligently, effortlessly.</h2>
     <a href="#trial" class="cta">Start Your Free Trial</a>
-  </section>  <section class="section">
-    <h3>Why Choose Fast Fill AI?</h3>
-    <ul>
-      <li>⚡ Save hours every week on manual tasks</li>
-      <li>🔒 Secure, stable bots tailored to your workflow</li>
-      <li>📈 Scale your operations without extra hiring</li>
-    </ul>
-  </section>  <section class="section">
-    <h3>What Our Clients Say</h3>
-    <p>“I saved 20 hours a week thanks to Fast Fill AI!” — SampleClient Inc.</p>
-    <p>“Our data is accurate and automated. Worth every penny.” — TrustedCorp</p>
-    <p>“Super easy onboarding. Loved the trial bot.” — QuickLogix</p>
-  </section>  <section class="section">
-    <h3>Industries We Help</h3>
-    <p>✔ Law Firms<br>✔ eCommerce Businesses<br>✔ Logistics Teams<br>✔ Office Admins<br>✔ Freelancers</p>
-  </section>  <section class="section" id="how">
-    <h3>How It Works</h3>
-    <ol>
-      <li>Submit a free trial form with your needs</li>
-      <li>Receive your custom-built bot within 24 hours</li>
-      <li>Upgrade if you love it — no strings attached</li>
-    </ol>
   </section>  <section class="section" id="pricing">
     <h3>Pricing</h3>
-    <ul>
-      <li><strong>Free Trial:</strong> $0 for 1 month – Includes 1 task bot</li>
-      <li><strong>Starter Bot:</strong> $299 – One-time payment, custom build</li>
-      <li><strong>Pro Bot:</strong> $499+ – Multi-feature or CRM integrations</li>
-    </ul>
-  </section>  <section class="section" id="trial">
-    <h3>Start Your Free Trial</h3>
-    <p>No card needed. Just tell us your task and we’ll deliver your bot.</p>
-    <a href="https://forms.gle/YOUR_GOOGLE_FORM_LINK" class="cta" target="_blank">Open Trial Form</a>
-  </section>  <section class="section" id="demo">
-    <h3>Live Demo</h3>
-    <p>Watch our bots in action or try one yourself:</p>
-    <a href="demo-bot.zip" download class="cta">Download Demo Bot</a>
-  </section>  <section class="section" id="faq">
-    <h3>FAQ</h3>
-    <p><strong>What platforms do your bots support?</strong><br>Windows, Chrome, Google Sheets, Excel, CRMs.</p>
-    <p><strong>Do I need to install anything?</strong><br>Minimal setup. We send full instructions with each bot.</p>
-    <p><strong>What if I need support?</strong><br>We’re available by email or live chat 24/7.</p>
+    <div class="pricing-table">
+      <div class="pricing-card">
+        <h4>Free Trial</h4>
+        <p class="price">$0</p>
+        <p>One free bot for one task. Try it risk-free for 1 month.</p>
+      </div>
+      <div class="pricing-card">
+        <h4>Starter Bot</h4>
+        <p class="price">$299</p>
+        <p>Custom-built bot (browser or desktop) for one task with email support.</p>
+      </div>
+      <div class="pricing-card">
+        <h4>Pro Bot</h4>
+        <p class="price">$499+</p>
+        <p>Advanced or multi-feature bot for complex automations (CRM, API, PDF extraction).</p>
+      </div>
+    </div>
   </section>  <footer>
     <p>&copy; 2025 Fast Fill AI</p>
     <a href="privacy.html">Privacy</a> | 
