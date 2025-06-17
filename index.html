@@ -18,25 +18,16 @@
       padding: 2rem;
       text-align: center;
     }
-    header h1 {
-      font-size: 2.5rem;
-    }
-    header p {
-      font-size: 1.25rem;
-      margin-top: 0.5rem;
-    }
-    nav {
-      margin-top: 1.5rem;
-    }
+    header h1 { font-size: 2.5rem; }
+    header p { font-size: 1.25rem; margin-top: 0.5rem; }
+    nav { margin-top: 1.5rem; }
     nav a {
       color: #ffffffcc;
       margin: 0 1rem;
       text-decoration: none;
       font-weight: 500;
     }
-    nav a:hover {
-      color: #ffffff;
-    }
+    nav a:hover { color: #ffffff; }
     .hero {
       padding: 4rem 2rem;
       text-align: center;
@@ -57,6 +48,7 @@
       margin-top: 1rem;
       font-weight: 600;
       text-decoration: none;
+      cursor: pointer;
     }
     .section {
       padding: 3rem 2rem;
@@ -68,39 +60,59 @@
       margin-bottom: 1rem;
       color: #333;
     }
-    .section p, .section ul, .section ol {
-      font-size: 1.1rem;
-      line-height: 1.6;
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .form input,
+    .form textarea,
+    .form button {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    .form label {
+      font-weight: 600;
     }
     .pricing-table {
       display: flex;
       flex-wrap: wrap;
       gap: 2rem;
-      justify-content: space-around;
-      margin-top: 2rem;
+      justify-content: center;
     }
     .pricing-card {
       background: white;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      padding: 2rem;
-      flex: 1 1 250px;
-      max-width: 300px;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 280px;
       text-align: center;
+      position: relative;
     }
     .pricing-card h4 {
-      font-size: 1.4rem;
+      font-size: 1.25rem;
       margin-bottom: 0.5rem;
-    }
-    .pricing-card p {
-      font-size: 1rem;
-      color: #555;
     }
     .pricing-card .price {
       font-size: 2rem;
-      font-weight: 800;
-      margin: 1rem 0;
       color: #5f5fff;
+      margin-bottom: 0.5rem;
+    }
+    .bot-details {
+      display: none;
+      margin-top: 1rem;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    .pricing-card.active .bot-details {
+      display: block;
     }
     footer {
       background-color: #0a0a23;
@@ -114,10 +126,14 @@
       margin: 0 0.5rem;
       text-decoration: none;
     }
-    footer a:hover {
-      color: white;
-    }
+    footer a:hover { color: white; }
   </style>
+  <script>
+    function toggleDetails(card) {
+      document.querySelectorAll('.pricing-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+    }
+  </script>
 </head>
 <body>
   <header>
@@ -129,39 +145,89 @@
       <a href="#trial">Free Trial</a>
       <a href="#demo">Demo</a>
       <a href="#faq">FAQ</a>
-      <a href="#login">Login</a>
+      <a href="login.html">Login</a>
     </nav>
   </header>  <section class="hero">
     <h2>Automate your data entry — instantly, intelligently, effortlessly.</h2>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfnnetp3fT0UD3Wov7rVv6J6dZd96n_osFwsUxc1sMKYTKTrA/viewform?usp=header" class="cta" target="_blank">Start Your Free Trial</a>
+    <a href="#trial" class="cta">Start Your Free Trial</a>
   </section>  <section class="section" id="pricing">
     <h3>Pricing</h3>
     <div class="pricing-table">
-      <div class="pricing-card">
+      <div class="pricing-card" onclick="toggleDetails(this)">
         <h4>Free Trial</h4>
         <p class="price">$0</p>
-        <p>One free bot for one task. Try it risk-free for 1 month.</p>
+        <p>One free bot for one task.</p>
+        <div class="bot-details">
+          <ul>
+            <li>Includes: Basic bot to automate one task</li>
+            <li>Delivery: Via email within 24h</li>
+            <li>Platform: Browser or desktop only</li>
+            <li>Support: Basic help during trial</li>
+          </ul>
+        </div>
       </div>
-      <div class="pricing-card">
+      <div class="pricing-card" onclick="toggleDetails(this)">
         <h4>Starter Bot</h4>
         <p class="price">$299</p>
-        <p>Custom-built bot (browser or desktop) for one task with email support.</p>
+        <p>Custom-built bot for one task.</p>
+        <a href="https://buy.stripe.com/test_StarterBot" class="cta">Buy with Stripe</a>
+        <div class="bot-details">
+          <ul>
+            <li>Custom automation bot</li>
+            <li>Runs on browser/desktop</li>
+            <li>Includes 1-on-1 onboarding</li>
+            <li>Email-based support</li>
+          </ul>
+        </div>
       </div>
-      <div class="pricing-card">
+      <div class="pricing-card" onclick="toggleDetails(this)">
         <h4>Pro Bot</h4>
         <p class="price">$499+</p>
-        <p>Advanced or multi-feature bot for complex automations (CRM, API, PDF extraction).</p>
+        <p>Multi-function, advanced bots.</p>
+        <a href="https://paypal.me/fastfillai/499" class="cta">Buy with PayPal</a>
+        <div class="bot-details">
+          <ul>
+            <li>Works across websites, APIs, or apps</li>
+            <li>Includes PDF data extraction, email parsing</li>
+            <li>Multi-step workflows</li>
+            <li>Priority support</li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>  <section class="section" id="trial">
     <h3>Start Your Free Trial</h3>
-    <p>No card needed. Just tell us your task and we’ll deliver your bot.</p>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfnnetp3fT0UD3Wov7rVv6J6dZd96n_osFwsUxc1sMKYTKTrA/viewform?usp=header" class="cta" target="_blank">Open Trial Form</a>
+    <p>No card needed. Tell us what you want automated, and we’ll send your bot.</p>
+    <form action="https://formsubmit.co/fastfillaiautomation@gmail.com" method="POST" class="form">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="thank-you.html"><label>Name</label>
+  <input type="text" name="Name" required>
+
+  <label>Email</label>
+  <input type="email" name="Email" required>
+
+  <label>Business Type</label>
+  <input type="text" name="Business Type" placeholder="e.g., Ecom, Healthcare, Law" required>
+
+  <label>What Do You Want Automated?</label>
+  <textarea name="Automation Goal" rows="4" required></textarea>
+
+  <label>Preferred Platform</label>
+  <input type="text" name="Platform" placeholder="Browser/Desktop/API?" required>
+
+  <button type="submit" class="cta">Submit & Start Trial</button>
+</form>
+
+  </section>  <section class="section" id="demo">
+    <h3>Live Demo</h3>
+    <p>Try our pre-built Excel autofill bot:</p>
+    <a href="FastFillAI_DemoBot.zip" download class="cta">Download Demo Bot (.zip)</a>
   </section>  <footer>
     <p>&copy; 2025 Fast Fill AI</p>
-    <a href="privacy.html">Privacy</a> | 
-    <a href="terms.html">Terms</a> | 
-    <a href="blog.html">Blog</a> | 
+    <a href="privacy.html">Privacy</a> |
+    <a href="terms.html">Terms</a> |
+    <a href="blog.html">Blog</a> |
     <a href="login.html">Login</a>
   </footer>
 </body>
