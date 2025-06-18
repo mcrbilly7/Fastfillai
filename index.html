@@ -25,7 +25,8 @@
     .pricing-card { background: #f1f5f9; border-radius: 10px; padding: 2rem; max-width: 300px; flex: 1; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
     .pricing-card h4 { font-size: 1.25rem; margin-bottom: 0.5rem; }
     .pricing-card .price { font-size: 2rem; color: #3b82f6; margin-bottom: 1rem; }
-    .pricing-card a { display: inline-block; margin: 0.25rem; background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 600; }
+    .btn-buy { display: inline-block; margin: 0.25rem; background: #10b981; color: white; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; font-weight: 600; transition: background 0.2s ease; }
+    .btn-buy:hover { background: #059669; }
     .form { display: flex; flex-direction: column; gap: 1rem; max-width: 600px; margin: auto; padding: 2rem; background: #f9fafb; border-radius: 10px; }
     .form label { font-weight: 600; }
     .form input, .form textarea { padding: 0.75rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
@@ -90,13 +91,13 @@
         <h4>Starter Bot</h4>
         <p class="price">$299</p>
         <p>Custom bot for one task with support and updates.</p>
-        <a href="starter-bot-info.html">Buy</a>
+        <a href="starter-bot-info.html" class="btn-buy">Buy</a>
       </div>
       <div class="pricing-card">
         <h4>Pro Bot</h4>
         <p class="price">$499+</p>
         <p>Advanced multi-system automation + CRM/API integration.</p>
-        <a href="pro-bot-info.html">Buy</a>
+        <a href="pro-bot-info.html" class="btn-buy">Buy</a>
       </div>
     </div>
   </section>  <section class="section" id="trial">
