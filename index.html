@@ -7,6 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; margin: 0; background: #0a0a23; color: white; }
+    nav { background: #0a0a23; padding: 1rem; text-align: center; }
+    nav a { color: white; margin: 0 1rem; text-decoration: none; font-weight: 600; }
+    nav a:hover { text-decoration: underline; }
     header { text-align: center; padding: 4rem 1rem 2rem; background-color: #0a0a23; }
     header h1 { font-size: 2.5rem; margin-bottom: 1rem; }
     header p { font-size: 1.25rem; margin-bottom: 2rem; }
@@ -34,13 +37,20 @@
     .form button:hover { background: #1e1e4b; }
     .download-demo { text-align: center; margin-top: 4rem; }
     .download-demo a { background: #0a0a23; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; }
+    .faq { max-width: 800px; margin: auto; padding: 2rem 1rem; background: #f3f4f6; border-radius: 10px; color: #111; }
+    .faq h3 { margin-top: 1.5rem; }
     footer { background: #0a0a23; color: white; padding: 2rem; text-align: center; font-size: 0.875rem; }
     footer a { color: #ffffffcc; margin: 0 0.5rem; text-decoration: none; }
     footer a:hover { color: white; }
   </style>
 </head>
 <body>
-  <header>
+  <nav>
+    <a href="#pricing">Pricing</a>
+    <a href="#trial">Free Trial</a>
+    <a href="#features">Features</a>
+    <a href="#faq">FAQ</a>
+  </nav>  <header>
     <h1>AI-POWERED DATA ENTRY FOR YOUR BUSINESS</h1>
     <p>Automate data entry tasks with a custom AI bot</p>
     <a href="#trial" class="cta">Start Free Trial</a>
@@ -50,7 +60,7 @@
         Your browser does not support the video tag.
       </video>
     </div>
-  </header>  <section class="features-section">
+  </header>  <section class="features-section" id="features">
     <h2>Features</h2>
     <div class="features-grid">
       <div class="feature">
@@ -75,8 +85,8 @@
       </div>
       <div class="feature">
         <div class="icon">⏳</div>
-        <h3>1 Month Free Trial</h3>
-        <p>Experience full automation capabilities with no risk.</p>
+        <h3>No Coding Needed</h3>
+        <p>Completely no-code and intuitive to use.</p>
       </div>
     </div>
   </section>  <section class="section" id="pricing">
@@ -126,11 +136,19 @@
   </section>  <section class="download-demo">
     <h2>Try Our Demo Bot</h2>
     <a href="FastFillAI_DemoBot.zip" download>Download Demo Bot (.zip)</a>
+  </section>  <section class="faq" id="faq">
+    <h2>FAQ</h2>
+    <h3>What platforms do the bots run on?</h3>
+    <p>You can choose to run your bot on either browser, desktop, or through API access.</p>
+    <h3>How long does it take to receive the bot?</h3>
+    <p>Starter bots are usually delivered within 5 business days. Pro bots may take longer depending on complexity.</p>
+    <h3>Do I need to install anything?</h3>
+    <p>No, we handle all installation and onboarding instructions for you.</p>
+    <h3>How do I request changes or updates?</h3>
+    <p>You'll receive contact instructions after your order to request edits or support.</p>
   </section>  <footer>
     <p>&copy; 2025 Fast Fill AI</p>
-    <a href="privacy.html">Privacy</a> |
-    <a href="terms.html">Terms</a> |
-    <a href="login.html">Login</a>
+    <p><a href="mailto:fastfillaiautomation@gmail.com">Contact Support</a> | <a href="privacy.html">Privacy</a> | <a href="terms.html">Terms</a> | <a href="login.html">Login</a></p>
   </footer>
 </body>
 </html>
