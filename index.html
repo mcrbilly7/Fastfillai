@@ -44,25 +44,34 @@
       text-decoration: none;
       font-weight: 500;
     }
+
     .hero {
       background-color: var(--primary);
       color: white;
-      text-align: center;
       padding: 4rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
     }
+
+    .hero-text {
+      max-width: 500px;
+    }
+
     .hero h1 {
       font-size: 2.75rem;
       margin-bottom: 1rem;
     }
+
     .hero p {
       font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto;
+      margin-bottom: 2rem;
       opacity: 0.9;
     }
+
     .hero .cta {
-      margin-top: 2rem;
-      display: inline-block;
       background-color: var(--accent);
       color: #000;
       padding: 0.75rem 1.5rem;
@@ -71,20 +80,18 @@
       text-decoration: none;
       font-size: 1rem;
     }
-    .video-section {
-      display: flex;
-      justify-content: center;
-      margin-top: -2rem;
-    }
-    video {
-      max-width: 90%;
+
+    .hero-video video {
+      width: 360px;
       border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
+
     section {
       padding: 4rem 2rem;
       text-align: center;
     }
+
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -92,22 +99,27 @@
       max-width: 1000px;
       margin: 0 auto;
     }
+
     .feature {
       background-color: var(--card-bg);
       border-radius: 12px;
       padding: 2rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
+
     .feature-icon {
       font-size: 2rem;
       margin-bottom: 0.5rem;
     }
+
     .pricing-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 2rem;
+      margin-top: 3rem;
     }
+
     .plan {
       background-color: var(--card-bg);
       border-radius: 12px;
@@ -116,18 +128,22 @@
       width: 300px;
       text-align: left;
     }
+
     .plan h3 {
       text-align: center;
       color: var(--primary);
       margin-bottom: 1rem;
     }
+
     .plan ul {
       list-style: none;
       padding-left: 1rem;
     }
+
     .plan ul li {
       margin: 0.5rem 0;
     }
+
     .btn-stripe {
       display: block;
       margin: 1.5rem auto 0;
@@ -139,11 +155,26 @@
       text-decoration: none;
       font-weight: bold;
     }
+
     footer {
       background-color: var(--primary);
       color: white;
       text-align: center;
       padding: 2rem;
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+      .hero-text, .hero-video {
+        max-width: 90%;
+      }
+      .hero-video video {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -160,17 +191,18 @@
   </nav>
 
   <header class="hero">
-    <h1>AI-Powered Data Entry For Your Business</h1>
-    <p>Automate data entry tasks with a custom-built AI bot designed for speed and efficiency.</p>
-    <a href="#trial" class="cta">Start Free Trial</a>
+    <div class="hero-text">
+      <h1>AI-Powered Data Entry For Your Business</h1>
+      <p>Automate repetitive tasks with a custom-built AI bot designed for speed and accuracy.</p>
+      <a href="#trial" class="cta">Start Free Trial</a>
+    </div>
+    <div class="hero-video">
+      <video controls autoplay muted loop>
+        <source src="demo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
   </header>
-
-  <div class="video-section">
-    <video controls autoplay muted loop>
-      <source src="demo.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
 
   <section id="features">
     <h2>Features</h2>
