@@ -1,22 +1,22 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fast Fill AI</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f7f8fa;
+      background-color: #f7f9fb;
       color: #111;
     }
     nav {
-      background: #1a1a2e;
+      background-color: #1c1c2e;
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
@@ -26,90 +26,93 @@
       z-index: 1000;
     }
     nav .logo {
-      color: #00ffe5;
       font-size: 1.5rem;
+      color: #00fff7;
       font-weight: bold;
     }
     nav a {
       color: #fff;
-      margin-left: 1rem;
+      margin-left: 1.5rem;
       text-decoration: none;
       font-weight: 500;
     }
     header {
-      background-color: #fff;
-      padding: 4rem 2rem 2rem;
+      background: linear-gradient(145deg, #00fff7 0%, #a8f0ff 100%);
+      color: #111;
       text-align: center;
+      padding: 4rem 2rem;
     }
     header h1 {
       font-size: 3rem;
       margin-bottom: 1rem;
     }
     header p {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       max-width: 700px;
-      margin: 0 auto 2rem;
-      color: #555;
+      margin: 0 auto;
     }
     video {
+      display: block;
+      margin: 2rem auto;
       max-width: 90%;
-      border-radius: 10px;
-      margin-top: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
     section {
       padding: 4rem 2rem;
       text-align: center;
     }
     #features ul {
-      list-style: none;
       max-width: 700px;
       margin: 0 auto;
       text-align: left;
+      list-style: none;
       font-size: 1.1rem;
     }
     #features li {
-      margin: 1rem 0;
+      margin-bottom: 1rem;
     }
     .pricing-container {
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
       gap: 2rem;
+      flex-wrap: wrap;
     }
     .plan {
       background-color: #fff;
       border-radius: 12px;
       padding: 2rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      width: 320px;
-      text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: left;
     }
     .plan h3 {
-      font-size: 1.5rem;
+      text-align: center;
+      color: #1c1c2e;
       margin-bottom: 1rem;
-      color: #1a1a2e;
     }
     .plan ul {
-      text-align: left;
       padding-left: 1rem;
     }
     .btn-stripe {
-      margin-top: 1.5rem;
-      background-color: #1a1a2e;
-      color: white;
+      display: block;
+      margin: 1.5rem auto 0;
+      text-align: center;
+      background: #1c1c2e;
+      color: #fff;
       padding: 0.75rem 1.5rem;
-      text-decoration: none;
       border-radius: 8px;
-      display: inline-block;
+      text-decoration: none;
+      font-weight: bold;
     }
     #trial {
-      background: #e6f7ff;
+      background-color: #e8f9ff;
     }
     footer {
-      background-color: #1a1a2e;
-      color: white;
-      padding: 2rem;
+      background-color: #1c1c2e;
+      color: #fff;
       text-align: center;
+      padding: 2rem;
     }
   </style>
 </head>
@@ -124,19 +127,18 @@
       <a href="login.html">Login</a>
     </div>
   </nav>  <header>
-    <h1>Automate Your Data Entry with AI</h1>
-    <p>Fast Fill AI creates powerful bots that handle your repetitive tasks so you can focus on what matters.</p>
-    <video controls autoplay muted loop>
-      <source src="demo.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </header>  <section id="features">
-    <h2>What Our Bots Can Do</h2>
+    <h1>AI-Powered Data Entry For Your Business</h1>
+    <p>Automate data entry tasks with a custom-built AI bot designed for speed and efficiency.</p>
+  </header>  <video controls autoplay muted loop>
+    <source src="demo.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>  <section id="features">
+    <h2>Features</h2>
     <ul>
-      <li>🤖 Automate repetitive data entry tasks</li>
-      <li>📊 Integrate with Google Sheets, CRMs, and more</li>
-      <li>📁 File upload & email automation</li>
-      <li>⚡ Full setup in under 10 minutes</li>
+      <li>🤖 AI Bots for Data Entry - Automate repetitive tasks with ease</li>
+      <li>🖥️ Runs on Browser or Desktop - Deploy anywhere</li>
+      <li>🗓️ 1 Month Free Trial - Try any bot completely free</li>
+      <li>⚙️ Easy Setup - Launch your bot in minutes</li>
     </ul>
   </section>  <section id="pricing">
     <h2>Compare Plans</h2>
@@ -144,29 +146,27 @@
       <div class="plan">
         <h3>Starter Bot</h3>
         <ul>
-          <li>Basic data entry automation</li>
-          <li>Email integration</li>
-          <li>Single workflow</li>
-          <li>Manual file upload</li>
-          <li>1 week support</li>
+          <li>1 custom task</li>
+          <li>Browser/Desktop ready</li>
+          <li>5-day delivery</li>
+          <li>Basic support</li>
         </ul>
-        <a href="starter-bot-info.html" class="btn-stripe">View Details</a>
+        <a href="starter-bot-info.html" class="btn-stripe">Order Starter</a>
       </div>
       <div class="plan">
         <h3>Pro Bot</h3>
         <ul>
-          <li>Advanced AI integrations</li>
-          <li>Google Sheets, CRMs, Webhooks</li>
-          <li>Multi-step workflows</li>
-          <li>Auto email + file management</li>
-          <li>30 days support</li>
+          <li>Multiple tasks + automation</li>
+          <li>Advanced integrations</li>
+          <li>Fast delivery</li>
+          <li>Priority support</li>
         </ul>
-        <a href="pro-bot-info.html" class="btn-stripe">View Details</a>
+        <a href="pro-bot-info.html" class="btn-stripe">Order Pro</a>
       </div>
     </div>
   </section>  <section id="trial">
-    <h2>Start Your 1-Month Free Trial</h2>
-    <p>No credit card required. Just answer a few quick questions and we’ll set up your bot.</p>
+    <h2>Start Your Free Trial</h2>
+    <p>No payment needed. Launch your first AI bot free for 1 month.</p>
     <a href="https://www.paypal.com/ncp/payment/2C9U5WNCTQATW" class="btn-stripe">Start Free Trial</a>
   </section>  <footer>
     <p>&copy; 2025 Fast Fill AI. All rights reserved.</p>
