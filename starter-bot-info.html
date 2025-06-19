@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Starter Bot – Checkout</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
-    <h1>Starter Bot – $299</h1>
+    <h1 class="page-title">Starter Bot – $299</h1>
 
     <div class="bot-summary">
       <p><strong>✔️ Includes:</strong> One custom-built AI bot for a single data entry task</p>
@@ -18,35 +18,35 @@
       <p><strong>🛠 Support:</strong> Basic setup + 1 revision included</p>
     </div>
 
-    <form action="https://formsubmit.co/fastfillaiautomation@gmail.com" method="POST">
+    <form action="https://formsubmit.co/fastfillaiautomation@gmail.com" method="POST" class="form">
       <input type="hidden" name="Bot" value="Starter Bot">
       <input type="hidden" name="_next" value="thank-you.html">
 
-      <label>Full Name</label>
-      <input type="text" name="Name" required>
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="Name" required>
 
-      <label>Email</label>
-      <input type="email" name="Email" required>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="Email" required>
 
-      <label>What should this bot do?</label>
-      <textarea name="Bot Functionality" rows="4" required></textarea>
+      <label for="bot">What should this bot do?</label>
+      <textarea id="bot" name="Bot Functionality" rows="4" required></textarea>
 
-      <label>Preferred Platform (Browser/Desktop/API)</label>
-      <input type="text" name="Platform" required>
+      <label for="platform">Preferred Platform (Browser/Desktop/API)</label>
+      <input type="text" id="platform" name="Platform" required>
 
-      <label>Deadline or Priority</label>
-      <input type="text" name="Priority">
+      <label for="priority">Deadline or Priority</label>
+      <input type="text" id="priority" name="Priority">
 
-      <button type="submit">Submit Information</button>
+      <button type="submit" class="btn-submit">Submit Information</button>
     </form>
 
     <div class="payment-links">
       <p><strong>After submitting, choose a payment method below:</strong></p>
-      <a href="https://buy.stripe.com/test_3cI4gBb3qallfXfbjK4c800" target="_blank">Pay with Stripe</a>
-      <a href="https://www.paypal.com/ncp/payment/2C9U5WNCTQATW" class="paypal" target="_blank">Pay with PayPal</a>
+      <a href="https://buy.stripe.com/test_3cI4gBb3qallfXfbjK4c800" class="btn-stripe" target="_blank">Pay with Stripe</a>
+      <a href="https://www.paypal.com/ncp/payment/2C9U5WNCTQATW" class="btn-paypal" target="_blank">Pay with PayPal</a>
     </div>
 
-    <p style="text-align:center; margin-top:2rem;"><a href="index.html">← Back to Home</a></p>
+    <p style="text-align:center; margin-top:2rem;"><a href="index.html" class="back-link">← Back to Home</a></p>
   </div>
 </body>
 </html>
