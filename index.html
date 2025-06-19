@@ -1,3 +1,4 @@
+<!-- Full index.html with login, video, feature icons — RAW CODE -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,44 +7,106 @@
   <title>Fast Fill AI</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    nav {
+      background-color: #0a0a23;
+      padding: 1rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav a {
+      margin: 0 1rem;
+      color: white;
+      text-decoration: none;
+    }
+    nav a.login {
+      color: #00ffcc;
+      font-weight: bold;
+    }
+    section {
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+    .pricing-container {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .plan {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      min-width: 280px;
+      max-width: 400px;
+      text-align: left;
+    }
+    .plan h3 {
+      text-align: center;
+    }
+    .btn-stripe {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #0a0a23;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    footer {
+      background-color: #0a0a23;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Navigation with Login -->
-  <nav style="position: sticky; top: 0; z-index: 1000; background: #0a0a23; padding: 1rem; text-align: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-    <a href="#pricing" style="margin: 0 1rem; color: white; text-decoration: none;">Pricing</a>
-    <a href="#trial" style="margin: 0 1rem; color: white; text-decoration: none;">Free Trial</a>
-    <a href="#features" style="margin: 0 1rem; color: white; text-decoration: none;">Features</a>
-    <a href="faq.html" style="margin: 0 1rem; color: white; text-decoration: none;">FAQ</a>
-    <a href="login.html" style="margin: 0 1rem; color: #00ffcc; text-decoration: none; font-weight: bold;">Login</a>
+  <nav>
+    <a href="#pricing">Pricing</a>
+    <a href="#trial">Free Trial</a>
+    <a href="#features">Features</a>
+    <a href="faq.html">FAQ</a>
+    <a href="login.html" class="login">Login</a>
   </nav>
 
-  <!-- Hero Section -->
-  <section style="text-align: center; padding: 3rem 1rem; background-color: #f9f9f9;">
+  <section style="background-color: #f9f9f9;">
     <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Automate Your Data Entry with AI</h1>
-    <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 2rem auto;">
+    <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
       Fast Fill AI creates powerful bots that handle your repetitive tasks so you can focus on what matters.
     </p>
+    <video controls autoplay muted loop style="max-width: 90%; margin: 2rem auto; display: block; border-radius: 8px;">
+      <source src="demo.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
   </section>
 
-  <!-- Features Section -->
-  <section id="features" style="padding: 2rem; text-align: center;">
+  <section id="features">
     <h2>What Our Bots Can Do</h2>
-    <ul style="list-style: none; padding: 0; line-height: 2;">
-      <li>✅ Automate repetitive data entry tasks</li>
-      <li>✅ Integrate with Google Sheets, CRMs, and more</li>
-      <li>✅ File upload & email automation</li>
-      <li>✅ Full setup in under 10 minutes</li>
+    <ul style="list-style: none; padding: 0; line-height: 2; max-width: 800px; margin: 0 auto; text-align: left;">
+      <li>🤖 Automate repetitive data entry tasks</li>
+      <li>📊 Integrate with Google Sheets, CRMs, and more</li>
+      <li>📁 File upload & email automation</li>
+      <li>⚡ Full setup in under 10 minutes</li>
     </ul>
   </section>
 
-  <!-- Pricing Comparison -->
-  <section id="pricing" style="padding: 2rem; text-align: center;">
+  <section id="pricing">
     <h2>Compare Plans</h2>
-    <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 2rem;">
-      <div style="flex: 1; min-width: 280px; max-width: 400px; background-color: #ffffff; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <div class="pricing-container">
+      <div class="plan">
         <h3>Starter Bot</h3>
-        <ul style="text-align: left; line-height: 1.8;">
+        <ul>
           <li>Basic data entry automation</li>
           <li>Email integration</li>
           <li>Single workflow</li>
@@ -52,9 +115,9 @@
         </ul>
         <a href="starter-bot-info.html" class="btn-stripe">View Details</a>
       </div>
-      <div style="flex: 1; min-width: 280px; max-width: 400px; background-color: #ffffff; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <div class="plan">
         <h3>Pro Bot</h3>
-        <ul style="text-align: left; line-height: 1.8;">
+        <ul>
           <li>Advanced AI integrations</li>
           <li>Google Sheets, CRMs, Webhooks</li>
           <li>Multi-step workflows</li>
@@ -66,15 +129,13 @@
     </div>
   </section>
 
-  <!-- Trial CTA -->
-  <section id="trial" style="text-align: center; padding: 3rem 1rem; background-color: #e6f7ff;">
+  <section id="trial" style="background-color: #e6f7ff;">
     <h2>Start Your 1-Month Free Trial</h2>
     <p>No credit card required. Just answer a few quick questions and we’ll set up your bot.</p>
     <a href="https://www.paypal.com/ncp/payment/2C9U5WNCTQATW" class="btn-stripe">Start Free Trial</a>
   </section>
 
-  <!-- Footer -->
-  <footer style="text-align: center; padding: 2rem; background: #0a0a23; color: white;">
+  <footer>
     <p>&copy; 2025 Fast Fill AI. All rights reserved.</p>
   </footer>
 
