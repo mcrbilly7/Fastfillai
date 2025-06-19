@@ -1,22 +1,30 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fast Fill AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --primary: #0a0a23;
+      --accent: #00fff7;
+      --light-bg: #f5f9ff;
+      --text-color: #111;
+      --card-bg: #ffffff;
+    }
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f7f9fb;
-      color: #111;
+      background-color: var(--light-bg);
+      color: var(--text-color);
     }
     nav {
-      background-color: #1c1c2e;
+      background-color: var(--primary);
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
@@ -27,7 +35,7 @@
     }
     nav .logo {
       font-size: 1.5rem;
-      color: #00fff7;
+      color: var(--accent);
       font-weight: bold;
     }
     nav a {
@@ -36,81 +44,104 @@
       text-decoration: none;
       font-weight: 500;
     }
-    header {
-      background: linear-gradient(145deg, #00fff7 0%, #a8f0ff 100%);
-      color: #111;
+    .hero {
+      background-color: var(--primary);
+      color: white;
       text-align: center;
       padding: 4rem 2rem;
     }
-    header h1 {
-      font-size: 3rem;
+    .hero h1 {
+      font-size: 2.75rem;
       margin-bottom: 1rem;
     }
-    header p {
+    .hero p {
       font-size: 1.2rem;
-      max-width: 700px;
+      max-width: 600px;
       margin: 0 auto;
+      opacity: 0.9;
+    }
+    .hero .cta {
+      margin-top: 2rem;
+      display: inline-block;
+      background-color: var(--accent);
+      color: #000;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .video-section {
+      display: flex;
+      justify-content: center;
+      margin-top: -2rem;
     }
     video {
-      display: block;
-      margin: 2rem auto;
       max-width: 90%;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     }
     section {
       padding: 4rem 2rem;
       text-align: center;
     }
-    #features ul {
-      max-width: 700px;
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
       margin: 0 auto;
-      text-align: left;
-      list-style: none;
-      font-size: 1.1rem;
     }
-    #features li {
-      margin-bottom: 1rem;
+    .feature {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
     }
     .pricing-container {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 2rem;
-      flex-wrap: wrap;
     }
     .plan {
-      background-color: #fff;
+      background-color: var(--card-bg);
       border-radius: 12px;
       padding: 2rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
       width: 300px;
       text-align: left;
     }
     .plan h3 {
       text-align: center;
-      color: #1c1c2e;
+      color: var(--primary);
       margin-bottom: 1rem;
     }
     .plan ul {
+      list-style: none;
       padding-left: 1rem;
+    }
+    .plan ul li {
+      margin: 0.5rem 0;
     }
     .btn-stripe {
       display: block;
       margin: 1.5rem auto 0;
       text-align: center;
-      background: #1c1c2e;
+      background: var(--primary);
       color: #fff;
       padding: 0.75rem 1.5rem;
       border-radius: 8px;
       text-decoration: none;
       font-weight: bold;
     }
-    #trial {
-      background-color: #e8f9ff;
-    }
     footer {
-      background-color: #1c1c2e;
-      color: #fff;
+      background-color: var(--primary);
+      color: white;
       text-align: center;
       padding: 2rem;
     }
@@ -120,31 +151,58 @@
   <nav>
     <div class="logo">Fast Fill AI</div>
     <div>
+      <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#trial">Free Trial</a>
-      <a href="#features">Features</a>
       <a href="faq.html">FAQ</a>
       <a href="login.html">Login</a>
     </div>
-  </nav>  <header>
+  </nav>
+
+  <header class="hero">
     <h1>AI-Powered Data Entry For Your Business</h1>
     <p>Automate data entry tasks with a custom-built AI bot designed for speed and efficiency.</p>
-  </header>  <video controls autoplay muted loop>
-    <source src="demo.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>  <section id="features">
+    <a href="#trial" class="cta">Start Free Trial</a>
+  </header>
+
+  <div class="video-section">
+    <video controls autoplay muted loop>
+      <source src="demo.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <section id="features">
     <h2>Features</h2>
-    <ul>
-      <li>🤖 AI Bots for Data Entry - Automate repetitive tasks with ease</li>
-      <li>🖥️ Runs on Browser or Desktop - Deploy anywhere</li>
-      <li>🗓️ 1 Month Free Trial - Try any bot completely free</li>
-      <li>⚙️ Easy Setup - Launch your bot in minutes</li>
-    </ul>
-  </section>  <section id="pricing">
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🤖</div>
+        <strong>AI Bots for Data Entry</strong>
+        <p>Automate repetitive tasks with ease</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🖥️</div>
+        <strong>Runs on Browser or Desktop</strong>
+        <p>Deploy anywhere instantly</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🗓️</div>
+        <strong>1 Month Free Trial</strong>
+        <p>Try any bot completely free</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⚙️</div>
+        <strong>Easy Setup</strong>
+        <p>Launch your bot in minutes</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
     <h2>Compare Plans</h2>
     <div class="pricing-container">
       <div class="plan">
-        <h3>Starter Bot</h3>
+        <h3>Starter Bot – $299</h3>
         <ul>
           <li>1 custom task</li>
           <li>Browser/Desktop ready</li>
@@ -154,7 +212,7 @@
         <a href="starter-bot-info.html" class="btn-stripe">Order Starter</a>
       </div>
       <div class="plan">
-        <h3>Pro Bot</h3>
+        <h3>Pro Bot – $499</h3>
         <ul>
           <li>Multiple tasks + automation</li>
           <li>Advanced integrations</li>
@@ -164,11 +222,15 @@
         <a href="pro-bot-info.html" class="btn-stripe">Order Pro</a>
       </div>
     </div>
-  </section>  <section id="trial">
+  </section>
+
+  <section id="trial">
     <h2>Start Your Free Trial</h2>
     <p>No payment needed. Launch your first AI bot free for 1 month.</p>
     <a href="https://www.paypal.com/ncp/payment/2C9U5WNCTQATW" class="btn-stripe">Start Free Trial</a>
-  </section>  <footer>
+  </section>
+
+  <footer>
     <p>&copy; 2025 Fast Fill AI. All rights reserved.</p>
   </footer>
 </body>
