@@ -3,33 +3,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fast Fill AI – Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f9fafc;
-      --text: #1a1a1a;
+      --bg: #f4f5f9;
+      --text: #222;
+      --accent: #ffc107;
       --card: #ffffff;
-      --accent: #00c5c5;
-      --shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
-    }
-    [data-theme="dark"] {
-      --bg: #0d1117;
-      --text: #f0f0f0;
-      --card: #1c1f26;
-      --accent: #00ffff;
-      --shadow: 0 8px 18px rgba(255, 255, 255, 0.06);
-    }
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      --radius: 20px;
     }
     body {
+      margin: 0;
       font-family: 'Inter', sans-serif;
-      background-color: var(--bg);
+      background: var(--bg);
       color: var(--text);
-      min-height: 100vh;
     }
-    nav {
-      background: #0a0a23;
+    header {
+      background: white;
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
@@ -37,137 +28,116 @@
       box-shadow: var(--shadow);
     }
     .logo {
-      color: var(--accent);
+      font-size: 1.5rem;
       font-weight: bold;
-      font-size: 1.8rem;
+      color: #00c5c5;
     }
-    .nav-buttons button {
-      margin-left: 1rem;
-      background-color: var(--accent);
-      color: white;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .container {
-      max-width: 1200px;
+    .grid {
+      max-width: 1440px;
       margin: 2rem auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
       padding: 0 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
     }
     .card {
       background: var(--card);
-      padding: 1.5rem;
-      border-radius: 16px;
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
-      transition: all 0.3s ease;
+      padding: 1.5rem;
     }
-    .card h3 {
+    .profile {
+      text-align: center;
+    }
+    .profile img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
       margin-bottom: 1rem;
-      font-size: 1.2rem;
     }
-    .input, select, textarea {
-      width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.5rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background: #fff;
-      font-size: 1rem;
+    .title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
     }
-    .btn {
-      display: inline-block;
-      background: var(--accent);
-      color: white;
-      padding: 0.6rem 1.1rem;
-      border-radius: 8px;
+    .highlight {
+      font-size: 1.5rem;
       font-weight: bold;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
     }
-    .referral-link, #apiKey {
-      background: #f1f1f1;
-      padding: 0.4rem 0.6rem;
-      border-radius: 6px;
-      display: inline-block;
-      margin-top: 0.5rem;
-      font-family: monospace;
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      height: 120px;
+      gap: 0.6rem;
+    }
+    .bar {
+      width: 12%;
+      background: #00c5c5;
+      border-radius: 10px 10px 0 0;
+    }
+    .circle-timer {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 8px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 0 auto;
+    }
+    .metrics {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
-  <nav>
+  <header>
     <div class="logo">Fast Fill AI</div>
-    <div class="nav-buttons">
-      <button onclick="toggleTheme()">🌓 Dark Mode</button>
+    <div>
       <button onclick="logout()">Logout</button>
     </div>
-  </nav>  <main class="container">
-    <div class="card">
-      <h3>👤 Welcome</h3>
-      <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
-      <p><strong>Plan:</strong> <span id="userPlan">Loading...</span></p>
+  </header>  <section class="grid">
+    <div class="card profile">
+      <img src="https://i.pravatar.cc/100" alt="Profile">
+      <h3 id="userName">User</h3>
+      <p id="userRole">Loading...</p>
+      <p class="highlight" id="userBalance">$0</p>
     </div><div class="card">
-  <h3>📈 Bot Usage</h3>
-  <p>Starter Bot: <span id="starterCount">0</span></p>
-  <p>Pro Bot: <span id="proCount">0</span></p>
+  <div class="title">Progress</div>
+  <p><span id="workHours">0</span>h Work Time This Week</p>
+  <div class="bar-chart" id="progressChart"></div>
 </div>
 
 <div class="card">
-  <h3>✅ Onboarding Checklist</h3>
-  <ul>
-    <li><input type="checkbox" id="step1" disabled> Downloaded a Bot</li>
-    <li><input type="checkbox" id="step2" disabled> Activated API Key</li>
-    <li><input type="checkbox" id="step3" disabled> Used Automation</li>
-  </ul>
+  <div class="title">Time Tracker</div>
+  <div class="circle-timer" id="timeCircle">00:00</div>
+  <p style="text-align: center; margin-top: 1rem;">Active Work Time</p>
 </div>
 
 <div class="card">
-  <h3>🔑 API Key</h3>
-  <p id="apiKey">Loading...</p>
-  <button class="btn" onclick="generateAPIKey()">Generate Key</button>
+  <div class="title">Onboarding Progress</div>
+  <p>Task Completion</p>
+  <progress id="onboardingProgress" value="0" max="8" style="width: 100%; height: 12px; border-radius: 10px;"></progress>
+  <p style="margin-top: 0.5rem;" id="onboardingStatus">0 / 8 Completed</p>
 </div>
 
 <div class="card">
-  <h3>📄 Download PDF Summary</h3>
-  <button class="btn" onclick="downloadPDF()">Download Report</button>
+  <div class="title">Topline Metrics</div>
+  <div class="metrics">
+    <div><strong id="userCount">0</strong><br>Users</div>
+    <div><strong id="setupCount">0</strong><br>Setups</div>
+    <div><strong id="botCount">0</strong><br>Bots</div>
+  </div>
 </div>
 
-<div class="card">
-  <h3>🎁 Referral Program</h3>
-  <p>Earn $100 when someone subscribes using your link:</p>
-  <div class="referral-link">https://fastfill.ai?r=yourID</div>
-</div>
-
-<div class="card">
-  <h3>📢 Admin Message</h3>
-  <p id="adminMessage">Loading...</p>
-</div>
-
-<div class="card">
-  <h3>🛠 Request a Custom Bot</h3>
-  <input class="input" id="company" placeholder="Company Name" />
-  <input class="input" id="usecase" placeholder="Bot Use Case" />
-  <input class="input" id="source" placeholder="Data Source" />
-  <select class="input" id="deadline">
-    <option>Select Deadline</option>
-    <option>ASAP</option>
-    <option>3 Days</option>
-    <option>1 Week</option>
-  </select>
-  <button class="btn" onclick="submitRequest()">Submit</button>
-</div>
-
-  </main>  <script type="module">
+  </section>  <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-    import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
     import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
     const config = {
@@ -183,61 +153,38 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
+    window.logout = () => signOut(auth).then(() => location.href = 'login.html');
+
     onAuthStateChanged(auth, async user => {
       if (!user) return location.href = 'login.html';
-      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('userName').textContent = user.displayName || 'Admin';
 
       const usage = await getDoc(doc(db, 'usage', user.uid));
-      const key = await getDoc(doc(db, 'apiKeys', user.uid));
-      const msg = await getDoc(doc(db, 'admin', 'latestMsg'));
+      const meta = await getDoc(doc(db, 'metrics', 'summary'));
 
       if (usage.exists()) {
         const u = usage.data();
-        document.getElementById('starterCount').textContent = u.starter || 0;
-        document.getElementById('proCount').textContent = u.pro || 0;
-        document.getElementById('userPlan').textContent = u.pro > 0 ? 'Pro' : 'Starter';
-        document.getElementById('step1').checked = true;
-        if (u.apiUsed) document.getElementById('step2').checked = true;
-        if (u.automated) document.getElementById('step3').checked = true;
+        document.getElementById('userRole').textContent = u.role || 'Pro User';
+        document.getElementById('userBalance').textContent = '$' + (u.balance || 0);
+        document.getElementById('workHours').textContent = u.weeklyHours || 0;
+
+        const chart = document.getElementById('progressChart');
+        const days = u.chartData || [30, 45, 60, 90, 75, 40, 20];
+        chart.innerHTML = days.map(h => `<div class="bar" style="height:${h}%"></div>`).join('');
+
+        const completed = u.onboarding || 0;
+        document.getElementById('onboardingProgress').value = completed;
+        document.getElementById('onboardingStatus').textContent = `${completed} / 8 Completed`;
+
+        document.getElementById('timeCircle').textContent = u.activeTime || '00:00';
       }
-      if (key.exists()) document.getElementById('apiKey').textContent = key.data().key;
-      if (msg.exists()) document.getElementById('adminMessage').textContent = msg.data().text;
+
+      if (meta.exists()) {
+        const d = meta.data();
+        document.getElementById('userCount').textContent = d.users || 0;
+        document.getElementById('setupCount').textContent = d.setups || 0;
+        document.getElementById('botCount').textContent = d.bots || 0;
+      }
     });
-
-    window.generateAPIKey = async () => {
-      const user = auth.currentUser;
-      const key = 'api_' + Math.random().toString(36).substring(2);
-      await setDoc(doc(db, 'apiKeys', user.uid), { key, created: serverTimestamp() });
-      document.getElementById('apiKey').textContent = key;
-    }
-
-    window.downloadPDF = () => {
-      const blob = new Blob([document.body.innerText], { type: 'application/pdf' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'report.pdf';
-      link.click();
-    }
-
-    window.submitRequest = async () => {
-      const user = auth.currentUser;
-      const data = {
-        email: user.email,
-        company: document.getElementById('company').value,
-        usecase: document.getElementById('usecase').value,
-        source: document.getElementById('source').value,
-        deadline: document.getElementById('deadline').value,
-        timestamp: serverTimestamp()
-      };
-      await setDoc(doc(db, 'botRequests', user.uid), data);
-      alert('Request submitted');
-    }
-
-    window.logout = () => signOut(auth).then(() => location.href = 'login.html');
-    window.toggleTheme = () => {
-      const html = document.documentElement;
-      const current = html.getAttribute('data-theme');
-      html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
-    }
   </script></body>
 </html>
