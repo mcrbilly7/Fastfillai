@@ -129,8 +129,8 @@
   <h3>Your Bot Access</h3>
   <p>Access the bots you’ve purchased, manage subscription details, or upgrade to a more powerful plan.</p>
   <div class="bot-actions">
-    <a href="#">Download Starter Bot</a>
-    <a href="#">Download Pro Bot</a>
+    <a href="#" onclick="trackBotUsage('starter')">Download Starter Bot</a>
+    <a href="#" onclick="trackBotUsage('pro')">Download Pro Bot</a>
     <a href="#">Request Custom Bot</a>
   </div>
 </div>
@@ -141,7 +141,7 @@
     <li>✅ Activate your chosen bot plan</li>
     <li>✅ Complete onboarding form</li>
     <li>✅ Book your welcome session</li>
-    <li>✅ Start automating routine data tasks</li>
+    <li id="onboardingStatus">❌ Onboarding not completed</li>
   </ul>
 </div>
 
@@ -153,6 +153,7 @@
   </div>  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
@@ -165,10 +166,34 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    onAuthStateChanged(auth, user => {
+    let currentUserEmail = "";
+
+    onAuthStateChanged(auth, async user => {
       if (user) {
         document.getElementById('user-name').textContent = user.displayName || user.email;
+        currentUserEmail = user.email;
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+          const data = userSnap.data();
+          if (data.onboarding_completed) {
+            document.getElementById("onboardingStatus").textContent = "✅ Onboarding completed";
+          }
+          await updateDoc(userRef, {
+            last_active: serverTimestamp()
+          });
+        } else {
+          await setDoc(userRef, {
+            email: user.email,
+            usage_count: 0,
+            onboarding_completed: false,
+            last_active: serverTimestamp(),
+            bot: "starter"
+          });
+        }
       } else {
         window.location.href = "login.html";
       }
@@ -178,6 +203,24 @@
       signOut(auth).then(() => {
         window.location.href = "login.html";
       });
+    }
+
+    window.trackBotUsage = async function(botType) {
+      const user = auth.currentUser;
+      if (!user) return;
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        const usage = data.usage_count || 0;
+        await updateDoc(userRef, {
+          usage_count: usage + 1,
+          bot: botType,
+          last_active: serverTimestamp()
+        });
+        alert(`Bot usage updated: ${botType.toUpperCase()} bot`);
+      }
     }
   </script></body>
 </html>
