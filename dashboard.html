@@ -5,32 +5,96 @@
   <title>Dashboard – Fast Fill AI</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; background: #f4f7fc; margin: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom right, #eaf6ff, #f9fbff);
+      margin: 0;
+    }
     nav {
       background-color: #0a0a23;
       color: white;
-      padding: 1rem 2rem;
+      padding: 1.2rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    nav .logo { font-weight: bold; font-size: 1.4rem; color: #00fff7; }
-    .dashboard { max-width: 1200px; margin: 2rem auto; padding: 1rem; }
-    h2 { color: #0a0a23; }
+    nav .logo {
+      font-weight: bold;
+      font-size: 1.6rem;
+      color: #00fff7;
+      letter-spacing: 1px;
+    }
+    .dashboard {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 2rem;
+    }
+    h2 {
+      color: #0a0a23;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
     .card {
       background: white;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
-      margin-bottom: 1.5rem;
+      padding: 2rem;
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.1);
+    }
+    .card h3 {
+      margin-top: 0;
+      font-size: 1.5rem;
+      color: #003366;
+    }
+    .card ul {
+      padding-left: 1.2rem;
+    }
+    .card ul li {
+      padding: 0.5rem 0;
     }
     .logout {
-      background: #d63031;
+      background: #ff4d4d;
       color: white;
       border: none;
       padding: 0.6rem 1.2rem;
       border-radius: 6px;
       cursor: pointer;
+      font-weight: bold;
+    }
+    .hero-banner {
+      background: linear-gradient(to right, #0a0a23, #1c1c4d);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 12px;
+      margin-bottom: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .hero-text {
+      max-width: 600px;
+    }
+    .hero-text h1 {
+      font-size: 2.8rem;
+      margin: 0 0 1rem;
+      color: #00fff7;
+    }
+    .hero-text p {
+      font-size: 1.1rem;
+    }
+    .hero-image {
+      max-width: 400px;
+    }
+    .hero-image img {
+      width: 100%;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -39,17 +103,26 @@
     <div class="logo">Fast Fill AI</div>
     <button class="logout" onclick="logout()">Logout</button>
   </nav>  <div class="dashboard">
-    <h2>Welcome, <span id="user-name">User</span> 👋</h2><div class="card">
+    <div class="hero-banner">
+      <div class="hero-text">
+        <h1>Welcome, <span id="user-name">User</span></h1>
+        <p>Your centralized hub for managing all your automation tools, access details, and onboarding resources.</p>
+      </div>
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7" alt="Bot Dashboard">
+      </div>
+    </div><div class="card">
   <h3>Your Bot Access</h3>
-  <p>This is your personal dashboard where you can manage bot subscriptions, check your usage, and access support.</p>
+  <p>This dashboard allows you to view bot plans, manage your current setup, and upgrade or request custom automation.</p>
 </div>
 
 <div class="card">
-  <h3>Getting Started</h3>
+  <h3>Getting Started Checklist</h3>
   <ul>
-    <li>✅ Activate your bot</li>
-    <li>✅ Join onboarding Zoom call</li>
-    <li>✅ Start automating your tasks</li>
+    <li>✅ Activate your chosen bot plan</li>
+    <li>✅ Complete onboarding form</li>
+    <li>✅ Book your welcome session</li>
+    <li>✅ Start automating routine data tasks</li>
   </ul>
 </div>
 
