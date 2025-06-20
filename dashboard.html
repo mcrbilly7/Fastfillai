@@ -1,4 +1,4 @@
-<!-- dashboard.html with Admin, PDF Export, Branding --><!DOCTYPE html><html lang="en">
+<!-- Dashboard – with Bot Usage, Onboarding, API, Referral, Notifications --><!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,7 @@
       --bg-color: #f4f6fb;
       --text-color: #111;
       --card-bg: white;
+      --accent-color: #00fff7;
     }
     [data-theme="dark"] {
       --bg-color: #0d1117;
@@ -33,7 +34,7 @@
     nav .logo {
       font-weight: bold;
       font-size: 1.6rem;
-      color: #00fff7;
+      color: var(--accent-color);
     }
     .logout, .theme-toggle {
       background: #ff4d4d;
@@ -48,20 +49,12 @@
     .theme-toggle {
       background: #3333ff;
     }
-    .notification {
-      background-color: #fffae6;
-      color: #663c00;
-      padding: 0.75rem 1.25rem;
-      font-size: 0.95rem;
-      border-left: 4px solid #ffc107;
-      text-align: center;
-    }
     .container {
       max-width: 1300px;
       margin: 2rem auto;
       padding: 1rem;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1.5rem;
     }
     .card {
@@ -73,52 +66,22 @@
     .profile-card {
       text-align: center;
     }
-    .profile-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 1rem;
-    }
-    .chat-widget {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    .progress-bar { width: 100%; background: #ddd; border-radius: 8px; overflow: hidden; }
+    .progress-bar span { display: block; height: 16px; background: #00c5c5; }
+    .referral-box, .api-box, .notify-box {
       padding: 1rem;
-      max-width: 320px;
-      font-size: 0.9rem;
-      z-index: 999;
-    }
-    .admin-area, .branding, .pdf-export {
-      grid-column: span 2;
       background: var(--card-bg);
-      padding: 1rem;
       border-radius: 12px;
     }
-    .admin-area table {
-      width: 100%;
-      border-collapse: collapse;
+    .notify-box ul {
+      list-style: none;
+      padding-left: 0;
     }
-    .admin-area th, .admin-area td {
-      padding: 0.75rem;
-      text-align: left;
-      border-bottom: 1px solid #ccc;
-    }
-    .admin-area th {
-      background-color: #e0e0e0;
-    }
-    .branding input, .branding select {
-      padding: 0.6rem;
-      width: 100%;
-      margin: 0.5rem 0;
-      border: 1px solid #ccc;
+    .notify-box li {
+      background: #e2f0ff;
+      padding: 0.5rem;
       border-radius: 6px;
-    }
-    .branding label {
-      font-weight: bold;
+      margin: 0.4rem 0;
     }
   </style>
 </head>
@@ -129,66 +92,53 @@
       <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
       <button class="logout" onclick="logout()">Logout</button>
     </div>
-  </nav>  <div class="notification">
-    🚀 New: PDF Export, Admin Controls & Custom Branding Enabled
-  </div>  <div class="container">
+  </nav>  <div class="container">
     <div class="card profile-card">
-      <img src="https://i.pravatar.cc/100?img=8" alt="User Profile">
+      <img src="https://i.pravatar.cc/100?img=12" alt="User Profile">
       <h3 id="user-name">Admin</h3>
       <p id="user-email">fastfillaiautomation@gmail.com</p>
     </div><div class="card">
-  <h3>Analytics</h3>
-  <p>Active Users: 24</p>
-  <p>Top Bot: Pro</p>
+  <h3>Bot Usage Tracker</h3>
+  <p>Starter Bot Uses: <span id="starterCount">0</span></p>
+  <p>Pro Bot Uses: <span id="proCount">0</span></p>
 </div>
 
 <div class="card">
-  <h3>API Key</h3>
-  <input type="text" id="apiKeyInput" readonly>
-  <button onclick="copyApiKey()">Copy</button>
+  <h3>Onboarding Progress</h3>
+  <ul>
+    <li id="step1">⬜ Downloaded Bot</li>
+    <li id="step2">⬜ Set Up Automation</li>
+    <li id="step3">⬜ Activated API Key</li>
+  </ul>
+  <div class="progress-bar">
+    <span id="progressFill" style="width: 0%;"></span>
+  </div>
 </div>
 
-<div class="pdf-export">
-  <h3>📄 Export Dashboard Summary</h3>
-  <button onclick="generatePDF()">Download PDF Report</button>
+<div class="referral-box">
+  <h3>🎁 Referral Program</h3>
+  <p>Share this link to earn $100 after their 1st paid month:</p>
+  <input type="text" value="https://fastfillai.com/referral?ref=USER_ID" readonly style="width:100%">
 </div>
 
-<div class="branding">
-  <h3>🎨 Custom Branding</h3>
-  <label>Business Name</label>
-  <input type="text" placeholder="Fast Fill AI">
-  <label>Primary Color</label>
-  <input type="color" value="#00fff7">
-  <label>Secondary Color</label>
-  <input type="color" value="#111111">
-  <label>Upload Logo</label>
-  <input type="file">
+<div class="api-box">
+  <h3>🔑 API Key Generator</h3>
+  <button onclick="generateApi()">Generate New Key</button>
+  <input type="text" id="apiDisplay" readonly style="width:100%; margin-top:0.5rem">
 </div>
 
-<div class="admin-area">
-  <h3>Admin User Table</h3>
-  <table id="adminTable">
-    <thead>
-      <tr>
-        <th>User</th>
-        <th>Email</th>
-        <th>Plan</th>
-        <th>API Key</th>
-        <th>Access</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<div class="notify-box">
+  <h3>🔔 Notifications</h3>
+  <ul id="notices">
+    <li>✅ Starter Bot setup guide updated</li>
+    <li>🚀 New feature: Export PDF summaries</li>
+  </ul>
 </div>
 
-  </div>  <div class="chat-widget">
-    <strong>Need Help?</strong>
-    <p>Ask your question and we'll reply ASAP:</p>
-    <input type="text" placeholder="Type your question...">
   </div>  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
@@ -200,49 +150,37 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
     const db = getFirestore(app);
+    const auth = getAuth(app);
 
     onAuthStateChanged(auth, async user => {
-      if (!user || user.email !== "fastfillaiautomation@gmail.com") {
-        window.location.href = "login.html";
-      } else {
-        const usersRef = collection(db, "users");
-        const snapshot = await getDocs(usersRef);
-        const tbody = document.querySelector("#adminTable tbody");
+      if (!user) return window.location.href = "login.html";
 
-        snapshot.forEach(docSnap => {
-          const data = docSnap.data();
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${data.name || "User"}</td>
-            <td>${data.email}</td>
-            <td>${data.plan || "Free"}</td>
-            <td>${data.apiKey || "None"}</td>
-            <td><button class="btn-toggle">Toggle</button></td>
-          `;
-          tbody.appendChild(row);
-        });
+      document.getElementById("user-name").textContent = user.displayName || "User";
+      document.getElementById("user-email").textContent = user.email;
+
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const d = docSnap.data();
+        document.getElementById("starterCount").textContent = d.starterUses || 0;
+        document.getElementById("proCount").textContent = d.proUses || 0;
+
+        let complete = 0;
+        if (d.downloaded) { document.getElementById("step1").textContent = "✅ Downloaded Bot"; complete++; }
+        if (d.automated) { document.getElementById("step2").textContent = "✅ Set Up Automation"; complete++; }
+        if (d.apiKey) { document.getElementById("step3").textContent = "✅ Activated API Key"; complete++; }
+        document.getElementById("progressFill").style.width = (complete / 3 * 100) + "%";
       }
     });
 
     window.logout = () => signOut(auth).then(() => window.location.href = "login.html");
-    window.toggleTheme = () => document.documentElement.toggleAttribute("data-theme", "dark");
-    window.copyApiKey = () => {
-      const input = document.getElementById("apiKeyInput");
-      input.select();
-      document.execCommand("copy");
-      alert("API Key copied!");
-    };
-    window.generatePDF = () => {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.text("Fast Fill AI – Dashboard Summary", 20, 20);
-      doc.text("Date: " + new Date().toLocaleDateString(), 20, 30);
-      doc.text("Total Users: 24", 20, 40);
-      doc.text("Top Bot: Pro", 20, 50);
-      doc.text("Generated by Admin.", 20, 60);
-      doc.save("dashboard_summary.pdf");
-    };
+    window.toggleTheme = () => document.documentElement.toggleAttribute("data-theme");
+    window.generateApi = async () => {
+      const key = 'api_' + Math.random().toString(36).substring(2, 15);
+      document.getElementById("apiDisplay").value = key;
+      const user = auth.currentUser;
+      if (user) await setDoc(doc(db, "users", user.uid), { apiKey: key }, { merge: true });
+    }
   </script></body>
 </html>
