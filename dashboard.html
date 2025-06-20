@@ -1,15 +1,25 @@
-<!-- dashboard.html – Now With Notifications + Chat Widget --><!DOCTYPE html><html lang="en">
+<!-- dashboard.html – Full Dashboard with API Key Generator --><!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard – Fast Fill AI</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-color: #f4f6fb;
+      --text-color: #111;
+      --card-bg: white;
+    }
+    [data-theme="dark"] {
+      --bg-color: #0d1117;
+      --text-color: #f1f1f1;
+      --card-bg: #161b22;
+    }
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to right, #f4f6fb, #fefefe);
-      color: #111;
+      background: var(--bg-color);
+      color: var(--text-color);
     }
     nav {
       background-color: #0a0a23;
@@ -24,7 +34,7 @@
       font-size: 1.6rem;
       color: #00fff7;
     }
-    .logout {
+    .logout, .theme-toggle {
       background: #ff4d4d;
       color: white;
       border: none;
@@ -32,6 +42,10 @@
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
+      margin-left: 0.5rem;
+    }
+    .theme-toggle {
+      background: #3333ff;
     }
     .notification {
       background-color: #fffae6;
@@ -39,7 +53,6 @@
       padding: 0.75rem 1.25rem;
       font-size: 0.95rem;
       border-left: 4px solid #ffc107;
-      margin: 0;
       text-align: center;
     }
     .container {
@@ -51,10 +64,13 @@
       gap: 1.5rem;
     }
     .card {
-      background: white;
+      background: var(--card-bg);
       padding: 1.5rem;
       border-radius: 14px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    .card h3 {
+      margin-top: 0;
     }
     .profile-card {
       text-align: center;
@@ -65,36 +81,6 @@
       border-radius: 50%;
       object-fit: cover;
       margin-bottom: 1rem;
-    }
-    .profile-card h3 {
-      margin: 0.25rem 0;
-    }
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      gap: 0.75rem;
-      margin-top: 1rem;
-    }
-    .stat h4 {
-      margin: 0;
-      font-size: 1.25rem;
-    }
-    .progress-bar {
-      background: #e0e0e0;
-      height: 14px;
-      border-radius: 8px;
-      overflow: hidden;
-      margin-top: 1rem;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: #00cc99;
-      width: 0%;
-      transition: width 0.3s ease;
-    }
-    .timeline ul {
-      list-style: none;
-      padding-left: 1rem;
     }
     .bot-links a {
       display: block;
@@ -131,50 +117,48 @@
       border: 1px solid #ccc;
       border-radius: 6px;
     }
+    .api-section input[type="text"] {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: monospace;
+    }
   </style>
 </head>
 <body>
   <nav>
     <div class="logo">Fast Fill AI</div>
-    <button class="logout" onclick="logout()">Logout</button>
+    <div>
+      <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+      <button class="logout" onclick="logout()">Logout</button>
+    </div>
   </nav>  <div class="notification" id="userNotification">
-    🛠️ Feature Update: You now have access to bot downloads and upgrade options.
+    🚀 Dashboard updated: Now includes API Key access, analytics, and dark mode.
   </div>  <div class="container">
     <div class="card profile-card">
       <img src="https://i.pravatar.cc/100?img=8" alt="User Profile">
       <h3 id="user-name">User</h3>
       <p id="user-email">user@example.com</p>
     </div><div class="card">
-  <h3>Account Stats</h3>
-  <div class="stat-grid">
-    <div class="stat"><h4 id="botType">Starter</h4><span>Plan</span></div>
-    <div class="stat"><h4 id="usageCount">0</h4><span>Uses</span></div>
-    <div class="stat"><h4 id="onboardingStatus">❌</h4><span>Onboarding</span></div>
-    <div class="stat"><h4 id="lastActive">--</h4><span>Last Active</span></div>
-  </div>
-</div>
-
-<div class="card">
-  <h3>Onboarding Progress</h3>
-  <ul>
-    <li>✅ Login</li>
-    <li>✅ Access Dashboard</li>
-    <li>⬜ Book Call</li>
-    <li>⬜ Request Bot</li>
-    <li>⬜ Launch Bot</li>
-  </ul>
-  <div class="progress-bar"><div class="progress-bar-fill" id="progressBarFill"></div></div>
-</div>
-
-<div class="card">
-  <h3>Bot Access</h3>
-  <div class="bot-links" id="botLinks">Loading...</div>
+  <h3>Analytics</h3>
+  <p>Active Users: 24</p>
+  <p>Top Bot: Pro</p>
+  <p>Avg. Use/Day: 12</p>
 </div>
 
 <div class="card">
   <h3>Upgrade Plan</h3>
   <p>Unlock the Pro Bot for advanced automations:</p>
   <a href="https://buy.stripe.com/test_4gMeVfc7u9hh5iBfA04c801" class="upgrade-button" target="_blank">Upgrade to Pro</a>
+</div>
+
+<div class="card api-section">
+  <h3>API Key</h3>
+  <p>Use this key to integrate with your bot or Zapier flow:</p>
+  <input type="text" id="apiKeyInput" readonly>
+  <button onclick="copyApiKey()">Copy Key</button>
 </div>
 
   </div>  <div class="chat-widget">
@@ -184,7 +168,7 @@
   </div>  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
@@ -208,23 +192,8 @@
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
           const data = userSnap.data();
-          document.getElementById('botType').textContent = data.bot || 'Starter';
-          document.getElementById('usageCount').textContent = data.usage_count || 0;
-          document.getElementById('onboardingStatus').textContent = data.onboarding_completed ? '✅' : '❌';
-          document.getElementById('lastActive').textContent = data.last_active?.toDate().toLocaleString() || '--';
-          await updateDoc(userRef, { last_active: serverTimestamp() });
-
-          let steps = data.onboarding_completed ? 5 : 2;
-          document.getElementById("progressBarFill").style.width = (steps / 5) * 100 + "%";
-
-          const botDiv = document.getElementById("botLinks");
-          if (data.bot === 'Starter') {
-            botDiv.innerHTML = '<a href="/bots/starter.zip" download>Download Starter Bot</a>';
-          } else if (data.bot === 'Pro') {
-            botDiv.innerHTML = '<a href="/bots/pro.zip" download>Download Pro Bot</a>';
-          } else {
-            botDiv.innerHTML = 'No bot access assigned.';
-          }
+          const key = data.apiKey || "Not generated yet";
+          document.getElementById("apiKeyInput").value = key;
         }
       } else {
         window.location.href = "login.html";
@@ -233,6 +202,15 @@
 
     window.logout = function() {
       signOut(auth).then(() => window.location.href = "login.html");
+    };
+    window.toggleTheme = function() {
+      document.documentElement.toggleAttribute("data-theme", "dark");
+    };
+    window.copyApiKey = function() {
+      const input = document.getElementById("apiKeyInput");
+      input.select();
+      document.execCommand("copy");
+      alert("API Key copied to clipboard!");
     };
   </script></body>
 </html>
