@@ -1,4 +1,4 @@
-<!-- dashboard.html - Modern Layout Inspired by Nixtio UI --><!DOCTYPE html><html lang="en">
+<!-- dashboard.html – Updated with Bot Access and Upgrade --><!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +34,7 @@
       font-weight: bold;
     }
     .container {
-      max-width: 1280px;
+      max-width: 1300px;
       margin: 2rem auto;
       padding: 1rem;
       display: grid;
@@ -62,27 +62,46 @@
     }
     .stat-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 0.75rem;
       margin-top: 1rem;
-    }
-    .stat {
-      background: #f0f4f8;
-      border-radius: 8px;
-      padding: 1rem;
-      text-align: center;
     }
     .stat h4 {
       margin: 0;
       font-size: 1.25rem;
-      color: #0a0a23;
     }
-    .stat span {
-      font-size: 0.85rem;
-      color: #666;
+    .progress-bar {
+      background: #e0e0e0;
+      height: 14px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 1rem;
     }
-    .card h3 {
-      margin-top: 0;
+    .progress-bar-fill {
+      height: 100%;
+      background: #00cc99;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .timeline ul {
+      list-style: none;
+      padding-left: 1rem;
+    }
+    .bot-links a {
+      display: block;
+      margin-top: 0.5rem;
+      text-decoration: none;
+      color: #0066cc;
+    }
+    .upgrade-button {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: #007bff;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -98,23 +117,34 @@
     </div><div class="card">
   <h3>Account Stats</h3>
   <div class="stat-grid">
-    <div class="stat">
-      <h4 id="botType">Starter</h4>
-      <span>Bot Plan</span>
-    </div>
-    <div class="stat">
-      <h4 id="usageCount">0</h4>
-      <span>Bot Uses</span>
-    </div>
-    <div class="stat">
-      <h4 id="onboardingStatus">❌</h4>
-      <span>Onboarding</span>
-    </div>
-    <div class="stat">
-      <h4 id="lastActive">--</h4>
-      <span>Last Active</span>
-    </div>
+    <div class="stat"><h4 id="botType">Starter</h4><span>Plan</span></div>
+    <div class="stat"><h4 id="usageCount">0</h4><span>Uses</span></div>
+    <div class="stat"><h4 id="onboardingStatus">❌</h4><span>Onboarding</span></div>
+    <div class="stat"><h4 id="lastActive">--</h4><span>Last Active</span></div>
   </div>
+</div>
+
+<div class="card">
+  <h3>Onboarding Progress</h3>
+  <ul>
+    <li>✅ Login</li>
+    <li>✅ Access Dashboard</li>
+    <li>⬜ Book Call</li>
+    <li>⬜ Request Bot</li>
+    <li>⬜ Launch Bot</li>
+  </ul>
+  <div class="progress-bar"><div class="progress-bar-fill" id="progressBarFill"></div></div>
+</div>
+
+<div class="card">
+  <h3>Bot Access</h3>
+  <div class="bot-links" id="botLinks">Loading...</div>
+</div>
+
+<div class="card">
+  <h3>Upgrade Plan</h3>
+  <p>Unlock the Pro Bot for advanced automations:</p>
+  <a href="https://buy.stripe.com/test_4gMeVfc7u9hh5iBfA04c801" class="upgrade-button" target="_blank">Upgrade to Pro</a>
 </div>
 
   </div>  <script type="module">
@@ -148,10 +178,22 @@
           document.getElementById('usageCount').textContent = data.usage_count || 0;
           document.getElementById('onboardingStatus').textContent = data.onboarding_completed ? '✅' : '❌';
           document.getElementById('lastActive').textContent = data.last_active?.toDate().toLocaleString() || '--';
+          await updateDoc(userRef, { last_active: serverTimestamp() });
 
-          await updateDoc(userRef, {
-            last_active: serverTimestamp()
-          });
+          // progress bar fill
+          let steps = data.onboarding_completed ? 5 : 2;
+          let percent = (steps / 5) * 100;
+          document.getElementById("progressBarFill").style.width = percent + "%";
+
+          // bot access
+          const botDiv = document.getElementById("botLinks");
+          if (data.bot === 'Starter') {
+            botDiv.innerHTML = '<a href="/bots/starter.zip" download>Download Starter Bot</a>';
+          } else if (data.bot === 'Pro') {
+            botDiv.innerHTML = '<a href="/bots/pro.zip" download>Download Pro Bot</a>';
+          } else {
+            botDiv.innerHTML = 'No bot access assigned.';
+          }
         }
       } else {
         window.location.href = "login.html";
@@ -159,9 +201,7 @@
     });
 
     window.logout = function() {
-      signOut(auth).then(() => {
-        window.location.href = "login.html";
-      });
+      signOut(auth).then(() => window.location.href = "login.html");
     };
   </script></body>
 </html>
