@@ -2,272 +2,93 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Fast Fill AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --primary: #0a0a23;
-      --accent: #00fff7;
-      --light-bg: #f5f9ff;
-      --text-color: #111;
-      --card-bg: #ffffff;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--light-bg);
-      color: var(--text-color);
-    }
-    nav {
-      background-color: var(--primary);
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    nav .logo {
-      font-size: 1.5rem;
-      color: var(--accent);
-      font-weight: bold;
-    }
-    nav a {
-      color: #fff;
-      margin-left: 1.5rem;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .hero {
-      background-color: var(--primary);
-      color: white;
-      padding: 4rem 2rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 3rem;
-    }
-
-    .hero-text {
-      max-width: 500px;
-    }
-
-    .hero h1 {
-      font-size: 2.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      opacity: 0.9;
-    }
-
-    .hero .cta {
-      background-color: var(--accent);
-      color: #000;
-      padding: 0.75rem 1.5rem;
-      border-radius: 6px;
-      font-weight: bold;
-      text-decoration: none;
-      font-size: 1rem;
-    }
-
-    .hero-video video {
-      width: 360px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-
-    section {
-      padding: 4rem 2rem;
-      text-align: center;
-    }
-
-    #features h2 {
-      margin-bottom: 2.5rem;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 2rem;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .feature {
-      background-color: var(--card-bg);
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    .feature-icon {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .pricing-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      margin-top: 3rem;
-    }
-
-    .plan {
-      background-color: var(--card-bg);
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-      width: 300px;
-      text-align: left;
-    }
-
-    .plan h3 {
-      text-align: center;
-      color: var(--primary);
-      margin-bottom: 1rem;
-    }
-
-    .plan ul {
-      list-style: none;
-      padding-left: 1rem;
-    }
-
-    .plan ul li {
-      margin: 0.5rem 0;
-    }
-
-    .btn-stripe {
-      display: block;
-      margin: 1.5rem auto 0;
-      text-align: center;
-      background: var(--primary);
-      color: #fff;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    footer {
-      background-color: var(--primary);
-      color: white;
-      text-align: center;
-      padding: 2rem;
-      margin-top: 3rem;
-    }
-
-    @media (max-width: 768px) {
-      .hero {
-        flex-direction: column;
-        text-align: center;
-      }
-      .hero-text, .hero-video {
-        max-width: 90%;
-      }
-      .hero-video video {
-        width: 100%;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="main.js" defer></script>
 </head>
 <body>
-  <nav>
+  <!-- HEADER -->
+  <header class="header">
     <div class="logo">Fast Fill AI</div>
-    <div>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#trial">Free Trial</a>
+    <nav class="top-nav">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
       <a href="faq.html">FAQ</a>
-      <a href="login.html">Login</a>
-    </div>
-  </nav>
+      <a href="login.html" class="login-btn">Login</a>
+    </nav>
+  </header>
 
-  <header class="hero">
+  <!-- HERO SECTION -->
+  <section class="hero">
     <div class="hero-text">
-      <h1>AI-Powered Data Entry For Your Business</h1>
-      <p>Automate repetitive tasks with a custom-built AI bot designed for speed and accuracy.</p>
-      <a href="#trial" class="cta">Start Free Trial</a>
+      <h1>Automate Data Entry with AI</h1>
+      <p>Boost your business with custom-built bots that streamline your workflow.</p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn-primary">See Pricing</a>
+        <a href="#trial-form" class="btn-secondary">Start Free Trial</a>
+      </div>
     </div>
     <div class="hero-video">
-      <video controls autoplay muted loop>
-        <source src="demo.mp4" type="video/mp4">
+      <video autoplay muted loop>
+        <source src="demo.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
-  </header>
+  </section>
 
-  <section id="features">
+  <!-- FEATURES -->
+  <section id="features" class="features">
     <h2>Features</h2>
-    <div class="features">
-      <div class="feature">
-        <div class="feature-icon">🤖</div>
-        <strong>AI Bots for Data Entry</strong>
-        <p>Automate repetitive tasks with ease</p>
+    <div class="feature-list">
+      <div class="feature-item">⚡ AI-Powered Automation</div>
+      <div class="feature-item">🔐 Secure Data Handling</div>
+      <div class="feature-item">📈 Real-Time Analytics</div>
+      <div class="feature-item">📥 File Management</div>
+      <div class="feature-item">📩 Instant Notifications</div>
+      <div class="feature-item">🎯 Custom Bot Requests</div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="pricing">
+    <h2>Choose Your Bot</h2>
+    <div class="pricing-table">
+      <div class="plan">
+        <h3>Starter Bot</h3>
+        <p class="price">$49/month</p>
+        <ul>
+          <li>Basic Data Entry</li>
+          <li>Email Reports</li>
+          <li>Standard Support</li>
+        </ul>
+        <a href="https://buy.stripe.com/test_3cI4gBb3qallfXfbjK4c800" class="btn-primary">Buy with Stripe</a>
+        <a href="https://www.paypal.com/ncp/payment/2C9U5WNCTQATW" class="btn-secondary">Buy with PayPal</a>
       </div>
-      <div class="feature">
-        <div class="feature-icon">🖥️</div>
-        <strong>Runs on Browser or Desktop</strong>
-        <p>Deploy anywhere instantly</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🗓️</div>
-        <strong>1 Month Free Trial</strong>
-        <p>Try any bot completely free</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">⚙️</div>
-        <strong>Easy Setup</strong>
-        <p>Launch your bot in minutes</p>
+      <div class="plan">
+        <h3>Pro Bot</h3>
+        <p class="price">$99/month</p>
+        <ul>
+          <li>Advanced Automation</li>
+          <li>Custom Integration</li>
+          <li>Priority Support</li>
+        </ul>
+        <a href="https://buy.stripe.com/test_4gMeVfc7u9hh5iBfA04c801" class="btn-primary">Buy with Stripe</a>
+        <a href="https://www.paypal.com/ncp/payment/R3DLMMLFG39JW" class="btn-secondary">Buy with PayPal</a>
       </div>
     </div>
   </section>
 
-  <section id="pricing">
-    <h2>Compare Plans</h2>
-    <div class="pricing-container">
-      <div class="plan">
-        <h3>Starter Bot – $299</h3>
-        <ul>
-          <li>1 custom task</li>
-          <li>Browser/Desktop ready</li>
-          <li>5-day delivery</li>
-          <li>Basic support</li>
-        </ul>
-        <a href="starter-bot-info.html" class="btn-stripe">Order Starter</a>
-      </div>
-      <div class="plan">
-        <h3>Pro Bot – $499</h3>
-        <ul>
-          <li>Multiple tasks + automation</li>
-          <li>Advanced integrations</li>
-          <li>Fast delivery</li>
-          <li>Priority support</li>
-        </ul>
-        <a href="pro-bot-info.html" class="btn-stripe">Order Pro</a>
-      </div>
-    </div>
+  <!-- FREE TRIAL -->
+  <section id="trial-form" class="trial">
+    <h2>Start Free Trial</h2>
+    <p>Get full access to Fast Fill AI free for 30 days. No credit card required.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfnnetp3fT0UD3Wov7rVv6J6dZd96n_osFwsUxc1sMKYTKTrA/viewform?usp=header" target="_blank" class="btn-secondary">Open Trial Form</a>
   </section>
 
-  <section id="trial">
-    <h2>Start Your Free Trial</h2>
-    <p>No payment needed. Launch your first AI bot free for 1 month.</p>
-    <a href="https://www.paypal.com/ncp/payment/2C9U5WNCTQATW" class="btn-stripe">Start Free Trial</a>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 Fast Fill AI. All rights reserved.</p>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2025 Fast Fill AI. All rights reserved.</p>
   </footer>
 </body>
 </html>
