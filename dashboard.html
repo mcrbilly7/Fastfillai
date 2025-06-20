@@ -1,4 +1,4 @@
-<!-- dashboard.html – Updated with Bot Access and Upgrade --><!DOCTYPE html><html lang="en">
+<!-- dashboard.html – Now With Notifications + Chat Widget --><!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,6 +32,15 @@
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
+    }
+    .notification {
+      background-color: #fffae6;
+      color: #663c00;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.95rem;
+      border-left: 4px solid #ffc107;
+      margin: 0;
+      text-align: center;
     }
     .container {
       max-width: 1300px;
@@ -103,13 +112,34 @@
       text-decoration: none;
       font-weight: bold;
     }
+    .chat-widget {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      padding: 1rem;
+      max-width: 320px;
+      font-size: 0.9rem;
+      z-index: 999;
+    }
+    .chat-widget input[type="text"] {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
   </style>
 </head>
 <body>
   <nav>
     <div class="logo">Fast Fill AI</div>
     <button class="logout" onclick="logout()">Logout</button>
-  </nav>  <div class="container">
+  </nav>  <div class="notification" id="userNotification">
+    🛠️ Feature Update: You now have access to bot downloads and upgrade options.
+  </div>  <div class="container">
     <div class="card profile-card">
       <img src="https://i.pravatar.cc/100?img=8" alt="User Profile">
       <h3 id="user-name">User</h3>
@@ -147,6 +177,10 @@
   <a href="https://buy.stripe.com/test_4gMeVfc7u9hh5iBfA04c801" class="upgrade-button" target="_blank">Upgrade to Pro</a>
 </div>
 
+  </div>  <div class="chat-widget">
+    <strong>Need Help?</strong>
+    <p>Ask your question and we'll reply ASAP:</p>
+    <input type="text" placeholder="Type your question...">
   </div>  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -180,12 +214,9 @@
           document.getElementById('lastActive').textContent = data.last_active?.toDate().toLocaleString() || '--';
           await updateDoc(userRef, { last_active: serverTimestamp() });
 
-          // progress bar fill
           let steps = data.onboarding_completed ? 5 : 2;
-          let percent = (steps / 5) * 100;
-          document.getElementById("progressBarFill").style.width = percent + "%";
+          document.getElementById("progressBarFill").style.width = (steps / 5) * 100 + "%";
 
-          // bot access
           const botDiv = document.getElementById("botLinks");
           if (data.bot === 'Starter') {
             botDiv.innerHTML = '<a href="/bots/starter.zip" download>Download Starter Bot</a>';
