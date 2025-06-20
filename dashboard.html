@@ -1,22 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fast Fill AI – Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* Modern theme */
     :root {
-      --bg: #f7f9fc;
-      --text: #1c1e21;
-      --primary: #00c5c5;
+      --bg: #f4f6f8;
+      --text: #1f1f1f;
+      --accent: #00c5c5;
       --card: #ffffff;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --shadow: 0 12px 32px rgba(0, 0, 0, 0.07);
       --radius: 16px;
+      --transition: all 0.25s ease-in-out;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; }
     body {
+      margin: 0;
       font-family: 'Inter', sans-serif;
       background: var(--bg);
       color: var(--text);
@@ -30,71 +30,116 @@
       box-shadow: var(--shadow);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
     }
-    .logo { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+    .logo {
+      font-size: 1.7rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
     .grid {
-      max-width: 1440px;
+      max-width: 1280px;
       margin: 2rem auto;
       padding: 0 2rem;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
     }
     .card {
       background: var(--card);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 2rem;
-      transition: transform 0.2s;
+      padding: 1.8rem;
+      transition: var(--transition);
     }
-    .card:hover { transform: translateY(-4px); }
-    .title { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
-    .metrics { display: flex; justify-content: space-between; font-weight: 600; }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+    .title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
     .bar-chart {
       display: flex;
       align-items: flex-end;
-      height: 120px;
+      height: 100px;
       gap: 0.6rem;
     }
-    .bar { width: 12%; background: var(--primary); border-radius: 10px 10px 0 0; }
+    .bar {
+      width: 12%;
+      background: var(--accent);
+      border-radius: 10px 10px 0 0;
+    }
     .circle-timer {
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      border: 8px solid var(--primary);
-      display:flex; align-items:center; justify-content:center;
-      font-size:1.2rem; font-weight:bold; margin:0 auto;
+      border: 10px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin: 0 auto;
     }
-    .profile { text-align:center; position:relative; }
-    .avatar-container { position: relative; display:inline-block; }
-    .avatar-edit {
-      position: absolute;
-      bottom:0; right:0;
-      background: var(--primary);
-      border-radius:50%; padding:4px;
-      cursor:pointer; font-size:0.8rem; color:white;
+    .metrics {
+      display: flex;
+      justify-content: space-around;
+      font-weight: 600;
     }
-    .profile img, .profile canvas {
-      width:100px; height:100px; object-fit:cover;
-      border-radius:50%; margin-bottom:1rem;
-      border:3px solid var(--primary);
+    input, textarea, button {
+      font-family: inherit;
+      font-size: 1rem;
+      border-radius: 8px;
     }
-    .profile input[type="file"] { display:none; }
-    .btn {
-      display:inline-block; margin-top:1rem;
-      padding:0.6rem 1rem; background:var(--primary);
-      color:#fff; font-weight:bold; border-radius:8px;
-      text-decoration:none; text-align:center;
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      transition: var(--transition);
+    }
+    input[type="text"]:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .btn, button[type="submit"] {
+      background: var(--accent);
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn:hover, button[type="submit"]:hover {
+      background: #00b0b0;
     }
     .copy-btn {
-      margin-left:1rem; padding:0.4rem 0.6rem;
-      font-size:0.8rem; background:#eee; cursor:pointer;
-      border:none; border-radius:6px;
+      margin-left: 1rem;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.9rem;
+      background: #eaeaea;
+      cursor: pointer;
+      border: none;
     }
-
+    .profile {
+      text-align: center;
+    }
+    .profile h3 {
+      margin: 0.5rem 0 0.3rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .profile p {
+      font-size: 0.95rem;
+      color: #666;
+    }
     @media (max-width: 768px) {
-      .grid { grid-template-columns: 1fr; padding:1rem; }
+      .grid {
+        padding: 1rem;
+      }
     }
   </style>
 </head>
@@ -103,42 +148,27 @@
     <div class="logo">Fast Fill AI</div>
     <button onclick="logout()">Logout</button>
   </header>
-
   <section class="grid">
-    <!-- Profile -->
     <div class="card profile">
-      <div class="avatar-container">
-        <canvas id="initialCanvas" width="100" height="100"></canvas>
-        <img id="profileImg" style="display:none;" />
-        <label for="uploadImage" class="avatar-edit">✎</label>
-        <input type="file" id="uploadImage" accept="image/*" />
-      </div>
+      <div class="circle-timer" id="profileInitial">U</div>
       <h3 id="userName">User</h3>
       <p id="userRole">Loading...</p>
     </div>
-
-    <!-- Progress -->
     <div class="card">
       <div class="title">Progress</div>
       <p><span id="workHours">0</span>h Work Time This Week</p>
       <div class="bar-chart" id="progressChart"></div>
     </div>
-
-    <!-- Timer -->
     <div class="card">
       <div class="title">Time Tracker</div>
       <div class="circle-timer" id="timeCircle">00:00</div>
-      <p style="text-align:center;margin-top:1rem;">Active Work Time</p>
+      <p style="text-align:center;">Active Work Time</p>
     </div>
-
-    <!-- Onboarding -->
     <div class="card">
       <div class="title">Onboarding Progress</div>
-      <progress id="onboardingProgress" value="0" max="8" style="width:100%;height:12px;"></progress>
+      <progress id="onboardingProgress" value="0" max="8" style="width:100%; height: 12px;"></progress>
       <p id="onboardingStatus">0 / 8 Completed</p>
     </div>
-
-    <!-- Metrics -->
     <div class="card">
       <div class="title">Topline Metrics</div>
       <div class="metrics">
@@ -147,141 +177,24 @@
         <div><strong id="botCount">0</strong><br>Bots</div>
       </div>
     </div>
-
-    <!-- API Key -->
     <div class="card">
       <div class="title">Your API Key</div>
       <p id="apiKey">Loading...</p>
       <button class="copy-btn" onclick="copyAPI()">Copy</button>
     </div>
-
-    <!-- Download Bots -->
     <div class="card">
       <div class="title">Your Bots</div>
       <a href="/bots/starter.zip" class="btn" download>Download Starter Bot</a>
-      <a href="/bots/pro.zip" class="btn" download>Download Pro Bot</a>
+      <a href="/bots/pro.zip" class="btn" download style="margin-left: 1rem;">Download Pro Bot</a>
     </div>
-
-    <!-- Custom Request -->
     <div class="card">
       <div class="title">Request a Custom Bot</div>
       <form action="https://formspree.io/f/mayvlkqk" method="POST">
-        <input type="text" name="name" placeholder="Your Name" required style="width:100%;margin-bottom:1rem;padding:0.5rem" />
-        <textarea name="details" placeholder="Describe your request..." required style="width:100%;padding:0.5rem;height:80px;"></textarea>
-        <button type="submit" class="btn">Submit Request</button>
+        <input type="text" name="name" placeholder="Your Name" required />
+        <textarea name="details" placeholder="Describe your request..." required></textarea>
+        <button type="submit">Submit Request</button>
       </form>
     </div>
   </section>
-
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-    import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-    import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
-    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-
-    const config = {
-      apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
-      authDomain: "fastfill-ai-f229b.firebaseapp.com",
-      projectId: "fastfill-ai-f229b",
-      storageBucket: "fastfill-ai-f229b.appspot.com",
-      messagingSenderId: "639658574105",
-      appId: "1:639658574105:web:afd78a1698e72eb1628588"
-    };
-
-    const app = initializeApp(config);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    const storage = getStorage(app);
-
-    const canvas = document.getElementById('initialCanvas');
-    const ctx = canvas.getContext('2d');
-    const profileImg = document.getElementById('profileImg');
-    const uploadInput = document.getElementById('uploadImage');
-
-    function drawInitialLetter(name) {
-      ctx.fillStyle = var(--primary);
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#fff';
-      ctx.font = '50px Inter';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(name.charAt(0).toUpperCase(), canvas.width/2, canvas.height/2);
-    }
-
-    uploadInput.addEventListener('change', async e => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const preview = URL.createObjectURL(file);
-      profileImg.src = preview;
-      profileImg.style.display = 'block';
-      canvas.style.display = 'none';
-
-      const user = auth.currentUser;
-      if(user){
-        const storageRef = ref(storage, `avatars/${user.uid}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
-        await setDoc(doc(db, 'profiles', user.uid), { avatar: url }, { merge: true });
-      }
-    });
-
-    function copyAPI() {
-      const text = document.getElementById('apiKey').textContent;
-      navigator.clipboard.writeText(text);
-      alert('API Key copied!');
-    }
-
-    function logout() {
-      signOut(auth).then(() => location.href = 'login.html');
-    }
-
-    window.logout = logout;
-    window.copyAPI = copyAPI;
-
-    onAuthStateChanged(auth, async user => {
-      if(!user) return location.href = 'login.html';
-      const name = user.displayName || 'User';
-      document.getElementById('userName').textContent = name;
-
-      const usage = await getDoc(doc(db,'usage',user.uid));
-      const profile = await getDoc(doc(db,'profiles',user.uid));
-      const meta = await getDoc(doc(db,'metrics','summary'));
-
-      if(profile.exists()){
-        const p = profile.data();
-        if(p.avatar){
-          profileImg.src = p.avatar;
-          profileImg.style.display = 'block';
-          canvas.style.display = 'none';
-        } else {
-          drawInitialLetter(name);
-        }
-      } else {
-        drawInitialLetter(name);
-      }
-
-      if(usage.exists()){
-        const u = usage.data();
-        document.getElementById('userRole').textContent = u.role || '';
-        document.getElementById('workHours').textContent = u.weeklyHours || 0;
-        document.getElementById('timeCircle').textContent = u.activeTime || '00:00';
-        document.getElementById('onboardingProgress').value = u.onboarding || 0;
-        document.getElementById('onboardingStatus').textContent = `${u.onboarding || 0} / 8 Completed`;
-
-        const days = u.chartData || [];
-        document.getElementById('progressChart').innerHTML =
-          days.map(h => `<div class="bar" style="height:${h}%"></div>`).join('');
-      }
-
-      if(meta.exists()){
-        const m = meta.data();
-        document.getElementById('userCount').textContent = m.users || 0;
-        document.getElementById('setupCount').textContent = m.setups || 0;
-        document.getElementById('botCount').textContent = m.bots || 0;
-      }
-
-      document.getElementById('apiKey').textContent = (usage.exists() ? usage.data().apiKey : '—');
-    });
-  </script>
 </body>
 </html>
