@@ -1,9 +1,10 @@
-<!-- dashboard.html – Full Dashboard with API Key Generator --><!DOCTYPE html><html lang="en">
+<!-- dashboard.html with Admin, PDF Export, Branding --><!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard – Fast Fill AI</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root {
       --bg-color: #f4f6fb;
@@ -69,9 +70,6 @@
       border-radius: 14px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
-    .card h3 {
-      margin-top: 0;
-    }
     .profile-card {
       text-align: center;
     }
@@ -81,22 +79,6 @@
       border-radius: 50%;
       object-fit: cover;
       margin-bottom: 1rem;
-    }
-    .bot-links a {
-      display: block;
-      margin-top: 0.5rem;
-      text-decoration: none;
-      color: #0066cc;
-    }
-    .upgrade-button {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.75rem 1.5rem;
-      background: #007bff;
-      color: white;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
     }
     .chat-widget {
       position: fixed;
@@ -110,20 +92,33 @@
       font-size: 0.9rem;
       z-index: 999;
     }
-    .chat-widget input[type="text"] {
+    .admin-area, .branding, .pdf-export {
+      grid-column: span 2;
+      background: var(--card-bg);
+      padding: 1rem;
+      border-radius: 12px;
+    }
+    .admin-area table {
       width: 100%;
+      border-collapse: collapse;
+    }
+    .admin-area th, .admin-area td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #ccc;
+    }
+    .admin-area th {
+      background-color: #e0e0e0;
+    }
+    .branding input, .branding select {
       padding: 0.6rem;
-      margin-top: 0.5rem;
+      width: 100%;
+      margin: 0.5rem 0;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
-    .api-section input[type="text"] {
-      width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-family: monospace;
+    .branding label {
+      font-weight: bold;
     }
   </style>
 </head>
@@ -134,31 +129,56 @@
       <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
       <button class="logout" onclick="logout()">Logout</button>
     </div>
-  </nav>  <div class="notification" id="userNotification">
-    🚀 Dashboard updated: Now includes API Key access, analytics, and dark mode.
+  </nav>  <div class="notification">
+    🚀 New: PDF Export, Admin Controls & Custom Branding Enabled
   </div>  <div class="container">
     <div class="card profile-card">
       <img src="https://i.pravatar.cc/100?img=8" alt="User Profile">
-      <h3 id="user-name">User</h3>
-      <p id="user-email">user@example.com</p>
+      <h3 id="user-name">Admin</h3>
+      <p id="user-email">fastfillaiautomation@gmail.com</p>
     </div><div class="card">
   <h3>Analytics</h3>
   <p>Active Users: 24</p>
   <p>Top Bot: Pro</p>
-  <p>Avg. Use/Day: 12</p>
 </div>
 
 <div class="card">
-  <h3>Upgrade Plan</h3>
-  <p>Unlock the Pro Bot for advanced automations:</p>
-  <a href="https://buy.stripe.com/test_4gMeVfc7u9hh5iBfA04c801" class="upgrade-button" target="_blank">Upgrade to Pro</a>
+  <h3>API Key</h3>
+  <input type="text" id="apiKeyInput" readonly>
+  <button onclick="copyApiKey()">Copy</button>
 </div>
 
-<div class="card api-section">
-  <h3>API Key</h3>
-  <p>Use this key to integrate with your bot or Zapier flow:</p>
-  <input type="text" id="apiKeyInput" readonly>
-  <button onclick="copyApiKey()">Copy Key</button>
+<div class="pdf-export">
+  <h3>📄 Export Dashboard Summary</h3>
+  <button onclick="generatePDF()">Download PDF Report</button>
+</div>
+
+<div class="branding">
+  <h3>🎨 Custom Branding</h3>
+  <label>Business Name</label>
+  <input type="text" placeholder="Fast Fill AI">
+  <label>Primary Color</label>
+  <input type="color" value="#00fff7">
+  <label>Secondary Color</label>
+  <input type="color" value="#111111">
+  <label>Upload Logo</label>
+  <input type="file">
+</div>
+
+<div class="admin-area">
+  <h3>Admin User Table</h3>
+  <table id="adminTable">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Email</th>
+        <th>Plan</th>
+        <th>API Key</th>
+        <th>Access</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 </div>
 
   </div>  <div class="chat-widget">
@@ -168,7 +188,7 @@
   </div>  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
@@ -184,33 +204,45 @@
     const db = getFirestore(app);
 
     onAuthStateChanged(auth, async user => {
-      if (user) {
-        document.getElementById('user-name').textContent = user.displayName || "User";
-        document.getElementById('user-email').textContent = user.email;
-
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          const data = userSnap.data();
-          const key = data.apiKey || "Not generated yet";
-          document.getElementById("apiKeyInput").value = key;
-        }
-      } else {
+      if (!user || user.email !== "fastfillaiautomation@gmail.com") {
         window.location.href = "login.html";
+      } else {
+        const usersRef = collection(db, "users");
+        const snapshot = await getDocs(usersRef);
+        const tbody = document.querySelector("#adminTable tbody");
+
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${data.name || "User"}</td>
+            <td>${data.email}</td>
+            <td>${data.plan || "Free"}</td>
+            <td>${data.apiKey || "None"}</td>
+            <td><button class="btn-toggle">Toggle</button></td>
+          `;
+          tbody.appendChild(row);
+        });
       }
     });
 
-    window.logout = function() {
-      signOut(auth).then(() => window.location.href = "login.html");
-    };
-    window.toggleTheme = function() {
-      document.documentElement.toggleAttribute("data-theme", "dark");
-    };
-    window.copyApiKey = function() {
+    window.logout = () => signOut(auth).then(() => window.location.href = "login.html");
+    window.toggleTheme = () => document.documentElement.toggleAttribute("data-theme", "dark");
+    window.copyApiKey = () => {
       const input = document.getElementById("apiKeyInput");
       input.select();
       document.execCommand("copy");
-      alert("API Key copied to clipboard!");
+      alert("API Key copied!");
+    };
+    window.generatePDF = () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text("Fast Fill AI – Dashboard Summary", 20, 20);
+      doc.text("Date: " + new Date().toLocaleDateString(), 20, 30);
+      doc.text("Total Users: 24", 20, 40);
+      doc.text("Top Bot: Pro", 20, 50);
+      doc.text("Generated by Admin.", 20, 60);
+      doc.save("dashboard_summary.pdf");
     };
   </script></body>
 </html>
