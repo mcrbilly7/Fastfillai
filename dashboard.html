@@ -1,200 +1,236 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Fast Fill AI – Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f4f6f8;
-      --text: #1f1f1f;
+      --main-bg: #f9fafb;
+      --main-card: #ffffff;
       --accent: #00c5c5;
-      --card: #ffffff;
-      --shadow: 0 12px 32px rgba(0, 0, 0, 0.07);
+      --text-dark: #111827;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       --radius: 16px;
-      --transition: all 0.25s ease-in-out;
     }
-    * { box-sizing: border-box; }
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-    header {
-      background: var(--card);
-      padding: 1rem 2rem;
+      background: var(--main-bg);
+      color: var(--text-dark);
+      margin: 0;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: var(--shadow);
-      position: sticky;
-      top: 0;
-      z-index: 100;
     }
-    .logo {
-      font-size: 1.7rem;
-      font-weight: bold;
+    aside {
+      width: 240px;
+      background: #fff;
+      height: 100vh;
+      padding: 2rem 1rem;
+      box-shadow: var(--shadow);
+    }
+    aside h2 {
       color: var(--accent);
+      font-size: 1.4rem;
+      margin-bottom: 2rem;
+    }
+    aside nav a {
+      display: block;
+      padding: 0.75rem 1rem;
+      color: var(--text-dark);
+      text-decoration: none;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    aside nav a:hover {
+      background: #f0f0f0;
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+    }
+    .dark-mode {
+      --main-bg: #111827;
+      --main-card: #1f2937;
+      --text-dark: #f9fafb;
+    }
+    .toggle-dark {
+      margin: 1rem;
+      cursor: pointer;
     }
     .grid {
-      max-width: 1280px;
-      margin: 2rem auto;
-      padding: 0 2rem;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
+      gap: 1.5rem;
     }
     .card {
-      background: var(--card);
+      background: var(--main-card);
+      padding: 1.5rem;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 1.8rem;
-      transition: var(--transition);
-    }
-    .card:hover {
-      transform: translateY(-4px);
     }
     .title {
-      font-size: 1.2rem;
       font-weight: 600;
+      font-size: 1.1rem;
       margin-bottom: 1rem;
-    }
-    .bar-chart {
-      display: flex;
-      align-items: flex-end;
-      height: 100px;
-      gap: 0.6rem;
-    }
-    .bar {
-      width: 12%;
-      background: var(--accent);
-      border-radius: 10px 10px 0 0;
-    }
-    .circle-timer {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 10px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      font-weight: bold;
-      margin: 0 auto;
     }
     .metrics {
       display: flex;
-      justify-content: space-around;
-      font-weight: 600;
+      justify-content: space-between;
+      font-size: 1.1rem;
+      font-weight: 500;
     }
-    input, textarea, button {
-      font-family: inherit;
-      font-size: 1rem;
-      border-radius: 8px;
-    }
-    input[type="text"], textarea {
+    .bot-btn {
+      display: block;
       width: 100%;
-      padding: 0.6rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      transition: var(--transition);
-    }
-    input[type="text"]:focus, textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-    .btn, button[type="submit"] {
       background: var(--accent);
       color: #fff;
-      padding: 0.6rem 1.2rem;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border-radius: 8px;
       font-weight: bold;
-      border: none;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .btn:hover, button[type="submit"]:hover {
-      background: #00b0b0;
-    }
-    .copy-btn {
-      margin-left: 1rem;
-      padding: 0.4rem 0.6rem;
-      font-size: 0.9rem;
-      background: #eaeaea;
-      cursor: pointer;
-      border: none;
-    }
-    .profile {
       text-align: center;
+      text-decoration: none;
     }
-    .profile h3 {
-      margin: 0.5rem 0 0.3rem;
-      font-size: 1.1rem;
-      font-weight: 600;
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 1rem;
     }
-    .profile p {
-      font-size: 0.95rem;
-      color: #666;
+    button {
+      background: var(--accent);
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: 8px;
+      margin-top: 1rem;
+      font-weight: bold;
+      cursor: pointer;
     }
-    @media (max-width: 768px) {
-      .grid {
-        padding: 1rem;
-      }
+    .api-box {
+      background: #f3f4f6;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-family: monospace;
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">Fast Fill AI</div>
-    <button onclick="logout()">Logout</button>
-  </header>
-  <section class="grid">
-    <div class="card profile">
-      <div class="circle-timer" id="profileInitial">U</div>
-      <h3 id="userName">User</h3>
-      <p id="userRole">Loading...</p>
+  <aside>
+    <h2>Fast Fill AI</h2>
+    <nav>
+      <a href="#">Dashboard</a>
+      <a href="#">My Bots</a>
+      <a href="#">Requests</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </nav>
+    <button class="toggle-dark" onclick="document.body.classList.toggle('dark-mode')">🌓 Toggle Dark Mode</button>
+  </aside>
+  <main>
+    <section class="grid">
+      <div class="card">
+        <div class="title">Your Profile</div>
+        <p><strong>Name:</strong> <span id="userName">Loading...</span></p>
+        <p><strong>Role:</strong> <span id="userRole">Loading...</span></p>
+      </div><div class="card">
+    <div class="title">Topline Metrics</div>
+    <div class="metrics">
+      <div><strong id="userCount">0</strong><br>Users</div>
+      <div><strong id="setupCount">0</strong><br>Setups</div>
+      <div><strong id="botCount">0</strong><br>Bots</div>
     </div>
-    <div class="card">
-      <div class="title">Progress</div>
-      <p><span id="workHours">0</span>h Work Time This Week</p>
-      <div class="bar-chart" id="progressChart"></div>
+  </div>
+
+  <div class="card">
+    <div class="title">Your API Key</div>
+    <div class="api-box">
+      <span id="apiKey">Loading...</span>
+      <button onclick="copyKey()">Copy</button>
     </div>
-    <div class="card">
-      <div class="title">Time Tracker</div>
-      <div class="circle-timer" id="timeCircle">00:00</div>
-      <p style="text-align:center;">Active Work Time</p>
-    </div>
-    <div class="card">
-      <div class="title">Onboarding Progress</div>
-      <progress id="onboardingProgress" value="0" max="8" style="width:100%; height: 12px;"></progress>
-      <p id="onboardingStatus">0 / 8 Completed</p>
-    </div>
-    <div class="card">
-      <div class="title">Topline Metrics</div>
-      <div class="metrics">
-        <div><strong id="userCount">0</strong><br>Users</div>
-        <div><strong id="setupCount">0</strong><br>Setups</div>
-        <div><strong id="botCount">0</strong><br>Bots</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="title">Your API Key</div>
-      <p id="apiKey">Loading...</p>
-      <button class="copy-btn" onclick="copyAPI()">Copy</button>
-    </div>
-    <div class="card">
-      <div class="title">Your Bots</div>
-      <a href="/bots/starter.zip" class="btn" download>Download Starter Bot</a>
-      <a href="/bots/pro.zip" class="btn" download style="margin-left: 1rem;">Download Pro Bot</a>
-    </div>
-    <div class="card">
-      <div class="title">Request a Custom Bot</div>
-      <form action="https://formspree.io/f/mayvlkqk" method="POST">
-        <input type="text" name="name" placeholder="Your Name" required />
-        <textarea name="details" placeholder="Describe your request..." required></textarea>
-        <button type="submit">Submit Request</button>
-      </form>
-    </div>
-  </section>
+  </div>
+
+  <div class="card">
+    <div class="title">Download Bots</div>
+    <a href="#" class="bot-btn">Download Starter Bot</a>
+    <a href="#" class="bot-btn">Download Pro Bot</a>
+  </div>
+
+  <div class="card">
+    <div class="title">Request a Custom Bot</div>
+    <input type="text" placeholder="Your Name" id="reqName" />
+    <textarea placeholder="Describe your request..." rows="5" id="reqDetails"></textarea>
+    <button onclick="submitRequest()">Submit Request</button>
+  </div>
+</section>
+
+  </main>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';const config = {
+  apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
+  authDomain: "fastfill-ai-f229b.firebaseapp.com",
+  projectId: "fastfill-ai-f229b",
+  storageBucket: "fastfill-ai-f229b.appspot.com",
+  messagingSenderId: "639658574105",
+  appId: "1:639658574105:web:afd78a1698e72eb1628588"
+};
+
+const app = initializeApp(config);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+function logout() {
+  signOut(auth).then(() => location.href = 'login.html');
+}
+window.logout = logout;
+
+function copyKey() {
+  const key = document.getElementById("apiKey").textContent;
+  navigator.clipboard.writeText(key);
+}
+
+async function submitRequest() {
+  const name = document.getElementById("reqName").value;
+  const msg = document.getElementById("reqDetails").value;
+  const user = auth.currentUser;
+  if (user && name && msg) {
+    await setDoc(doc(db, "requests", user.uid), {
+      name: name,
+      request: msg,
+      timestamp: new Date()
+    });
+    alert("Request submitted!");
+  }
+}
+
+onAuthStateChanged(auth, async user => {
+  if (!user) return location.href = 'login.html';
+  document.getElementById('userName').textContent = user.displayName || "User";
+
+  const usage = await getDoc(doc(db, 'usage', user.uid));
+  const meta = await getDoc(doc(db, 'metrics', 'summary'));
+  const profile = await getDoc(doc(db, 'profiles', user.uid));
+
+  if (usage.exists()) {
+    const u = usage.data();
+    document.getElementById('userRole').textContent = u.role || "Member";
+    document.getElementById('apiKey').textContent = u.apiKey || "Not Assigned";
+  }
+
+  if (meta.exists()) {
+    const d = meta.data();
+    document.getElementById('userCount').textContent = d.users || 0;
+    document.getElementById('setupCount').textContent = d.setups || 0;
+    document.getElementById('botCount').textContent = d.bots || 0;
+  }
+});
+
+  </script>
 </body>
 </html>
