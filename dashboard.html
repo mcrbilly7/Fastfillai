@@ -50,13 +50,27 @@
       text-align: center;
       position: relative;
     }
-    .profile img {
+    .avatar-container {
+      position: relative;
+      display: inline-block;
+    }
+    .avatar-edit {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: #00c5c5;
+      border-radius: 50%;
+      padding: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      color: white;
+    }
+    .profile img, .profile canvas {
       width: 100px;
       height: 100px;
       object-fit: cover;
       border-radius: 50%;
       margin-bottom: 1rem;
-      cursor: pointer;
       border: 3px solid #00c5c5;
     }
     .profile input[type="file"] {
@@ -66,10 +80,6 @@
       font-size: 1.1rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
-    }
-    .highlight {
-      font-size: 1.5rem;
-      font-weight: bold;
     }
     .bar-chart {
       display: flex;
@@ -99,23 +109,28 @@
       justify-content: space-between;
       font-weight: 600;
     }
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="logo">Fast Fill AI</div>
-    <div>
-      <button onclick="logout()">Logout</button>
-    </div>
+    <div><button onclick="logout()">Logout</button></div>
   </header>  <section class="grid">
     <div class="card profile">
-      <label for="uploadImage">
-        <img id="profileImg" src="https://i.pravatar.cc/100" alt="Profile" />
-      </label>
-      <input type="file" id="uploadImage" accept="image/*" />
+      <div class="avatar-container">
+        <canvas id="initialCanvas" width="100" height="100"></canvas>
+        <img id="profileImg" style="display: none;" />
+        <label for="uploadImage" class="avatar-edit">✎</label>
+        <input type="file" id="uploadImage" accept="image/*" />
+      </div>
       <h3 id="userName">User</h3>
       <p id="userRole">Loading...</p>
-      <p class="highlight" id="userBalance">$0</p>
     </div><div class="card">
   <div class="title">Progress</div>
   <p><span id="workHours">0</span>h Work Time This Week</p>
@@ -147,6 +162,7 @@
   </section>  <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
     import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
     import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
     const config = {
@@ -161,34 +177,71 @@
     const app = initializeApp(config);
     const db = getFirestore(app);
     const auth = getAuth(app);
+    const storage = getStorage(app);
 
-    window.logout = () => signOut(auth).then(() => location.href = 'login.html');
-
+    const canvas = document.getElementById('initialCanvas');
+    const ctx = canvas.getContext('2d');
     const profileImg = document.getElementById('profileImg');
     const uploadInput = document.getElementById('uploadImage');
 
+    function drawInitialLetter(name) {
+      ctx.fillStyle = '#00c5c5';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#fff';
+      ctx.font = '50px Inter';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(name.charAt(0).toUpperCase(), canvas.width / 2, canvas.height / 2);
+    }
+
     uploadInput.addEventListener('change', async (e) => {
       const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          profileImg.src = reader.result;
-        };
-        reader.readAsDataURL(file);
+      if (!file) return;
+      const preview = URL.createObjectURL(file);
+      profileImg.src = preview;
+      profileImg.style.display = 'block';
+      canvas.style.display = 'none';
+
+      const user = auth.currentUser;
+      if (user) {
+        const storageRef = ref(storage, `avatars/${user.uid}`);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        await setDoc(doc(db, 'profiles', user.uid), { avatar: url }, { merge: true });
       }
     });
 
+    function logout() {
+      signOut(auth).then(() => location.href = 'login.html');
+    }
+
+    window.logout = logout;
+
     onAuthStateChanged(auth, async user => {
       if (!user) return location.href = 'login.html';
-      document.getElementById('userName').textContent = user.displayName || 'Admin';
+      const name = user.displayName || 'User';
+      document.getElementById('userName').textContent = name;
 
       const usage = await getDoc(doc(db, 'usage', user.uid));
       const meta = await getDoc(doc(db, 'metrics', 'summary'));
+      const profile = await getDoc(doc(db, 'profiles', user.uid));
+
+      if (profile.exists()) {
+        const p = profile.data();
+        if (p.avatar) {
+          profileImg.src = p.avatar;
+          profileImg.style.display = 'block';
+          canvas.style.display = 'none';
+        } else {
+          drawInitialLetter(name);
+        }
+      } else {
+        drawInitialLetter(name);
+      }
 
       if (usage.exists()) {
         const u = usage.data();
         document.getElementById('userRole').textContent = u.role || 'Pro User';
-        document.getElementById('userBalance').textContent = '$' + (u.balance || 0);
         document.getElementById('workHours').textContent = u.weeklyHours || 0;
 
         const chart = document.getElementById('progressChart');
