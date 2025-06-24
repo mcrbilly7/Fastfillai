@@ -1,178 +1,222 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Dashboard – Fast Fill AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --bg: #f0f2f5;
-      --primary: #0a0a23;
-      --accent: #00c5c5;
+      --bg: #f7f9fb;
+      --primary: #0a84ff;
       --card: #fff;
-      --text: #111;
-      --radius: 12px;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      --text: #1c1c1e;
+      --muted: #6e6e73;
+      --radius: 14px;
+      --shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
     }
     body {
+      margin: 0;
       font-family: 'Inter', sans-serif;
       background: var(--bg);
-      margin: 0;
       color: var(--text);
     }
     header {
-      background: var(--primary);
+      background: white;
       padding: 1rem 2rem;
-      color: #fff;
-      font-size: 1.25rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: var(--shadow);
     }
-    .container {
-      max-width: 1200px;
+    .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    .grid {
+      max-width: 1440px;
       margin: 2rem auto;
       padding: 0 1rem;
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     }
     .card {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 1.5rem;
-      margin-bottom: 2rem;
       box-shadow: var(--shadow);
+      padding: 1.5rem;
     }
-    h2 {
+    .title {
+      font-size: 1.2rem;
+      font-weight: 600;
       margin-bottom: 1rem;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 1rem;
     }
-    table th, table td {
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid #e0e0e0;
+    th, td {
+      padding: 0.5rem;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95rem;
     }
-    table tr:hover {
-      background: #f9f9f9;
+    th {
+      text-align: left;
+      color: var(--muted);
     }
     .btn {
-      background: var(--accent);
+      padding: 6px 12px;
+      background: var(--primary);
       color: white;
-      padding: 0.5rem 1rem;
       border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .user-detail-panel {
-      margin-top: 1rem;
-      background: #fefefe;
-      border: 1px solid #ddd;
       border-radius: 8px;
-      padding: 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
     }
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
+    input[type="search"] {
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
     }
-    .metric-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 1rem;
-      text-align: center;
-      box-shadow: var(--shadow);
+    .referrals {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+    .referral-box {
+      background: #eaf6ff;
+      padding: 0.4rem 0.7rem;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
   <header>
-    <div>Admin Dashboard – Fast Fill AI</div>
+    <div class="logo">Fast Fill AI – Admin</div>
     <button class="btn" onclick="logout()">Logout</button>
   </header>
-  <div class="container">
+
+  <main class="grid">
     <div class="card">
-      <h2>Top Metrics</h2>
-      <div class="metrics-grid">
-        <div class="metric-card"><strong id="totalUsers">0</strong><br>Total Users</div>
-        <div class="metric-card"><strong id="activeBots">0</strong><br>Active Bots</div>
-        <div class="metric-card"><strong id="botsDeployed">0</strong><br>Bots Deployed</div>
-        <div class="metric-card"><strong id="emailsSent">0</strong><br>Emails Sent</div>
-        <div class="metric-card"><strong id="referrals">0</strong><br>Referrals</div>
-      </div>
+      <div class="title">Search Users</div>
+      <input type="search" id="searchUser" placeholder="Search by name or email..." oninput="filterUsers()" />
+      <div id="userList"></div>
     </div>
+
     <div class="card">
-      <h2>Registered Users</h2>
-      <table id="userTable">
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Sign-up Date</th>
-            <th>Status</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <div class="user-detail-panel" id="userDetails" style="display:none;"></div>
+      <div class="title">Referral Tracker</div>
+      <p>Total Referrals: <strong id="totalReferrals">0</strong></p>
+      <div class="referrals" id="referralList"></div>
     </div>
-  </div>
+
+    <div class="card">
+      <div class="title">Custom Bot Requests</div>
+      <ul id="botRequestList"><li>Loading requests...</li></ul>
+    </div>
+
+    <div class="card">
+      <div class="title">All Bots Deployed</div>
+      <ul id="botSummaryList"><li>Loading bots...</li></ul>
+    </div>
+  </main>
+
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-    import { getFirestore, collection, getDocs, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-    import { getAuth, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';const firebaseConfig = {
-  apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
-  authDomain: "fastfill-ai-f229b.firebaseapp.com",
-  projectId: "fastfill-ai-f229b",
-  storageBucket: "fastfill-ai-f229b.appspot.com",
-  messagingSenderId: "639658574105",
-  appId: "1:639658574105:web:afd78a1698e72eb1628588"
-};
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
+      authDomain: "fastfill-ai-f229b.firebaseapp.com",
+      projectId: "fastfill-ai-f229b",
+      storageBucket: "fastfill-ai-f229b.appspot.com",
+      messagingSenderId: "639658574105",
+      appId: "1:639658574105:web:afd78a1698e72eb1628588"
+    };
 
-window.logout = () => signOut(auth).then(() => location.href = 'login.html');
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-const loadUsers = async () => {
-  const usersSnap = await getDocs(collection(db, 'users'));
-  const table = document.querySelector('#userTable tbody');
-  let total = 0;
-  usersSnap.forEach(docSnap => {
-    const data = docSnap.data();
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${data.email}</td>
-      <td>${data.created || '—'}</td>
-      <td>${data.status || 'Active'}</td>
-      <td><button class="btn" onclick="viewDetails('${docSnap.id}')">View</button></td>
-    `;
-    table.appendChild(row);
-    total++;
-  });
-  document.getElementById('totalUsers').textContent = total;
-};
+    const userList = document.getElementById('userList');
+    const referralList = document.getElementById('referralList');
+    const botRequestList = document.getElementById('botRequestList');
+    const botSummaryList = document.getElementById('botSummaryList');
+    const totalReferrals = document.getElementById('totalReferrals');
+    let allUsers = [];
 
-window.viewDetails = async (id) => {
-  const ref = doc(db, 'users', id);
-  const snap = await getDoc(ref);
-  const detailDiv = document.getElementById('userDetails');
-  if (!snap.exists()) return;
-  const data = snap.data();
-  detailDiv.style.display = 'block';
-  detailDiv.innerHTML = `
-    <strong>Email:</strong> ${data.email}<br>
-    <strong>Status:</strong> ${data.status || 'Active'}<br>
-    <strong>Bots Purchased:</strong> ${data.botsPurchased || 0}<br>
-    <strong>Bots Active:</strong> ${data.botsActive || 0}<br>
-    <strong>Signup Date:</strong> ${data.created || 'N/A'}<br>
-  `;
-};
+    async function loadUsers() {
+      const snapshot = await getDocs(collection(db, "users"));
+      let html = "<table><tr><th>Name</th><th>Email</th><th>Bots</th></tr>";
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        allUsers.push({ id: doc.id, ...d });
+        html += `<tr><td>${d.name || "N/A"}</td><td>${d.email || "N/A"}</td><td>${d.bots || 0}</td></tr>`;
+      });
+      html += "</table>";
+      userList.innerHTML = html;
+    }
 
-loadUsers();
+    async function loadReferrals() {
+      const snapshot = await getDocs(collection(db, "referrals"));
+      let count = 0;
+      let html = "";
+      snapshot.forEach(doc => {
+        const r = doc.data();
+        html += `<div class="referral-box">${r.email}</div>`;
+        count++;
+      });
+      totalReferrals.textContent = count;
+      referralList.innerHTML = html;
+    }
 
+    async function loadBotRequests() {
+      const snapshot = await getDocs(collection(db, "bot_requests"));
+      let html = "";
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        html += `<li><strong>${d.name}:</strong> ${d.request}</li>`;
+      });
+      botRequestList.innerHTML = html || "<li>No requests yet.</li>";
+    }
+
+    async function loadBots() {
+      const snapshot = await getDocs(collection(db, "bots"));
+      let html = "";
+      snapshot.forEach(doc => {
+        const b = doc.data();
+        html += `<li>${b.user} – ${b.name}</li>`;
+      });
+      botSummaryList.innerHTML = html || "<li>No bots deployed.</li>";
+    }
+
+    function filterUsers() {
+      const query = document.getElementById("searchUser").value.toLowerCase();
+      const filtered = allUsers.filter(u =>
+        (u.name || "").toLowerCase().includes(query) ||
+        (u.email || "").toLowerCase().includes(query)
+      );
+      let html = "<table><tr><th>Name</th><th>Email</th><th>Bots</th></tr>";
+      filtered.forEach(u => {
+        html += `<tr><td>${u.name}</td><td>${u.email}</td><td>${u.bots || 0}</td></tr>`;
+      });
+      html += "</table>";
+      userList.innerHTML = html;
+    }
+
+    function logout() {
+      signOut(auth).then(() => location.href = 'login.html');
+    }
+
+    loadUsers();
+    loadReferrals();
+    loadBotRequests();
+    loadBots();
   </script>
 </body>
 </html>
