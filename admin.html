@@ -1,31 +1,27 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fast Fill AI – Admin Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel – Fast Fill AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f4f5f9;
-      --text: #222;
-      --accent: #00c5c5;
+      --bg: #f9fafa;
+      --text: #1a1a1a;
+      --accent: #00c9a7;
       --card: #ffffff;
-      --shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
       --radius: 16px;
     }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
     body {
+      margin: 0;
       font-family: 'Inter', sans-serif;
       background: var(--bg);
       color: var(--text);
     }
     header {
-      background: #fff;
-      padding: 1rem 2rem;
+      background: white;
+      padding: 1.2rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -37,7 +33,7 @@
       color: var(--accent);
     }
     .grid {
-      max-width: 1440px;
+      max-width: 1400px;
       margin: 2rem auto;
       padding: 0 1rem;
       display: grid;
@@ -48,89 +44,109 @@
       background: var(--card);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      padding: 2rem;
     }
-    .title {
+    .card h3 {
+      margin-bottom: 1rem;
       font-size: 1.2rem;
       font-weight: 600;
-      margin-bottom: 1rem;
     }
-    .value {
-      font-size: 2rem;
-      color: var(--accent);
-      font-weight: bold;
-    }
-    .tooltip {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 0.25rem;
-    }
-    button.alert-btn {
-      margin-top: 1rem;
-      background: var(--accent);
-      color: #fff;
-      padding: 0.5rem 1rem;
-      border: none;
+    textarea, input[type="text"], select, button {
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 0.75rem;
       border-radius: 8px;
+      border: 1px solid #ddd;
+      font-family: 'Inter', sans-serif;
+    }
+    button {
+      background-color: var(--accent);
+      color: white;
+      border: none;
       cursor: pointer;
       font-weight: bold;
+    }
+    .settings-section {
+      display: grid;
+      gap: 1rem;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">Fast Fill AI Admin</div>
-    <div><button onclick="logout()">Logout</button></div>
-  </header>
-  <section class="grid">
+    <div class="logo">Admin – Fast Fill AI</div>
+    <button onclick="logout()">Logout</button>
+  </header>  <section class="grid">
     <div class="card">
-      <div class="title">Bots Deployed</div>
-      <div class="value" id="botsDeployed">0</div>
-      <div class="tooltip">Total bots created and activated by users</div>
-    </div>
-    <div class="card">
-      <div class="title">Active Users</div>
-      <div class="value" id="activeUsers">0</div>
-      <div class="tooltip">Users currently using dashboard or bots</div>
-    </div>
-    <div class="card">
-      <div class="title">Recent Requests</div>
-      <div class="value" id="recentRequests">0</div>
-      <div class="tooltip">New custom bot submissions this week</div>
-    </div>
-    <div class="card">
-      <div class="title">Support Tickets</div>
-      <div class="value" id="supportTickets">0</div>
-      <div class="tooltip">Help messages from users</div>
-    </div>
-    <div class="card">
-      <div class="title">Referral Tracker</div>
-      <div class="value" id="referrals">0</div>
-      <div class="tooltip">Users brought in via referral links</div>
-    </div>
-    <div class="card">
-      <div class="title">API Keys Generated</div>
-      <div class="value" id="apiKeys">0</div>
-      <div class="tooltip">Total user API keys created</div>
-    </div>
-    <div class="card">
-      <div class="title">Send Alert</div>
-      <input type="text" id="alertText" placeholder="Type alert..." />
-      <button class="alert-btn" onclick="sendAlert()">Send</button>
-    </div>
-  </section>
-  <script>
+      <h3>Send User Alert</h3>
+      <input type="text" placeholder="Subject">
+      <textarea rows="4" placeholder="Message to all users..."></textarea>
+      <button>Send Notification</button>
+    </div><div class="card">
+  <h3>User Management</h3>
+  <select>
+    <option>Search user by email</option>
+  </select>
+  <button>View User</button>
+  <button>Suspend User</button>
+  <button>Reset Password</button>
+</div>
+
+<div class="card">
+  <h3>Bot Monitoring</h3>
+  <div class="settings-section">
+    <button>View Active Bots</button>
+    <button>Restart Failed Bots</button>
+    <button>Check Usage Logs</button>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Data Export & Backup</h3>
+  <div class="settings-section">
+    <button>Export All Users (CSV)</button>
+    <button>Export Bots (JSON)</button>
+    <button>Download System Logs</button>
+    <button>Generate Usage Report</button>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Platform Settings</h3>
+  <div class="settings-section">
+    <button>Toggle Dark Mode (Global)</button>
+    <button>Update Pricing</button>
+    <button>Manage API Keys</button>
+    <button>Feature Flags</button>
+    <button>Maintenance Mode</button>
+    <button>Upgrade Database</button>
+    <button>Force Refresh Bots</button>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Referral & Feedback</h3>
+  <div class="settings-section">
+    <button>View Referral Stats</button>
+    <button>Download Feedback</button>
+    <button>Reply to Ticket</button>
+    <button>Mark Ticket as Resolved</button>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Developer Tools</h3>
+  <div class="settings-section">
+    <button>Toggle Dev Logs</button>
+    <button>Simulate Bot Request</button>
+    <button>Run Health Check</button>
+    <button>Clear All Caches</button>
+  </div>
+</div>
+
+  </section>  <script>
     function logout() {
-      location.href = 'login.html';
+      alert("Logging out...");
     }
-    function sendAlert() {
-      const text = document.getElementById('alertText').value.trim();
-      if (text) alert('📣 Alert sent: ' + text);
-    }
-    // Load real data from backend (to be implemented)
-  </script>
-</body>
+  </script></body>
 </html>
