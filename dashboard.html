@@ -1,236 +1,205 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fast Fill AI – Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --main-bg: #f9fafb;
-      --main-card: #ffffff;
-      --accent: #00c5c5;
-      --text-dark: #111827;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --bg: #f0f2f5;
+      --text: #1a1a1a;
+      --accent: #00b894;
+      --card: #ffffff;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       --radius: 16px;
     }
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--main-bg);
-      color: var(--text-dark);
       margin: 0;
-      display: flex;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
-    aside {
-      width: 240px;
-      background: #fff;
-      height: 100vh;
-      padding: 2rem 1rem;
+    header {
+      background: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       box-shadow: var(--shadow);
     }
-    aside h2 {
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
       color: var(--accent);
-      font-size: 1.4rem;
-      margin-bottom: 2rem;
-    }
-    aside nav a {
-      display: block;
-      padding: 0.75rem 1rem;
-      color: var(--text-dark);
-      text-decoration: none;
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
-    }
-    aside nav a:hover {
-      background: #f0f0f0;
-    }
-    main {
-      flex: 1;
-      padding: 2rem;
-    }
-    .dark-mode {
-      --main-bg: #111827;
-      --main-card: #1f2937;
-      --text-dark: #f9fafb;
-    }
-    .toggle-dark {
-      margin: 1rem;
-      cursor: pointer;
     }
     .grid {
+      max-width: 1440px;
+      margin: 2rem auto;
+      padding: 0 1rem;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
     }
     .card {
-      background: var(--main-card);
-      padding: 1.5rem;
+      background: var(--card);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+      padding: 2rem;
     }
     .title {
+      font-size: 1.25rem;
       font-weight: 600;
-      font-size: 1.1rem;
       margin-bottom: 1rem;
     }
     .metrics {
       display: flex;
       justify-content: space-between;
-      font-size: 1.1rem;
-      font-weight: 500;
     }
-    .bot-btn {
-      display: block;
-      width: 100%;
-      background: var(--accent);
-      color: #fff;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      border-radius: 8px;
-      font-weight: bold;
+    .profile {
       text-align: center;
-      text-decoration: none;
     }
-    input, textarea {
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      height: 100px;
+      gap: 0.5rem;
+    }
+    .bar {
+      width: 12%;
+      background: var(--accent);
+      border-radius: 6px 6px 0 0;
+    }
+    #customBotModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      border-radius: var(--radius);
+      padding: 2rem;
+      width: 90%;
+      max-width: 500px;
+    }
+    .modal-content input, .modal-content textarea {
       width: 100%;
       padding: 0.75rem;
-      margin-top: 0.5rem;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      font-size: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
     }
-    button {
+    .modal-content button {
       background: var(--accent);
       color: white;
-      padding: 0.75rem 1.25rem;
+      padding: 0.75rem 1.5rem;
       border: none;
       border-radius: 8px;
-      margin-top: 1rem;
       font-weight: bold;
       cursor: pointer;
-    }
-    .api-box {
-      background: #f3f4f6;
-      padding: 0.75rem;
-      border-radius: 8px;
-      font-family: monospace;
-      margin-top: 0.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
   </style>
 </head>
 <body>
-  <aside>
-    <h2>Fast Fill AI</h2>
-    <nav>
-      <a href="#">Dashboard</a>
-      <a href="#">My Bots</a>
-      <a href="#">Requests</a>
-      <a href="#" onclick="logout()">Logout</a>
-    </nav>
-    <button class="toggle-dark" onclick="document.body.classList.toggle('dark-mode')">🌓 Toggle Dark Mode</button>
-  </aside>
-  <main>
-    <section class="grid">
-      <div class="card">
-        <div class="title">Your Profile</div>
-        <p><strong>Name:</strong> <span id="userName">Loading...</span></p>
-        <p><strong>Role:</strong> <span id="userRole">Loading...</span></p>
-      </div><div class="card">
-    <div class="title">Topline Metrics</div>
-    <div class="metrics">
-      <div><strong id="userCount">0</strong><br>Users</div>
-      <div><strong id="setupCount">0</strong><br>Setups</div>
-      <div><strong id="botCount">0</strong><br>Bots</div>
+  <header>
+    <div class="logo">Fast Fill AI</div>
+    <button onclick="logout()">Logout</button>
+  </header>  <section class="grid">
+    <div class="card profile">
+      <div class="title">Welcome Back</div>
+      <h3 id="userName">User</h3>
+      <p id="userRole">Loading...</p>
+    </div><div class="card">
+  <div class="title">Progress</div>
+  <p><span id="workHours">0</span>h This Week</p>
+  <div class="bar-chart" id="progressChart"></div>
+</div>
+
+<div class="card">
+  <div class="title">Onboarding</div>
+  <progress id="onboardingProgress" value="0" max="8" style="width: 100%; height: 12px;"></progress>
+  <p id="onboardingStatus">0 / 8 Completed</p>
+</div>
+
+<div class="card">
+  <div class="title">Key Metrics</div>
+  <div class="metrics">
+    <div><strong id="userCount">0</strong><br>Users</div>
+    <div><strong id="setupCount">0</strong><br>Setups</div>
+    <div><strong id="botCount">0</strong><br>Bots</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="title">Need a Custom Bot?</div>
+  <button onclick="openBotModal()">Request Custom Bot</button>
+</div>
+
+  </section>  <div id="customBotModal">
+    <div class="modal-content">
+      <h2>Custom Bot Request</h2>
+      <input type="text" id="botRequestName" placeholder="Your Name" />
+      <input type="email" id="botRequestEmail" placeholder="Your Email" />
+      <textarea id="botRequestDesc" rows="4" placeholder="Describe your bot..."></textarea>
+      <button onclick="submitBotRequest()">Submit</button>
+      <button onclick="closeBotModal()" style="margin-left: 1rem; background: #ccc; color: #000;">Cancel</button>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="title">Your API Key</div>
-    <div class="api-box">
-      <span id="apiKey">Loading...</span>
-      <button onclick="copyKey()">Copy</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="title">Download Bots</div>
-    <a href="#" class="bot-btn">Download Starter Bot</a>
-    <a href="#" class="bot-btn">Download Pro Bot</a>
-  </div>
-
-  <div class="card">
-    <div class="title">Request a Custom Bot</div>
-    <input type="text" placeholder="Your Name" id="reqName" />
-    <textarea placeholder="Describe your request..." rows="5" id="reqDetails"></textarea>
-    <button onclick="submitRequest()">Submit Request</button>
-  </div>
-</section>
-
-  </main>
-  <script type="module">
+  </div>  <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-    import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';const config = {
-  apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
-  authDomain: "fastfill-ai-f229b.firebaseapp.com",
-  projectId: "fastfill-ai-f229b",
-  storageBucket: "fastfill-ai-f229b.appspot.com",
-  messagingSenderId: "639658574105",
-  appId: "1:639658574105:web:afd78a1698e72eb1628588"
-};
+    import { getFirestore, doc, getDoc, setDoc, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
-const app = initializeApp(config);
-const db = getFirestore(app);
-const auth = getAuth(app);
-
-function logout() {
-  signOut(auth).then(() => location.href = 'login.html');
-}
-window.logout = logout;
-
-function copyKey() {
-  const key = document.getElementById("apiKey").textContent;
-  navigator.clipboard.writeText(key);
-}
-
-async function submitRequest() {
-  const name = document.getElementById("reqName").value;
-  const msg = document.getElementById("reqDetails").value;
-  const user = auth.currentUser;
-  if (user && name && msg) {
-    await setDoc(doc(db, "requests", user.uid), {
-      name: name,
-      request: msg,
-      timestamp: new Date()
+    const app = initializeApp({
+      apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
+      authDomain: "fastfill-ai-f229b.firebaseapp.com",
+      projectId: "fastfill-ai-f229b",
     });
-    alert("Request submitted!");
-  }
-}
 
-onAuthStateChanged(auth, async user => {
-  if (!user) return location.href = 'login.html';
-  document.getElementById('userName').textContent = user.displayName || "User";
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-  const usage = await getDoc(doc(db, 'usage', user.uid));
-  const meta = await getDoc(doc(db, 'metrics', 'summary'));
-  const profile = await getDoc(doc(db, 'profiles', user.uid));
+    onAuthStateChanged(auth, async user => {
+      if (!user) return location.href = 'login.html';
+      const name = user.displayName || 'User';
+      document.getElementById('userName').textContent = name;
 
-  if (usage.exists()) {
-    const u = usage.data();
-    document.getElementById('userRole').textContent = u.role || "Member";
-    document.getElementById('apiKey').textContent = u.apiKey || "Not Assigned";
-  }
+      const usage = await getDoc(doc(db, 'usage', user.uid));
+      const meta = await getDoc(doc(db, 'metrics', 'summary'));
 
-  if (meta.exists()) {
-    const d = meta.data();
-    document.getElementById('userCount').textContent = d.users || 0;
-    document.getElementById('setupCount').textContent = d.setups || 0;
-    document.getElementById('botCount').textContent = d.bots || 0;
-  }
-});
+      if (usage.exists()) {
+        const u = usage.data();
+        document.getElementById('userRole').textContent = u.role || 'Pro User';
+        document.getElementById('workHours').textContent = u.weeklyHours || 0;
+        const days = u.chartData || [30, 45, 60, 90, 75, 40, 20];
+        document.getElementById('progressChart').innerHTML = days.map(h => `<div class='bar' style='height:${h}%'></div>`).join('');
+        const completed = u.onboarding || 0;
+        document.getElementById('onboardingProgress').value = completed;
+        document.getElementById('onboardingStatus').textContent = `${completed} / 8 Completed`;
+      }
+      if (meta.exists()) {
+        const d = meta.data();
+        document.getElementById('userCount').textContent = d.users || 0;
+        document.getElementById('setupCount').textContent = d.setups || 0;
+        document.getElementById('botCount').textContent = d.bots || 0;
+      }
+    });
 
-  </script>
-</body>
+    window.logout = () => signOut(auth).then(() => location.href = 'login.html');
+    window.openBotModal = () => document.getElementById('customBotModal').style.display = 'flex';
+    window.closeBotModal = () => document.getElementById('customBotModal').style.display = 'none';
+    window.submitBotRequest = async () => {
+      const name = document.getElementById('botRequestName').value.trim();
+      const email = document.getElementById('botRequestEmail').value.trim();
+      const desc = document.getElementById('botRequestDesc').value.trim();
+      if (!name || !email || !desc) return alert("Please fill all fields.");
+      await addDoc(collection(db, 'customBotRequests'), {
+        name, email, description: desc, createdAt: new Date().toISOString()
+      });
+      alert("Request submitted.");
+      closeBotModal();
+    }
+  </script></body>
 </html>
