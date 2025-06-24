@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fast Fill AI – Dashboard</title>
+  <title>Fast Fill AI – Admin Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -12,16 +11,20 @@
       --accent: #00c5c5;
       --card: #ffffff;
       --shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-      --radius: 20px;
+      --radius: 16px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
       background: var(--bg);
       color: var(--text);
     }
     header {
-      background: white;
+      background: #fff;
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
@@ -46,291 +49,88 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 1.5rem;
-    }
-    .profile {
-      text-align: center;
-      position: relative;
-    }
-    .avatar-container {
-      position: relative;
-      display: inline-block;
-    }
-    .avatar-edit {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      background: var(--accent);
-      border-radius: 50%;
-      padding: 4px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      color: white;
-    }
-    .profile img, .profile canvas {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin-bottom: 1rem;
-      border: 3px solid var(--accent);
-    }
-    .profile input[type="file"] {
-      display: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .title {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-    .bar-chart {
-      display: flex;
-      align-items: flex-end;
-      height: 120px;
-      gap: 0.6rem;
-    }
-    .bar {
-      width: 12%;
-      background: var(--accent);
-      border-radius: 10px 10px 0 0;
-    }
-    .metrics {
-      display: flex;
-      justify-content: space-between;
-      font-weight: 600;
-    }
-
-    /* Modal styles */
-    #customBotModal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 999;
-      justify-content: center;
-      align-items: center;
-    }
-    #customBotModal .modal-content {
-      background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      max-width: 500px;
-      width: 90%;
-    }
-    #customBotModal input, #customBotModal textarea {
-      width: 100%;
-      padding: 0.5rem;
       margin-bottom: 1rem;
     }
-    #customBotModal button {
+    .value {
+      font-size: 2rem;
+      color: var(--accent);
+      font-weight: bold;
+    }
+    .tooltip {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+    button.alert-btn {
+      margin-top: 1rem;
       background: var(--accent);
-      color: white;
-      padding: 0.75rem 1.5rem;
+      color: #fff;
+      padding: 0.5rem 1rem;
       border: none;
       border-radius: 8px;
-      font-weight: bold;
       cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-      .grid {
-        grid-template-columns: 1fr;
-        padding: 1rem;
-      }
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">Fast Fill AI</div>
-    <button onclick="logout()">Logout</button>
+    <div class="logo">Fast Fill AI Admin</div>
+    <div><button onclick="logout()">Logout</button></div>
   </header>
-
   <section class="grid">
-    <div class="card profile">
-      <div class="avatar-container">
-        <canvas id="initialCanvas" width="100" height="100"></canvas>
-        <img id="profileImg" style="display: none;" />
-        <label for="uploadImage" class="avatar-edit">✎</label>
-        <input type="file" id="uploadImage" accept="image/*" />
-      </div>
-      <h3 id="userName">User</h3>
-      <p id="userRole">Loading...</p>
-    </div>
-
     <div class="card">
-      <div class="title">Progress</div>
-      <p><span id="workHours">0</span>h Work Time This Week</p>
-      <div class="bar-chart" id="progressChart"></div>
+      <div class="title">Bots Deployed</div>
+      <div class="value" id="botsDeployed">0</div>
+      <div class="tooltip">Total bots created and activated by users</div>
     </div>
-
     <div class="card">
-      <div class="title">Onboarding</div>
-      <p>Task Completion</p>
-      <progress id="onboardingProgress" value="0" max="8" style="width: 100%; height: 12px; border-radius: 10px;"></progress>
-      <p id="onboardingStatus">0 / 8 Completed</p>
+      <div class="title">Active Users</div>
+      <div class="value" id="activeUsers">0</div>
+      <div class="tooltip">Users currently using dashboard or bots</div>
     </div>
-
     <div class="card">
-      <div class="title">Topline Metrics</div>
-      <div class="metrics">
-        <div><strong id="userCount">0</strong><br>Users</div>
-        <div><strong id="setupCount">0</strong><br>Setups</div>
-        <div><strong id="botCount">0</strong><br>Bots</div>
-      </div>
+      <div class="title">Recent Requests</div>
+      <div class="value" id="recentRequests">0</div>
+      <div class="tooltip">New custom bot submissions this week</div>
     </div>
-
     <div class="card">
-      <div class="title">Request Custom Bot</div>
-      <p>Need a custom automation?</p>
-      <a href="#" onclick="openBotModal()">Request Custom Bot</a>
+      <div class="title">Support Tickets</div>
+      <div class="value" id="supportTickets">0</div>
+      <div class="tooltip">Help messages from users</div>
+    </div>
+    <div class="card">
+      <div class="title">Referral Tracker</div>
+      <div class="value" id="referrals">0</div>
+      <div class="tooltip">Users brought in via referral links</div>
+    </div>
+    <div class="card">
+      <div class="title">API Keys Generated</div>
+      <div class="value" id="apiKeys">0</div>
+      <div class="tooltip">Total user API keys created</div>
+    </div>
+    <div class="card">
+      <div class="title">Send Alert</div>
+      <input type="text" id="alertText" placeholder="Type alert..." />
+      <button class="alert-btn" onclick="sendAlert()">Send</button>
     </div>
   </section>
-
-  <!-- Modal -->
-  <div id="customBotModal">
-    <div class="modal-content">
-      <h2>Request Custom Bot</h2>
-      <label>Name</label>
-      <input type="text" id="botRequestName" />
-      <label>Email</label>
-      <input type="email" id="botRequestEmail" />
-      <label>Bot Description</label>
-      <textarea id="botRequestDesc" rows="4"></textarea>
-      <button onclick="submitBotRequest()">Submit</button>
-      <button onclick="closeBotModal()" style="margin-left: 1rem;">Cancel</button>
-    </div>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-    import { getFirestore, doc, getDoc, setDoc, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-    import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
-    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-
-    const config = {
-      apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
-      authDomain: "fastfill-ai-f229b.firebaseapp.com",
-      projectId: "fastfill-ai-f229b",
-      storageBucket: "fastfill-ai-f229b.appspot.com",
-      messagingSenderId: "639658574105",
-      appId: "1:639658574105:web:afd78a1698e72eb1628588"
-    };
-
-    const app = initializeApp(config);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    const storage = getStorage(app);
-
-    const canvas = document.getElementById('initialCanvas');
-    const ctx = canvas.getContext('2d');
-    const profileImg = document.getElementById('profileImg');
-    const uploadInput = document.getElementById('uploadImage');
-
-    function drawInitialLetter(name) {
-      ctx.fillStyle = '#00c5c5';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#fff';
-      ctx.font = '50px Inter';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(name.charAt(0).toUpperCase(), canvas.width / 2, canvas.height / 2);
-    }
-
-    uploadInput.addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const preview = URL.createObjectURL(file);
-      profileImg.src = preview;
-      profileImg.style.display = 'block';
-      canvas.style.display = 'none';
-
-      const user = auth.currentUser;
-      if (user) {
-        const storageRef = ref(storage, `avatars/${user.uid}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
-        await setDoc(doc(db, 'profiles', user.uid), { avatar: url }, { merge: true });
-      }
-    });
-
+  <script>
     function logout() {
-      signOut(auth).then(() => location.href = 'login.html');
+      location.href = 'login.html';
     }
-
-    window.logout = logout;
-
-    window.openBotModal = () => {
-      document.getElementById("customBotModal").style.display = "flex";
+    function sendAlert() {
+      const text = document.getElementById('alertText').value.trim();
+      if (text) alert('📣 Alert sent: ' + text);
     }
-
-    window.closeBotModal = () => {
-      document.getElementById("customBotModal").style.display = "none";
-    }
-
-    window.submitBotRequest = async () => {
-      const name = document.getElementById("botRequestName").value.trim();
-      const email = document.getElementById("botRequestEmail").value.trim();
-      const desc = document.getElementById("botRequestDesc").value.trim();
-      if (!name || !email || !desc) {
-        alert("Please fill out all fields.");
-        return;
-      }
-      try {
-        await addDoc(collection(db, "customBotRequests"), {
-          name,
-          email,
-          description: desc,
-          createdAt: new Date().toISOString()
-        });
-        alert("Request submitted!");
-        closeBotModal();
-      } catch (err) {
-        console.error(err);
-        alert("Error submitting request.");
-      }
-    }
-
-    onAuthStateChanged(auth, async user => {
-      if (!user) return location.href = 'login.html';
-      const name = user.displayName || 'User';
-      document.getElementById('userName').textContent = name;
-
-      const usage = await getDoc(doc(db, 'usage', user.uid));
-      const meta = await getDoc(doc(db, 'metrics', 'summary'));
-      const profile = await getDoc(doc(db, 'profiles', user.uid));
-
-      if (profile.exists()) {
-        const p = profile.data();
-        if (p.avatar) {
-          profileImg.src = p.avatar;
-          profileImg.style.display = 'block';
-          canvas.style.display = 'none';
-        } else {
-          drawInitialLetter(name);
-        }
-      } else {
-        drawInitialLetter(name);
-      }
-
-      if (usage.exists()) {
-        const u = usage.data();
-        document.getElementById('userRole').textContent = u.role || 'Pro User';
-        document.getElementById('workHours').textContent = u.weeklyHours || 0;
-        const chart = document.getElementById('progressChart');
-        const days = u.chartData || [30, 45, 60, 90, 75, 40, 20];
-        chart.innerHTML = days.map(h => `<div class="bar" style="height:${h}%"></div>`).join('');
-        const completed = u.onboarding || 0;
-        document.getElementById('onboardingProgress').value = completed;
-        document.getElementById('onboardingStatus').textContent = `${completed} / 8 Completed`;
-      }
-
-      if (meta.exists()) {
-        const d = meta.data();
-        document.getElementById('userCount').textContent = d.users || 0;
-        document.getElementById('setupCount').textContent = d.setups || 0;
-        document.getElementById('botCount').textContent = d.bots || 0;
-      }
-    });
+    // Load real data from backend (to be implemented)
   </script>
 </body>
-  </html>
+</html>
