@@ -5,128 +5,159 @@
   <title>Fast Fill AI – Admin Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --bg: #f6f9fc;
+      --primary: #0052cc;
+      --accent: #00c5c5;
+      --text: #222;
+      --light: #ffffff;
+      --muted: #6c757d;
+      --radius: 16px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
     body {
-      font-family: 'Inter', sans-serif;
-      background: #f7f9fc;
       margin: 0;
-      color: #1a1a1a;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 240px;
+      background: var(--primary);
+      color: white;
+      padding: 2rem 1rem;
+    }
+    .sidebar h2 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: white;
+    }
+    .sidebar nav a {
+      display: block;
+      padding: 0.8rem 1rem;
+      margin-bottom: 0.5rem;
+      color: white;
+      text-decoration: none;
+      border-radius: var(--radius);
+    }
+    .sidebar nav a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .main {
+      margin-left: 260px;
+      padding: 2rem;
     }
     header {
-      background: #ffffff;
-      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
     }
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #0066ff;
-    }
-    .grid {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
+    .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
     }
     .card {
-      background: #ffffff;
+      background: var(--light);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
       padding: 1.5rem;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
-    .title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
+    .card h3 {
+      margin-top: 0;
+      font-size: 1.1rem;
     }
-    input, select, textarea, button {
-      width: 100%;
-      padding: 10px;
-      margin: 0.5rem 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-family: inherit;
-    }
-    button {
-      background: #0066ff;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #004dcc;
-    }
-    table {
+    .user-table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 1rem;
     }
-    th, td {
-      padding: 10px;
+    .user-table th, .user-table td {
+      padding: 0.75rem 1rem;
       border-bottom: 1px solid #eee;
-      text-align: left;
     }
-    th {
-      background: #f0f2f5;
+    .user-table tr:hover {
+      background: #f1f1f1;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">Fast Fill AI – Admin</div>
-    <button onclick="logout()">Logout</button>
-  </header>  <section class="grid">
-    <div class="card">
-      <div class="title">Search Users</div>
-      <input type="text" placeholder="Search by name or email...">
-      <table>
-        <thead>
-          <tr><th>Name</th><th>Email</th><th>Bots</th></tr>
-        </thead>
-        <tbody id="userList"></tbody>
-      </table>
-    </div><div class="card">
-  <div class="title">Referral Tracker</div>
-  <p>Total Referrals: <strong id="referrals">0</strong></p>
+  <div class="sidebar">
+    <h2>Fast Fill AI</h2>
+    <nav>
+      <a href="#">Dashboard</a>
+      <a href="#">Manage Bots</a>
+      <a href="#">Users</a>
+      <a href="#">Referrals</a>
+      <a href="#">Reports</a>
+      <a href="#">Settings</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </nav>
+  </div>  <div class="main">
+    <header>
+      <h1>Admin Dashboard</h1>
+    </header><div class="cards">
+  <div class="card">
+    <h3>Total Bots Deployed</h3>
+    <p id="botsDeployed">0</p>
+  </div>
+  <div class="card">
+    <h3>Total Users</h3>
+    <p id="totalUsers">0</p>
+  </div>
+  <div class="card">
+    <h3>Referrals</h3>
+    <p id="referralCount">0</p>
+  </div>
+  <div class="card">
+    <h3>Pending Requests</h3>
+    <p id="customRequests">0</p>
+  </div>
 </div>
 
-<div class="card">
-  <div class="title">Custom Bot Requests</div>
-  <ul id="botRequests"><li>No requests yet.</li></ul>
+<div class="card" style="margin-top: 2rem;">
+  <h3>Users List</h3>
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Bots</th>
+      </tr>
+    </thead>
+    <tbody id="userList">
+      <!-- Users go here -->
+    </tbody>
+  </table>
 </div>
 
-<div class="card">
-  <div class="title">All Bots Deployed</div>
-  <ul id="allBots"><li>No bots deployed.</li></ul>
-</div>
+  </div>  <script>
+    // Placeholder logic, should be replaced with real backend/Firebase calls
+    document.getElementById('botsDeployed').textContent = '14';
+    document.getElementById('totalUsers').textContent = '63';
+    document.getElementById('referralCount').textContent = '18';
+    document.getElementById('customRequests').textContent = '5';
 
-<div class="card">
-  <div class="title">Email List Export</div>
-  <button onclick="exportEmails()">Export All Emails (CSV)</button>
-</div>
+    const users = [
+      { name: 'John Doe', email: 'john@example.com', bots: 3 },
+      { name: 'Jane Smith', email: 'jane@example.com', bots: 1 },
+      { name: 'Max Carter', email: 'max@example.com', bots: 5 },
+    ];
 
-<div class="card">
-  <div class="title">System Controls</div>
-  <button onclick="resetTrial()">Reset Free Trial Timers</button>
-  <button onclick="broadcastMessage()">Broadcast Message to Users</button>
-  <textarea placeholder="Enter your message..."></textarea>
-</div>
+    const tbody = document.getElementById('userList');
+    users.forEach(user => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${user.name}</td><td>${user.email}</td><td>${user.bots}</td>`;
+      tbody.appendChild(tr);
+    });
 
-  </section>  <script>
     function logout() {
-      location.href = 'login.html';
-    }
-    function exportEmails() {
-      alert('Simulated export. Replace with Firebase logic.');
-    }
-    function resetTrial() {
-      alert('Trial timers reset. Replace with database write.');
-    }
-    function broadcastMessage() {
-      alert('Broadcast sent. Replace with notification logic.');
+      alert('Logging out...');
     }
   </script></body>
 </html>
