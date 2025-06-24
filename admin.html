@@ -2,165 +2,157 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fast Fill AI – Admin Panel</title>
+  <title>Admin Panel – Fast Fill AI</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #f0f2f5;
-      --text: #1a1a1a;
-      --card: #ffffff;
-      --accent: #00c5c5;
-      --radius: 16px;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    }
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      margin: 0;
+      background-color: #f0f2f5;
+      color: #333;
     }
     header {
-      background: var(--card);
-      box-shadow: var(--shadow);
+      background: #0a0a23;
+      color: white;
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    .logo {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: var(--accent);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     .container {
-      max-width: 1440px;
-      margin: 2rem auto;
-      padding: 0 2rem;
+      display: flex;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2rem;
+    .sidebar {
+      width: 250px;
+      background: #fff;
+      padding: 1rem;
+      border-right: 1px solid #ddd;
+      min-height: 100vh;
+    }
+    .sidebar h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar li {
+      margin-bottom: 0.75rem;
+    }
+    .sidebar a {
+      text-decoration: none;
+      color: #0a0a23;
+      font-weight: 500;
+    }
+    .main {
+      flex: 1;
+      padding: 2rem;
     }
     .card {
-      background: var(--card);
-      border-radius: var(--radius);
+      background: white;
       padding: 1.5rem;
-      box-shadow: var(--shadow);
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
     }
     .card h3 {
       margin-bottom: 1rem;
-      font-size: 1.2rem;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    table th, table td {
-      text-align: left;
-      padding: 0.5rem;
-      border-bottom: 1px solid #ddd;
-    }
-    .button {
-      background: var(--accent);
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 8px;
+    .user-list div {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
       cursor: pointer;
+    }
+    .user-details {
+      display: none;
       margin-top: 1rem;
     }
-    .button:disabled {
-      background: #ccc;
-      cursor: not-allowed;
+    .user-details.active {
+      display: block;
+    }
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">Fast Fill AI – Admin</div>
-    <div><button onclick="logout()" class="button">Logout</button></div>
+    <div>Fast Fill AI – Admin Panel</div>
+    <button onclick="logout()" style="background:#ffc107;padding:0.5rem 1rem;border:none;border-radius:6px;font-weight:bold;">Logout</button>
   </header>
-  <main class="container">
-    <div class="grid">
-      <div class="card">
-        <h3>Total Stats</h3>
-        <p><strong id="userCount">0</strong> Users</p>
-        <p><strong id="botCount">0</strong> Bots Deployed</p>
-        <p><strong id="orderCount">0</strong> Orders</p>
-      </div>
-      <div class="card">
-        <h3>Recent Signups</h3>
-        <table id="userTable">
-          <thead><tr><th>Email</th><th>Date</th><th>Details</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div class="card">
-        <h3>Request Logs</h3>
-        <ul id="requestList"></ul>
-      </div>
-      <div class="card">
-        <h3>Send Announcement</h3>
-        <textarea id="announcement" rows="4" style="width:100%"></textarea>
-        <button class="button" onclick="sendAnnouncement()">Send</button>
-      </div>
-    </div>
-  </main>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";const firebaseConfig = {
-  apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
-  authDomain: "fastfill-ai-f229b.firebaseapp.com",
-  projectId: "fastfill-ai-f229b",
-  storageBucket: "fastfill-ai-f229b.appspot.com",
-  messagingSenderId: "639658574105",
-  appId: "1:639658574105:web:afd78a1698e72eb1628588"
-};
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Navigation</h2>
+      <ul>
+        <li><a href="#users">Users</a></li>
+        <li><a href="#bots">Bot Purchases</a></li>
+        <li><a href="#logs">Activity Logs</a></li>
+        <li><a href="#announcements">Announcements</a></li>
+        <li><a href="#referrals">Referrals</a></li>
+        <li><a href="#settings">Settings</a></li>
+      </ul>
+    </aside>
+    <main class="main">
+      <div class="card" id="users">
+        <h3 class="section-title">All Registered Users</h3>
+        <div class="user-list" id="userList">Loading users...</div>
+        <div class="user-details" id="userDetails"></div>
+      </div><div class="card" id="bots">
+    <h3 class="section-title">Bots Purchased & Active</h3>
+    <div id="botSummary">Loading...</div>
+  </div>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+  <div class="card" id="logs">
+    <h3 class="section-title">User Activity Logs</h3>
+    <div id="logsSection">Loading logs...</div>
+  </div>
 
-function logout() {
-  signOut(auth).then(() => location.href = 'login.html');
-}
+  <div class="card" id="announcements">
+    <h3 class="section-title">Push Announcement</h3>
+    <textarea id="announcementText" rows="4" style="width:100%;border-radius:8px;"></textarea>
+    <button onclick="sendAnnouncement()" style="margin-top:1rem;background:#0a0a23;color:white;padding:0.5rem 1rem;border:none;border-radius:6px;font-weight:bold;">Send</button>
+  </div>
 
-onAuthStateChanged(auth, async user => {
-  if (!user || user.uid !== "YA6SZjezglPPZmB9CE71YQ2UP572") return location.href = 'login.html';
+  <div class="card" id="referrals">
+    <h3 class="section-title">Referral Overview</h3>
+    <div id="referralData">Loading referrals...</div>
+  </div>
 
-  const meta = await getDoc(doc(db, 'metrics', 'summary'));
-  if (meta.exists()) {
-    const d = meta.data();
-    document.getElementById('userCount').textContent = d.users || 0;
-    document.getElementById('botCount').textContent = d.bots || 0;
-    document.getElementById('orderCount').textContent = d.orders || 0;
-  }
+  <div class="card" id="settings">
+    <h3 class="section-title">Admin Settings</h3>
+    <p>Here you can adjust visibility, delete accounts, or change pricing.</p>
+    <button style="background:#dc3545;color:white;padding:0.5rem 1rem;border:none;border-radius:6px;">Emergency Lockout</button>
+  </div>
+</main>
 
-  const users = await getDocs(collection(db, 'users'));
-  const table = document.querySelector('#userTable tbody');
-  users.forEach(doc => {
-    const d = doc.data();
-    const row = `<tr><td>${d.email}</td><td>${d.signupDate || 'N/A'}</td><td><a href="user.html?id=${doc.id}">View</a></td></tr>`;
-    table.innerHTML += row;
-  });
+  </div>  <script>
+    const adminUid = "YA6SZjezglPPZmB9CE71YQ2UP572";
+    function logout() {
+      alert("Logging out...");
+    }
+    // Replace this with your real Firebase logic to pull data from Firestore
+    document.getElementById('userList').innerHTML = `
+      <div onclick="viewUser('John Doe')">John Doe</div>
+      <div onclick="viewUser('Jane Smith')">Jane Smith</div>
+    `;
 
-  const requests = await getDocs(collection(db, 'requests'));
-  const list = document.getElementById('requestList');
-  requests.forEach(doc => {
-    const r = doc.data();
-    list.innerHTML += `<li>${r.message || 'No message'} – ${r.timestamp || ''}</li>`;
-  });
-});
-
-window.sendAnnouncement = async function() {
-  const msg = document.getElementById('announcement').value.trim();
-  if (!msg) return alert('Enter message');
-  await setDoc(doc(db, 'announcements', 'latest'), { text: msg, time: new Date().toISOString() });
-  alert('Announcement sent');
-}
-
-  </script>
-</body>
+    function viewUser(name) {
+      document.getElementById('userDetails').classList.add('active');
+      document.getElementById('userDetails').innerHTML = `
+        <strong>User: ${name}</strong><br>
+        Bots Purchased: 2<br>
+        Bots Active: 1<br>
+        Email: example@domain.com<br>
+        Signup Date: 2025-06-10
+      `;
+    }
+    function sendAnnouncement() {
+      const msg = document.getElementById('announcementText').value;
+      alert("Announcement Sent: " + msg);
+    }
+  </script></body>
 </html>
