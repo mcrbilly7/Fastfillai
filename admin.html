@@ -2,162 +2,143 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fast Fill AI – Admin Dashboard</title>
+  <title>Fast Fill AI – Admin Panel</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --bg: #f6f9fc;
-      --primary: #0052cc;
-      --accent: #00c5c5;
-      --text: #222;
-      --light: #ffffff;
-      --muted: #6c757d;
-      --radius: 16px;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-    }
-    .sidebar {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      width: 240px;
-      background: var(--primary);
-      color: white;
-      padding: 2rem 1rem;
-    }
-    .sidebar h2 {
-      font-size: 1.5rem;
-      margin-bottom: 2rem;
-      color: white;
-    }
-    .sidebar nav a {
-      display: block;
-      padding: 0.8rem 1rem;
-      margin-bottom: 0.5rem;
-      color: white;
-      text-decoration: none;
-      border-radius: var(--radius);
-    }
-    .sidebar nav a:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-    .main {
-      margin-left: 260px;
-      padding: 2rem;
+      background-color: #f4f6fb;
+      color: #333;
     }
     header {
+      background: #fff;
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
-    .cards {
+    .container {
+      padding: 2rem;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 1.5rem;
     }
     .card {
-      background: var(--light);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      background: #fff;
+      border-radius: 16px;
       padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
-    .card h3 {
-      margin-top: 0;
+    .card h2 {
       font-size: 1.1rem;
+      margin-bottom: 1rem;
     }
-    .user-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-    }
-    .user-table th, .user-table td {
-      padding: 0.75rem 1rem;
+    .user-row {
+      display: flex;
+      justify-content: space-between;
       border-bottom: 1px solid #eee;
+      padding: 0.5rem 0;
     }
-    .user-table tr:hover {
-      background: #f1f1f1;
+    .user-row:last-child {
+      border-bottom: none;
+    }
+    .btn {
+      background: #007bff;
+      color: #fff;
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
+      font-weight: 600;
+    }
+    .btn:disabled {
+      background: #ccc;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h2>Fast Fill AI</h2>
-    <nav>
-      <a href="#">Dashboard</a>
-      <a href="#">Manage Bots</a>
-      <a href="#">Users</a>
-      <a href="#">Referrals</a>
-      <a href="#">Reports</a>
-      <a href="#">Settings</a>
-      <a href="#" onclick="logout()">Logout</a>
-    </nav>
-  </div>  <div class="main">
-    <header>
-      <h1>Admin Dashboard</h1>
-    </header><div class="cards">
-  <div class="card">
-    <h3>Total Bots Deployed</h3>
-    <p id="botsDeployed">0</p>
-  </div>
-  <div class="card">
-    <h3>Total Users</h3>
-    <p id="totalUsers">0</p>
-  </div>
-  <div class="card">
-    <h3>Referrals</h3>
-    <p id="referralCount">0</p>
-  </div>
-  <div class="card">
-    <h3>Pending Requests</h3>
-    <p id="customRequests">0</p>
-  </div>
-</div>
+  <header>
+    <div><strong>Fast Fill AI – Admin</strong></div>
+    <button onclick="logout()" class="btn">Logout</button>
+  </header>
+  <main class="container">
+    <div class="card">
+      <h2>Search Users</h2>
+      <input type="text" placeholder="Search by name or email..." id="searchInput" oninput="filterUsers()">
+      <div id="userList"></div>
+    </div>
+    <div class="card">
+      <h2>Referral Tracker</h2>
+      <p>Total Referrals: <span id="referralCount">0</span></p>
+    </div>
+    <div class="card">
+      <h2>Custom Bot Requests</h2>
+      <ul id="customRequests">No requests yet.</ul>
+    </div>
+    <div class="card">
+      <h2>All Bots Deployed</h2>
+      <ul id="botDeployments">No bots deployed.</ul>
+    </div>
+  </main>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';const firebaseConfig = {
+  apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
+  authDomain: "fastfill-ai-f229b.firebaseapp.com",
+  projectId: "fastfill-ai-f229b",
+  storageBucket: "fastfill-ai-f229b.appspot.com",
+  messagingSenderId: "639658574105",
+  appId: "1:639658574105:web:afd78a1698e72eb1628588"
+};
 
-<div class="card" style="margin-top: 2rem;">
-  <h3>Users List</h3>
-  <table class="user-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Bots</th>
-      </tr>
-    </thead>
-    <tbody id="userList">
-      <!-- Users go here -->
-    </tbody>
-  </table>
-</div>
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-  </div>  <script>
-    // Placeholder logic, should be replaced with real backend/Firebase calls
-    document.getElementById('botsDeployed').textContent = '14';
-    document.getElementById('totalUsers').textContent = '63';
-    document.getElementById('referralCount').textContent = '18';
-    document.getElementById('customRequests').textContent = '5';
+function logout() {
+  signOut(auth).then(() => location.href = 'login.html');
+}
+window.logout = logout;
 
-    const users = [
-      { name: 'John Doe', email: 'john@example.com', bots: 3 },
-      { name: 'Jane Smith', email: 'jane@example.com', bots: 1 },
-      { name: 'Max Carter', email: 'max@example.com', bots: 5 },
-    ];
+function filterUsers() {
+  const input = document.getElementById('searchInput').value.toLowerCase();
+  const rows = document.querySelectorAll('.user-row');
+  rows.forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(input) ? 'flex' : 'none';
+  });
+}
 
-    const tbody = document.getElementById('userList');
-    users.forEach(user => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${user.name}</td><td>${user.email}</td><td>${user.bots}</td>`;
-      tbody.appendChild(tr);
-    });
+onAuthStateChanged(auth, async user => {
+  if (!user || user.email !== 'admin@fastfillai.com') return location.href = 'login.html';
+  const usersSnap = await getDocs(collection(db, 'users'));
+  const userList = document.getElementById('userList');
+  userList.innerHTML = '';
+  usersSnap.forEach(doc => {
+    const u = doc.data();
+    const div = document.createElement('div');
+    div.className = 'user-row';
+    div.innerHTML = `
+      <div>${u.name || 'N/A'}</div>
+      <div>${u.email || 'N/A'}</div>
+      <button class="btn">View</button>
+    `;
+    userList.appendChild(div);
+  });
 
-    function logout() {
-      alert('Logging out...');
-    }
-  </script></body>
+  // Add actual custom bot request and bot deployment rendering here...
+  // Add referral tracking logic based on Firestore data
+});
+
+  </script>
+</body>
 </html>
