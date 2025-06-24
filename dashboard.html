@@ -6,168 +6,168 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f2f4f8;
+      --bg: #f5f6fa;
       --text: #1e1e2f;
-      --accent: #00bcd4;
-      --primary: #ffffff;
-      --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      --primary: #0d99ff;
+      --secondary: #ffffff;
+      --accent: #0d99ff;
+      --shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
       --radius: 16px;
     }
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+    }
+    body {
       font-family: 'Inter', sans-serif;
       background: var(--bg);
       color: var(--text);
+      line-height: 1.6;
     }
     header {
-      background: var(--primary);
-      padding: 1.25rem 2rem;
+      background: var(--secondary);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       box-shadow: var(--shadow);
     }
     .logo {
-      font-size: 1.75rem;
+      font-size: 1.5rem;
       font-weight: 700;
-      color: var(--accent);
+      color: var(--primary);
     }
-    .btn {
-      background: var(--accent);
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    main {
+    .grid {
       max-width: 1400px;
       margin: 2rem auto;
-      padding: 0 1.5rem;
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
+      padding: 0 1rem;
     }
     .card {
-      background: var(--primary);
+      background: var(--secondary);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
       padding: 2rem;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
     }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2rem;
-    }
-    h2 {
+    .card h3 {
+      font-size: 1.25rem;
       margin-bottom: 1rem;
-      font-size: 1.5rem;
     }
-    .profile-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .profile-header img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--accent);
-    }
-    .summary {
-      display: flex;
-      gap: 1.5rem;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    .summary-box {
-      flex: 1;
-      min-width: 200px;
-      background: #f9fbfc;
-      border-radius: var(--radius);
-      padding: 1rem;
+    .profile-img-wrapper {
       text-align: center;
-      box-shadow: var(--shadow);
     }
-    .summary-box h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
+    .profile-img-wrapper img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--primary);
     }
-    form {
+    .stats {
       display: flex;
-      flex-direction: column;
-      gap: 1rem;
+      justify-content: space-between;
       margin-top: 1rem;
     }
-    input, textarea {
-      padding: 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-family: inherit;
+    .stat {
+      text-align: center;
     }
-    .analytics-chart {
-      height: 250px;
-      background: repeating-linear-gradient(90deg, #e0f7fa 0 10%, #fff 10% 20%);
+    .stat strong {
+      display: block;
+      font-size: 1.4rem;
+    }
+    .onboarding {
+      margin-top: 1rem;
+    }
+    .support, .custom-bot-form {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      color: #888;
-      border-radius: 12px;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .support input, .support textarea, .custom-bot-form input, .custom-bot-form textarea {
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    .support button, .custom-bot-form button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <header>
     <div class="logo">Fast Fill AI</div>
-    <button class="btn" onclick="logout()">Logout</button>
-  </header>  <main>
-    <section class="card">
-      <div class="profile-header">
-        <img src="https://via.placeholder.com/80" alt="Profile" id="profilePhoto" />
-        <div>
-          <h2 id="userName">Welcome, User</h2>
-          <p id="userRole">Role: Loading...</p>
-        </div>
+    <button onclick="logout()">Logout</button>
+  </header>  <main class="grid">
+    <div class="card">
+      <h3>Welcome, <span id="userName">User</span></h3>
+      <div class="profile-img-wrapper">
+        <img id="profileImg" src="" alt="Avatar" />
       </div>
-    </section><section class="card">
-  <h2>Usage Overview</h2>
-  <div class="summary">
-    <div class="summary-box">
-      <h3 id="botCount">0</h3>
-      <p>Bots Created</p>
-    </div>
-    <div class="summary-box">
-      <h3 id="formCount">0</h3>
-      <p>Forms Submitted</p>
-    </div>
-    <div class="summary-box">
-      <h3 id="supportTickets">0</h3>
-      <p>Support Tickets</p>
-    </div>
+    </div><div class="card">
+  <h3>Key Metrics</h3>
+  <div class="stats">
+    <div class="stat"><strong id="botCount">0</strong>Bots</div>
+    <div class="stat"><strong id="userCount">0</strong>Users</div>
+    <div class="stat"><strong id="setupCount">0</strong>Setups</div>
   </div>
-</section>
+</div>
 
-<section class="card">
-  <h2>Request a Custom Bot</h2>
-  <form id="customBotForm">
-    <input type="text" placeholder="Bot Title" required />
-    <textarea rows="4" placeholder="Describe what your bot should do..." required></textarea>
-    <button type="submit" class="btn">Submit Request</button>
+<div class="card">
+  <h3>Onboarding Completion</h3>
+  <div class="onboarding">
+    <progress id="onboardingProgress" value="3" max="8" style="width: 100%;"></progress>
+    <p><span id="onboardingStatus">3</span> of 8 Steps Completed</p>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Request Custom Bot</h3>
+  <form class="custom-bot-form" onsubmit="handleBotRequest(event)">
+    <input type="text" id="botName" placeholder="Bot Name" required />
+    <textarea id="botDescription" placeholder="Describe your bot idea" rows="3" required></textarea>
+    <button type="submit">Submit Request</button>
+    <p id="botResponse" style="margin-top: 0.5rem;"></p>
   </form>
-</section>
+</div>
 
-<section class="card">
-  <h2>Recent Activity</h2>
-  <div class="analytics-chart">Chart Integration Coming Soon</div>
-</section>
+<div class="card">
+  <h3>Contact Support</h3>
+  <form class="support" onsubmit="handleSupport(event)">
+    <input type="email" id="supportEmail" placeholder="Your email" required />
+    <textarea id="supportMessage" placeholder="What can we help with?" rows="3" required></textarea>
+    <button type="submit">Send Message</button>
+    <p id="supportResponse"></p>
+  </form>
+</div>
 
   </main>  <script>
     function logout() {
-      alert("Logged out successfully.");
+      alert("Logged out");
+    }
+
+    document.getElementById("profileImg").src = "https://via.placeholder.com/100x100?text=U";
+
+    function handleBotRequest(e) {
+      e.preventDefault();
+      document.getElementById("botResponse").textContent = "✅ Request submitted. We’ll be in touch soon.";
+      e.target.reset();
+    }
+
+    function handleSupport(e) {
+      e.preventDefault();
+      document.getElementById("supportResponse").textContent = "✅ Support message sent.";
+      e.target.reset();
     }
   </script></body>
 </html>
