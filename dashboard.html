@@ -1,162 +1,104 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fast Fill AI – Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #0a0a23;
-      --accent: #00d9b2;
-      --light: #f9f9fb;
-      --dark: #ffffff;
-      --gray: #ddd;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--light);
-      color: #222;
-    }
-    header {
-      background: var(--dark);
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--accent);
-    }
-    .main {
-      display: flex;
-      min-height: calc(100vh - 80px);
-    }
-    .sidebar {
-      width: 220px;
-      background: var(--primary);
-      padding: 1rem;
-      color: white;
-    }
-    .sidebar h3 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-    }
-    .sidebar a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      margin-bottom: 1rem;
-      font-weight: 600;
-    }
-    .content {
-      flex: 1;
-      padding: 2rem;
-    }
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-    }
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    }
-    .card h4 {
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
-    }
-    .card p {
-      font-size: 1.6rem;
-      font-weight: bold;
-    }
-    .form-section {
-      margin-top: 3rem;
-    }
-    .form-section form {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    }
-    .form-section label {
-      font-weight: 600;
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-    .form-section input, .form-section textarea {
-      width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      border: 1px solid var(--gray);
-      border-radius: 6px;
-    }
-    .form-section button {
-      background: var(--primary);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-  <header>
-    <div class="logo">Fast Fill AI</div>
-    <div><a href="logout.html">Logout</a></div>
-  </header>  <div class="main">
-    <aside class="sidebar">
-      <h3>Dashboard</h3>
-      <a href="#">Overview</a>
-      <a href="#">Manage Bots</a>
-      <a href="#">Reports</a>
-      <a href="#">Request Bot</a>
-      <a href="#">Settings</a>
-    </aside><main class="content">
-  <div class="card-grid">
-    <div class="card">
-      <h4>Bots Deployed</h4>
-      <p>27</p>
-    </div>
-    <div class="card">
-      <h4>Active Users</h4>
-      <p>134</p>
-    </div>
-    <div class="card">
-      <h4>Recent Requests</h4>
-      <p>6</p>
-    </div>
-    <div class="card">
-      <h4>Support Tickets</h4>
-      <p>2 Open</p>
-    </div>
+  <aside class="sidebar">
+    <div class="sidebar-header">Fast Fill AI</div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Dashboard</a></li>
+      <li><a href="#">Manage Bots</a></li>
+      <li><a href="#">Reports</a></li>
+      <li><a href="#">Settings</a></li>
+    </ul>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </aside>  <main class="main-content">
+    <header class="top-header">
+      <h1>Dashboard Overview</h1>
+    </header><section class="stats-grid">
+  <div class="stat-card">
+    <h3>Bots Deployed</h3>
+    <p id="botCount">0</p>
   </div>
-
-  <section class="form-section">
-    <h3>Request a Custom Bot</h3>
-    <form onsubmit="alert('Request submitted!'); return false;">
-      <label for="botName">Bot Name</label>
-      <input type="text" id="botName" required>
-
-      <label for="description">Description</label>
-      <textarea id="description" rows="4" required></textarea>
-
-      <button type="submit">Submit Request</button>
-    </form>
-  </section>
-</main>
-
+  <div class="stat-card">
+    <h3>Active Users</h3>
+    <p id="userCount">0</p>
   </div>
-</body>
+  <div class="stat-card">
+    <h3>Recent Requests</h3>
+    <p id="requestCount">0</p>
+  </div>
+  <div class="stat-card">
+    <h3>Support Tickets</h3>
+    <p id="ticketCount">0</p>
+  </div>
+</section>
+
+<section class="card large">
+  <h2>Request a Custom Bot</h2>
+  <form id="requestForm">
+    <input type="text" id="botName" placeholder="Bot Name" required />
+    <textarea id="botDescription" placeholder="Describe the functionality you need..." required></textarea>
+    <button type="submit">Submit Request</button>
+  </form>
+</section>
+
+  </main>  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getFirestore, doc, getDoc, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+    const config = {
+      apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
+      authDomain: "fastfill-ai-f229b.firebaseapp.com",
+      projectId: "fastfill-ai-f229b",
+      storageBucket: "fastfill-ai-f229b.appspot.com",
+      messagingSenderId: "639658574105",
+      appId: "1:639658574105:web:afd78a1698e72eb1628588"
+    };
+
+    const app = initializeApp(config);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    function logout() {
+      signOut(auth).then(() => location.href = 'login.html');
+    }
+    window.logout = logout;
+
+    onAuthStateChanged(auth, async user => {
+      if (!user) return location.href = 'login.html';
+      const meta = await getDoc(doc(db, 'metrics', 'summary'));
+      if (meta.exists()) {
+        const data = meta.data();
+        document.getElementById('botCount').textContent = data.bots || 0;
+        document.getElementById('userCount').textContent = data.users || 0;
+        document.getElementById('requestCount').textContent = data.requests || 0;
+        document.getElementById('ticketCount').textContent = data.tickets || 0;
+      }
+    });
+
+    const requestForm = document.getElementById('requestForm');
+    requestForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const botName = document.getElementById('botName').value;
+      const botDescription = document.getElementById('botDescription').value;
+      const user = auth.currentUser;
+      if (user) {
+        await addDoc(collection(db, 'customRequests'), {
+          userId: user.uid,
+          name: botName,
+          description: botDescription,
+          status: 'Pending',
+          createdAt: new Date().toISOString()
+        });
+        alert('Your request has been submitted!');
+        requestForm.reset();
+      }
+    });
+  </script></body>
 </html>
