@@ -1,126 +1,144 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fast Fill AI – Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fast Fill AI Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --bg: #f1f4f9;
-      --card: #ffffff;
-      --text: #1e293b;
-      --accent: #4f46e5;
-      --accent-light: #6366f1;
+      --primary: #6c63ff;
+      --background: #f4f5f7;
+      --card-bg: #fff;
+      --text: #333;
       --radius: 16px;
+      --shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: var(--bg);
+      background: var(--background);
       color: var(--text);
+      display: flex;
     }
     .sidebar {
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 250px;
-      background: var(--accent);
+      width: 240px;
+      background: var(--primary);
       color: white;
+      min-height: 100vh;
       padding: 2rem 1rem;
     }
     .sidebar h2 {
       margin-bottom: 2rem;
     }
     .sidebar a {
-      display: block;
       color: white;
       text-decoration: none;
+      display: block;
       margin: 1rem 0;
       font-weight: 600;
     }
-    header {
-      margin-left: 250px;
-      background: white;
-      padding: 1rem 2rem;
+    .content {
+      flex: 1;
+      padding: 2rem;
+    }
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
     }
-    .main {
-      margin-left: 250px;
-      padding: 2rem;
+    .header h1 {
+      font-size: 1.8rem;
+    }
+    .grid {
       display: grid;
-      gap: 2rem;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
     }
     .card {
-      background: var(--card);
+      background: var(--card-bg);
       padding: 1.5rem;
       border-radius: var(--radius);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      box-shadow: var(--shadow);
     }
     .card h3 {
-      margin: 0 0 1rem;
+      margin-bottom: 0.5rem;
     }
-    .stat-number {
-      font-size: 2rem;
-      font-weight: 700;
+    .metric {
+      font-size: 1.5rem;
+      font-weight: bold;
     }
-    .cta-button {
-      background: var(--accent);
+    .button {
+      background: var(--primary);
       color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 1rem;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
       font-weight: 600;
+    }
+    .referral {
+      background: linear-gradient(to right, #7e77ff, #9a91ff);
+      color: white;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .referral h3 {
+      margin: 0 0 0.5rem;
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
+  <aside class="sidebar">
     <h2>Fast Fill AI</h2>
-    <a href="#">Dashboard</a>
-    <a href="#">Bots</a>
-    <a href="#">Orders</a>
-    <a href="#">API Access</a>
-    <a href="#">Support</a>
-    <a href="#">Settings</a>
-  </div>
-  <header>
-    <div>Welcome, <strong>User</strong></div>
-    <button onclick="logout()">Logout</button>
-  </header>
-  <div class="main">
-    <div class="card">
-      <h3>Total Bots</h3>
-      <div class="stat-number" id="botCount">0</div>
-      <div>Active this week</div>
+    <a href="#"><i class="fas fa-gauge"></i> Dashboard</a>
+    <a href="#"><i class="fas fa-robot"></i> Bots</a>
+    <a href="#"><i class="fas fa-box"></i> Orders</a>
+    <a href="#"><i class="fas fa-key"></i> API Access</a>
+    <a href="#"><i class="fas fa-headset"></i> Support</a>
+    <a href="#"><i class="fas fa-gear"></i> Settings</a>
+  </aside>
+  <main class="content">
+    <div class="header">
+      <h1>Welcome Back, User</h1>
+      <button class="button">Upload Bot</button>
     </div>
-    <div class="card">
-      <h3>Total Users</h3>
-      <div class="stat-number" id="userCount">0</div>
-      <div>Since launch</div>
+    <div class="grid">
+      <div class="referral">
+        <h3>Want some EXTRA Money?</h3>
+        <p>Refer a friend and earn 10% commission on every referral.</p>
+        <button class="button" style="margin-top: 1rem; background:white; color:#6c63ff">Referral Program</button>
+      </div>
+      <div class="card">
+        <h3>Total Bots</h3>
+        <div class="metric">12</div>
+        <p>Active this week</p>
+      </div>
+      <div class="card">
+        <h3>Total Users</h3>
+        <div class="metric">436</div>
+        <p>Since launch</p>
+      </div>
+      <div class="card">
+        <h3>Total Revenue</h3>
+        <div class="metric">$8,450</div>
+        <p>+12% this month</p>
+      </div>
+      <div class="card">
+        <h3>API Key</h3>
+        <p><code>loading...</code> <button class="button" style="padding: 0.3rem 1rem; margin-left: 1rem;">Copy</button></p>
+      </div>
+      <div class="card">
+        <h3>Request Custom Bot</h3>
+        <form>
+          <input type="text" placeholder="Your Name" style="width:100%; padding:0.5rem; margin-bottom:0.5rem">
+          <textarea placeholder="Describe your request..." style="width:100%; padding:0.5rem;"></textarea>
+          <button type="submit" class="button" style="margin-top: 1rem; width:100%">Submit</button>
+        </form>
+      </div>
     </div>
-    <div class="card">
-      <h3>Start Your Free Trial</h3>
-      <p>Try our automation platform completely free for 1 month.</p>
-      <a href="#" class="cta-button">Start Free Trial</a>
-    </div>
-    <div class="card">
-      <h3>Your API Key</h3>
-      <p id="apiKey">Loading...</p>
-      <button onclick="copyApiKey()">Copy</button>
-    </div>
-    <div class="card">
-      <h3>Custom Bot Request</h3>
-      <input type="text" placeholder="Your Name" style="width:100%;padding:0.5rem;margin-bottom:0.5rem">
-      <textarea placeholder="Describe your request..." style="width:100%;padding:0.5rem;height:80px;"></textarea>
-      <button class="cta-button">Submit Request</button>
-    </div>
-  </div>
+  </main>
 </body>
 </html>
