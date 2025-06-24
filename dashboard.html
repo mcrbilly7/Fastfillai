@@ -4,174 +4,229 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fast Fill AI – Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --bg: #f3f6fd;
-      --primary: #4f46e5;
-      --text: #111827;
-      --card: #fff;
-      --radius: 16px;
-    }
     * {
-      margin: 0;
       box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
     }
     body {
-      display: flex;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: #f5f7fb;
+      color: #222;
     }
     .sidebar {
       width: 220px;
-      background: var(--primary);
-      color: white;
-      padding: 2rem 1rem;
+      height: 100vh;
+      background: #4e3cff;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 1.5rem 1rem;
+      color: #fff;
     }
-    .sidebar h2 {
-      font-size: 1.5rem;
+    .sidebar h1 {
+      font-size: 1.4rem;
       margin-bottom: 2rem;
     }
     .sidebar a {
       display: block;
+      color: #fff;
       margin: 1rem 0;
-      color: white;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
     }
     .main {
-      flex: 1;
+      margin-left: 240px;
       padding: 2rem;
     }
-    header {
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
+    }
+    .header h2 {
+      margin: 0;
+    }
+    .logout-btn {
+      background: #eee;
+      padding: 0.5rem 1rem;
+      border: none;
+      cursor: pointer;
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
+      margin-top: 2rem;
     }
     .card {
-      background: var(--card);
+      background: #fff;
       padding: 1.5rem;
-      border-radius: var(--radius);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
     }
     .card h3 {
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
+      margin-top: 0;
+      font-size: 1.1rem;
     }
-    .value {
-      font-size: 1.5rem;
-      font-weight: bold;
+    .card .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0.5rem 0;
     }
-    .form-group {
-      margin-top: 1rem;
+    .referral {
+      background: #e6f0ff;
+      padding: 1.2rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .referral h4 {
+      margin: 0 0 0.5rem;
+    }
+    .referral button {
+      background: #4e3cff;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
     }
     input, textarea {
       width: 100%;
       padding: 0.7rem;
+      margin-top: 0.5rem;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      border-radius: 8px;
       margin-bottom: 1rem;
     }
-    button {
-      background: var(--primary);
+    button.submit-btn {
+      background: #4e3cff;
       color: white;
-      padding: 0.7rem 1.2rem;
       border: none;
-      border-radius: 8px;
+      padding: 0.7rem 1.2rem;
+      font-weight: 600;
+      border-radius: 6px;
       cursor: pointer;
-    }
-    button:hover {
-      opacity: 0.9;
-    }
-    .logout {
-      background: white;
-      color: var(--primary);
-      border: 1px solid var(--primary);
     }
   </style>
 </head>
 <body>
-  <aside class="sidebar">
-    <h2>Fast Fill AI</h2>
-    <a href="#">Dashboard</a>
-    <a href="#">Manage Bots</a>
-    <a href="#">Reports</a>
-    <a href="#">Settings</a>
-    <button class="logout" onclick="logout()">Logout</button>
-  </aside>
-  <main class="main">
-    <header>
-      <h1>Welcome, <span id="userName">User</span></h1>
-    </header>
+  <div class="sidebar">
+    <h1>Fast Fill AI</h1>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="bots.html">Bots</a>
+    <a href="orders.html">Orders</a>
+    <a href="api.html">API Access</a>
+    <a href="support.html">Support</a>
+    <a href="settings.html">Settings</a>
+  </div>
 
-    <section class="grid">
+  <div class="main">
+    <div class="header">
+      <h2>Welcome, <span id="userName">User</span></h2>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="grid">
       <div class="card">
         <h3>Bots Deployed</h3>
-        <p class="value" id="botCount">0</p>
+        <p class="value" id="botCount">Loading...</p>
       </div>
+
       <div class="card">
         <h3>Active Users</h3>
-        <p class="value" id="userCount">0</p>
+        <p class="value" id="userCount">Loading...</p>
       </div>
+
       <div class="card">
-        <h3>Recent Requests</h3>
-        <p class="value" id="requestCount">0</p>
+        <h3>Requests</h3>
+        <p class="value" id="requestCount">Loading...</p>
       </div>
+
       <div class="card">
-        <h3>Support Tickets</h3>
-        <p class="value" id="ticketCount">0</p>
+        <h3>Your API Key</h3>
+        <p id="apiKey">Loading...</p>
+        <button onclick="copyKey()">Copy</button>
       </div>
-    </section>
 
-    <section class="card" style="margin-top: 2rem;">
-      <h3>Your API Key</h3>
-      <p id="apiKey">Loading...</p>
-      <button onclick="copyAPIKey()">Copy</button>
-    </section>
+      <div class="card referral">
+        <h4>Want some EXTRA money?</h4>
+        <p>Refer a friend and earn 10% on every referral!</p>
+        <button onclick="copyReferral()">Referral Program</button>
+      </div>
 
-    <section class="card" style="margin-top: 2rem;">
-      <h3>Request a Custom Bot</h3>
-      <form onsubmit="submitBotRequest(event)">
-        <input type="text" id="botName" placeholder="Bot Name" required />
-        <textarea id="botDesc" rows="4" placeholder="Describe the functionality you need..." required></textarea>
-        <button type="submit">Submit Request</button>
-      </form>
-    </section>
-  </main>
+      <div class="card">
+        <h3>Custom Bot Request</h3>
+        <input type="text" id="botName" placeholder="Bot Name" />
+        <textarea id="botDesc" placeholder="Describe what you want the bot to do..."></textarea>
+        <button class="submit-btn" onclick="submitRequest()">Submit Request</button>
+      </div>
+    </div>
+  </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const app = initializeApp({
+      apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
+      authDomain: "fastfill-ai-f229b.firebaseapp.com",
+      projectId: "fastfill-ai-f229b",
+      storageBucket: "fastfill-ai-f229b.appspot.com",
+      messagingSenderId: "639658574105",
+      appId: "1:639658574105:web:afd78a1698e72eb1628588"
+    });
+
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
     function logout() {
-      window.location.href = 'login.html';
+      signOut(auth).then(() => location.href = "login.html");
     }
 
-    function copyAPIKey() {
-      const key = document.getElementById('apiKey').textContent;
+    function copyKey() {
+      const key = document.getElementById("apiKey").textContent;
       navigator.clipboard.writeText(key);
-      alert('API key copied to clipboard');
     }
 
-    function submitBotRequest(e) {
-      e.preventDefault();
-      const name = document.getElementById('botName').value;
-      const desc = document.getElementById('botDesc').value;
-      alert(`Request submitted:\n\nName: ${name}\nDescription: ${desc}`);
+    function copyReferral() {
+      navigator.clipboard.writeText("https://fastfillai.vercel.app/referral");
+      alert("Referral link copied!");
     }
 
-    // Example demo data (replace with Firebase integration)
-    document.getElementById('userName').textContent = 'John Doe';
-    document.getElementById('botCount').textContent = 12;
-    document.getElementById('userCount').textContent = 158;
-    document.getElementById('requestCount').textContent = 7;
-    document.getElementById('ticketCount').textContent = 2;
-    document.getElementById('apiKey').textContent = 'sk-fakeapikey-1234567890';
+    async function submitRequest() {
+      const name = document.getElementById("botName").value;
+      const desc = document.getElementById("botDesc").value;
+      if (!name || !desc) return alert("Please fill out both fields.");
+
+      const user = auth.currentUser;
+      if (user) {
+        await addDoc(collection(db, "botRequests"), {
+          uid: user.uid,
+          name,
+          desc,
+          date: Date.now()
+        });
+        alert("Request submitted!");
+      }
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return location.href = "login.html";
+      document.getElementById("userName").textContent = user.displayName || "User";
+
+      const metaDoc = await getDoc(doc(db, "metrics", "summary"));
+      if (metaDoc.exists()) {
+        const d = metaDoc.data();
+        document.getElementById("botCount").textContent = d.bots || 0;
+        document.getElementById("userCount").textContent = d.users || 0;
+        document.getElementById("requestCount").textContent = d.requests || 0;
+        document.getElementById("apiKey").textContent = d.apiKey || "Unavailable";
+      }
+    });
   </script>
 </body>
 </html>
