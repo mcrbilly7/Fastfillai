@@ -1,104 +1,177 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fast Fill AI – Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f3f6fd;
+      --primary: #4f46e5;
+      --text: #111827;
+      --card: #fff;
+      --radius: 16px;
+    }
+    * {
+      margin: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      display: flex;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 220px;
+      background: var(--primary);
+      color: white;
+      padding: 2rem 1rem;
+    }
+    .sidebar h2 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .sidebar a {
+      display: block;
+      margin: 1rem 0;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .main {
+      flex: 1;
+      padding: 2rem;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: var(--card);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    }
+    .card h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    .value {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .form-group {
+      margin-top: 1rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    button {
+      background: var(--primary);
+      color: white;
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .logout {
+      background: white;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+  </style>
 </head>
 <body>
   <aside class="sidebar">
-    <div class="sidebar-header">Fast Fill AI</div>
-    <ul class="nav-links">
-      <li><a href="#" class="active">Dashboard</a></li>
-      <li><a href="#">Manage Bots</a></li>
-      <li><a href="#">Reports</a></li>
-      <li><a href="#">Settings</a></li>
-    </ul>
-    <button onclick="logout()" class="logout-btn">Logout</button>
-  </aside>  <main class="main-content">
-    <header class="top-header">
-      <h1>Dashboard Overview</h1>
-    </header><section class="stats-grid">
-  <div class="stat-card">
-    <h3>Bots Deployed</h3>
-    <p id="botCount">0</p>
-  </div>
-  <div class="stat-card">
-    <h3>Active Users</h3>
-    <p id="userCount">0</p>
-  </div>
-  <div class="stat-card">
-    <h3>Recent Requests</h3>
-    <p id="requestCount">0</p>
-  </div>
-  <div class="stat-card">
-    <h3>Support Tickets</h3>
-    <p id="ticketCount">0</p>
-  </div>
-</section>
+    <h2>Fast Fill AI</h2>
+    <a href="#">Dashboard</a>
+    <a href="#">Manage Bots</a>
+    <a href="#">Reports</a>
+    <a href="#">Settings</a>
+    <button class="logout" onclick="logout()">Logout</button>
+  </aside>
+  <main class="main">
+    <header>
+      <h1>Welcome, <span id="userName">User</span></h1>
+    </header>
 
-<section class="card large">
-  <h2>Request a Custom Bot</h2>
-  <form id="requestForm">
-    <input type="text" id="botName" placeholder="Bot Name" required />
-    <textarea id="botDescription" placeholder="Describe the functionality you need..." required></textarea>
-    <button type="submit">Submit Request</button>
-  </form>
-</section>
+    <section class="grid">
+      <div class="card">
+        <h3>Bots Deployed</h3>
+        <p class="value" id="botCount">0</p>
+      </div>
+      <div class="card">
+        <h3>Active Users</h3>
+        <p class="value" id="userCount">0</p>
+      </div>
+      <div class="card">
+        <h3>Recent Requests</h3>
+        <p class="value" id="requestCount">0</p>
+      </div>
+      <div class="card">
+        <h3>Support Tickets</h3>
+        <p class="value" id="ticketCount">0</p>
+      </div>
+    </section>
 
-  </main>  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-    import { getFirestore, doc, getDoc, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    <section class="card" style="margin-top: 2rem;">
+      <h3>Your API Key</h3>
+      <p id="apiKey">Loading...</p>
+      <button onclick="copyAPIKey()">Copy</button>
+    </section>
 
-    const config = {
-      apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
-      authDomain: "fastfill-ai-f229b.firebaseapp.com",
-      projectId: "fastfill-ai-f229b",
-      storageBucket: "fastfill-ai-f229b.appspot.com",
-      messagingSenderId: "639658574105",
-      appId: "1:639658574105:web:afd78a1698e72eb1628588"
-    };
+    <section class="card" style="margin-top: 2rem;">
+      <h3>Request a Custom Bot</h3>
+      <form onsubmit="submitBotRequest(event)">
+        <input type="text" id="botName" placeholder="Bot Name" required />
+        <textarea id="botDesc" rows="4" placeholder="Describe the functionality you need..." required></textarea>
+        <button type="submit">Submit Request</button>
+      </form>
+    </section>
+  </main>
 
-    const app = initializeApp(config);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-
+  <script>
     function logout() {
-      signOut(auth).then(() => location.href = 'login.html');
+      window.location.href = 'login.html';
     }
-    window.logout = logout;
 
-    onAuthStateChanged(auth, async user => {
-      if (!user) return location.href = 'login.html';
-      const meta = await getDoc(doc(db, 'metrics', 'summary'));
-      if (meta.exists()) {
-        const data = meta.data();
-        document.getElementById('botCount').textContent = data.bots || 0;
-        document.getElementById('userCount').textContent = data.users || 0;
-        document.getElementById('requestCount').textContent = data.requests || 0;
-        document.getElementById('ticketCount').textContent = data.tickets || 0;
-      }
-    });
+    function copyAPIKey() {
+      const key = document.getElementById('apiKey').textContent;
+      navigator.clipboard.writeText(key);
+      alert('API key copied to clipboard');
+    }
 
-    const requestForm = document.getElementById('requestForm');
-    requestForm.addEventListener('submit', async (e) => {
+    function submitBotRequest(e) {
       e.preventDefault();
-      const botName = document.getElementById('botName').value;
-      const botDescription = document.getElementById('botDescription').value;
-      const user = auth.currentUser;
-      if (user) {
-        await addDoc(collection(db, 'customRequests'), {
-          userId: user.uid,
-          name: botName,
-          description: botDescription,
-          status: 'Pending',
-          createdAt: new Date().toISOString()
-        });
-        alert('Your request has been submitted!');
-        requestForm.reset();
-      }
-    });
-  </script></body>
+      const name = document.getElementById('botName').value;
+      const desc = document.getElementById('botDesc').value;
+      alert(`Request submitted:\n\nName: ${name}\nDescription: ${desc}`);
+    }
+
+    // Example demo data (replace with Firebase integration)
+    document.getElementById('userName').textContent = 'John Doe';
+    document.getElementById('botCount').textContent = 12;
+    document.getElementById('userCount').textContent = 158;
+    document.getElementById('requestCount').textContent = 7;
+    document.getElementById('ticketCount').textContent = 2;
+    document.getElementById('apiKey').textContent = 'sk-fakeapikey-1234567890';
+  </script>
+</body>
 </html>
