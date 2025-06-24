@@ -1,209 +1,162 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fast Fill AI – Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #5b3cc4;
-      --background: #f4f5f9;
-      --white: #ffffff;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      --radius: 14px;
+      --primary: #0a0a23;
+      --accent: #00d9b2;
+      --light: #f9f9fb;
+      --dark: #ffffff;
+      --gray: #ddd;
     }
-
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+    }
+    body {
       font-family: 'Inter', sans-serif;
-      background: var(--background);
-      color: #333;
+      background: var(--light);
+      color: #222;
     }
-
-    .sidebar {
-      width: 220px;
-      height: 100vh;
-      position: fixed;
-      background: var(--primary);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      padding: 1.5rem;
-    }
-
-    .sidebar h1 {
-      font-size: 1.4rem;
-      margin-bottom: 2rem;
-    }
-
-    .sidebar a {
-      color: white;
-      text-decoration: none;
-      margin: 0.7rem 0;
-      display: block;
-      font-weight: 500;
-    }
-
-    .main {
-      margin-left: 240px;
-      padding: 2rem;
-    }
-
     header {
+      background: var(--dark);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-
-    header h2 {
-      font-size: 1.4rem;
-    }
-
-    button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .card {
-      background: var(--white);
-      padding: 1.5rem;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    .card h3 {
-      margin: 0 0 0.8rem;
-      font-size: 1rem;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 0.9rem;
-    }
-
-    .btn-submit {
-      margin-top: 1rem;
-      width: 100%;
-      background: var(--primary);
-      color: white;
+    .logo {
+      font-size: 1.5rem;
       font-weight: bold;
-      padding: 10px;
+      color: var(--accent);
+    }
+    .main {
+      display: flex;
+      min-height: calc(100vh - 80px);
+    }
+    .sidebar {
+      width: 220px;
+      background: var(--primary);
+      padding: 1rem;
+      color: white;
+    }
+    .sidebar h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .content {
+      flex: 1;
+      padding: 2rem;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .card h4 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .card p {
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+    .form-section {
+      margin-top: 3rem;
+    }
+    .form-section form {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .form-section label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .form-section input, .form-section textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--gray);
+      border-radius: 6px;
+    }
+    .form-section button {
+      background: var(--primary);
+      color: white;
+      padding: 0.75rem 1.5rem;
       border: none;
       border-radius: 8px;
-    }
-
-    .copy-btn {
-      margin-top: 8px;
-      background: #eee;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
+      font-weight: bold;
       cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
-
-      .main {
-        margin-left: 0;
-      }
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h1>Fast Fill AI</h1>
-    <a href="#">Dashboard</a>
-    <a href="#">Bots</a>
-    <a href="#">Orders</a>
-    <a href="#">API Access</a>
-    <a href="#">Support</a>
-    <a href="#">Settings</a>
-  </div>
-
-  <div class="main">
-    <header>
-      <h2>Welcome, User</h2>
-      <button onclick="logout()">Logout</button>
-    </header>
-
-    <div class="grid">
-      <div class="card">
-        <h3>Total Bots</h3>
-        <p><strong>0</strong> Active This Week</p>
-      </div>
-
-      <div class="card">
-        <h3>Total Users</h3>
-        <p><strong>0</strong> Since Launch</p>
-      </div>
-
-      <div class="card">
-        <h3>Start Your Free Trial</h3>
-        <p>Try our automation platform completely free for 1 month.</p>
-        <button class="btn-submit">Start Free Trial</button>
-      </div>
-
-      <div class="card">
-        <h3>Your API Key</h3>
-        <p id="apiKey">Loading...</p>
-        <button class="copy-btn" onclick="copyAPI()">Copy</button>
-      </div>
-
-      <div class="card">
-        <h3>Custom Bot Request</h3>
-        <input type="text" placeholder="Your Name" id="requestName" />
-        <textarea placeholder="Describe your request..." rows="4" id="requestDetails"></textarea>
-        <button class="btn-submit" onclick="submitRequest()">Submit Request</button>
-      </div>
+  <header>
+    <div class="logo">Fast Fill AI</div>
+    <div><a href="logout.html">Logout</a></div>
+  </header>  <div class="main">
+    <aside class="sidebar">
+      <h3>Dashboard</h3>
+      <a href="#">Overview</a>
+      <a href="#">Manage Bots</a>
+      <a href="#">Reports</a>
+      <a href="#">Request Bot</a>
+      <a href="#">Settings</a>
+    </aside><main class="content">
+  <div class="card-grid">
+    <div class="card">
+      <h4>Bots Deployed</h4>
+      <p>27</p>
+    </div>
+    <div class="card">
+      <h4>Active Users</h4>
+      <p>134</p>
+    </div>
+    <div class="card">
+      <h4>Recent Requests</h4>
+      <p>6</p>
+    </div>
+    <div class="card">
+      <h4>Support Tickets</h4>
+      <p>2 Open</p>
     </div>
   </div>
 
-  <script>
-    function logout() {
-      alert("Logged out!");
-    }
+  <section class="form-section">
+    <h3>Request a Custom Bot</h3>
+    <form onsubmit="alert('Request submitted!'); return false;">
+      <label for="botName">Bot Name</label>
+      <input type="text" id="botName" required>
 
-    function copyAPI() {
-      const text = document.getElementById("apiKey").textContent;
-      navigator.clipboard.writeText(text);
-      alert("API Key Copied");
-    }
+      <label for="description">Description</label>
+      <textarea id="description" rows="4" required></textarea>
 
-    function submitRequest() {
-      const name = document.getElementById("requestName").value;
-      const detail = document.getElementById("requestDetails").value;
-      if (name && detail) {
-        alert("Request Submitted!");
-        document.getElementById("requestName").value = "";
-        document.getElementById("requestDetails").value = "";
-      } else {
-        alert("Fill in all fields.");
-      }
-    }
+      <button type="submit">Submit Request</button>
+    </form>
+  </section>
+</main>
 
-    // Simulated API key loading
-    setTimeout(() => {
-      document.getElementById("apiKey").textContent = "sk-abc123xyz456";
-    }, 1000);
-  </script>
+  </div>
 </body>
 </html>
