@@ -1,144 +1,209 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fast Fill AI Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fast Fill AI – Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --primary: #6c63ff;
-      --background: #f4f5f7;
-      --card-bg: #fff;
-      --text: #333;
-      --radius: 16px;
-      --shadow: 0 4px 12px rgba(0,0,0,0.08);
+      --primary: #5b3cc4;
+      --background: #f4f5f9;
+      --white: #ffffff;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --radius: 14px;
     }
+
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
       background: var(--background);
-      color: var(--text);
-      display: flex;
+      color: #333;
     }
+
     .sidebar {
-      width: 240px;
+      width: 220px;
+      height: 100vh;
+      position: fixed;
       background: var(--primary);
       color: white;
-      min-height: 100vh;
-      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
     }
-    .sidebar h2 {
+
+    .sidebar h1 {
+      font-size: 1.4rem;
       margin-bottom: 2rem;
     }
+
     .sidebar a {
       color: white;
       text-decoration: none;
+      margin: 0.7rem 0;
       display: block;
-      margin: 1rem 0;
-      font-weight: 600;
+      font-weight: 500;
     }
-    .content {
-      flex: 1;
+
+    .main {
+      margin-left: 240px;
       padding: 2rem;
     }
-    .header {
+
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 2rem;
     }
-    .header h1 {
-      font-size: 1.8rem;
+
+    header h2 {
+      font-size: 1.4rem;
     }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
     }
+
     .card {
-      background: var(--card-bg);
+      background: var(--white);
       padding: 1.5rem;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
     }
+
     .card h3 {
-      margin-bottom: 0.5rem;
+      margin: 0 0 0.8rem;
+      font-size: 1rem;
     }
-    .metric {
-      font-size: 1.5rem;
-      font-weight: bold;
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.9rem;
     }
-    .button {
+
+    .btn-submit {
+      margin-top: 1rem;
+      width: 100%;
       background: var(--primary);
       color: white;
-      padding: 0.7rem 1.5rem;
+      font-weight: bold;
+      padding: 10px;
       border: none;
-      border-radius: var(--radius);
+      border-radius: 8px;
+    }
+
+    .copy-btn {
+      margin-top: 8px;
+      background: #eee;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
       cursor: pointer;
-      font-weight: 600;
     }
-    .referral {
-      background: linear-gradient(to right, #7e77ff, #9a91ff);
-      color: white;
-      padding: 1.5rem;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .referral h3 {
-      margin: 0 0 0.5rem;
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <aside class="sidebar">
-    <h2>Fast Fill AI</h2>
-    <a href="#"><i class="fas fa-gauge"></i> Dashboard</a>
-    <a href="#"><i class="fas fa-robot"></i> Bots</a>
-    <a href="#"><i class="fas fa-box"></i> Orders</a>
-    <a href="#"><i class="fas fa-key"></i> API Access</a>
-    <a href="#"><i class="fas fa-headset"></i> Support</a>
-    <a href="#"><i class="fas fa-gear"></i> Settings</a>
-  </aside>
-  <main class="content">
-    <div class="header">
-      <h1>Welcome Back, User</h1>
-      <button class="button">Upload Bot</button>
-    </div>
+  <div class="sidebar">
+    <h1>Fast Fill AI</h1>
+    <a href="#">Dashboard</a>
+    <a href="#">Bots</a>
+    <a href="#">Orders</a>
+    <a href="#">API Access</a>
+    <a href="#">Support</a>
+    <a href="#">Settings</a>
+  </div>
+
+  <div class="main">
+    <header>
+      <h2>Welcome, User</h2>
+      <button onclick="logout()">Logout</button>
+    </header>
+
     <div class="grid">
-      <div class="referral">
-        <h3>Want some EXTRA Money?</h3>
-        <p>Refer a friend and earn 10% commission on every referral.</p>
-        <button class="button" style="margin-top: 1rem; background:white; color:#6c63ff">Referral Program</button>
-      </div>
       <div class="card">
         <h3>Total Bots</h3>
-        <div class="metric">12</div>
-        <p>Active this week</p>
+        <p><strong>0</strong> Active This Week</p>
       </div>
+
       <div class="card">
         <h3>Total Users</h3>
-        <div class="metric">436</div>
-        <p>Since launch</p>
+        <p><strong>0</strong> Since Launch</p>
       </div>
+
       <div class="card">
-        <h3>Total Revenue</h3>
-        <div class="metric">$8,450</div>
-        <p>+12% this month</p>
+        <h3>Start Your Free Trial</h3>
+        <p>Try our automation platform completely free for 1 month.</p>
+        <button class="btn-submit">Start Free Trial</button>
       </div>
+
       <div class="card">
-        <h3>API Key</h3>
-        <p><code>loading...</code> <button class="button" style="padding: 0.3rem 1rem; margin-left: 1rem;">Copy</button></p>
+        <h3>Your API Key</h3>
+        <p id="apiKey">Loading...</p>
+        <button class="copy-btn" onclick="copyAPI()">Copy</button>
       </div>
+
       <div class="card">
-        <h3>Request Custom Bot</h3>
-        <form>
-          <input type="text" placeholder="Your Name" style="width:100%; padding:0.5rem; margin-bottom:0.5rem">
-          <textarea placeholder="Describe your request..." style="width:100%; padding:0.5rem;"></textarea>
-          <button type="submit" class="button" style="margin-top: 1rem; width:100%">Submit</button>
-        </form>
+        <h3>Custom Bot Request</h3>
+        <input type="text" placeholder="Your Name" id="requestName" />
+        <textarea placeholder="Describe your request..." rows="4" id="requestDetails"></textarea>
+        <button class="btn-submit" onclick="submitRequest()">Submit Request</button>
       </div>
     </div>
-  </main>
+  </div>
+
+  <script>
+    function logout() {
+      alert("Logged out!");
+    }
+
+    function copyAPI() {
+      const text = document.getElementById("apiKey").textContent;
+      navigator.clipboard.writeText(text);
+      alert("API Key Copied");
+    }
+
+    function submitRequest() {
+      const name = document.getElementById("requestName").value;
+      const detail = document.getElementById("requestDetails").value;
+      if (name && detail) {
+        alert("Request Submitted!");
+        document.getElementById("requestName").value = "";
+        document.getElementById("requestDetails").value = "";
+      } else {
+        alert("Fill in all fields.");
+      }
+    }
+
+    // Simulated API key loading
+    setTimeout(() => {
+      document.getElementById("apiKey").textContent = "sk-abc123xyz456";
+    }, 1000);
+  </script>
 </body>
 </html>
