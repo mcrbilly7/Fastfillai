@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard – Fast Fill AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0a0a23;
+      --accent: #00c5c5;
+      --bg: #f5f9ff;
+      --card: #fff;
+      --text: #222;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      --radius: 16px;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 1.5rem 2rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .card {
+      background: var(--card);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .flex {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: var(--accent);
+      color: white;
+    }
+    button {
+      background: var(--primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .export-btns button {
+      margin-right: 1rem;
+    }
+    .metrics {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .metric {
+      flex: 1;
+      background: #e3f6f5;
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>Admin Dashboard – Fast Fill AI</header>
+  <div class="container">
+    <div class="card metrics">
+      <div class="metric">Users<br><span id="userCount">120</span></div>
+      <div class="metric">Bots Active<br><span id="botCount">80</span></div>
+      <div class="metric">Pro Plans<br><span id="proCount">35</span></div>
+    </div><div class="card export-btns">
+  <h3>User Table</h3>
+  <button onclick="exportCSV()">Export CSV</button>
+  <button onclick="exportJSON()">Export JSON</button>
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Plan</th><th>Status</th></tr>
+    </thead>
+    <tbody id="userTable">
+      <tr><td>Jane Doe</td><td>jane@domain.com</td><td>Pro</td><td>✅</td></tr>
+      <tr><td>John Smith</td><td>john@domain.com</td><td>Starter</td><td>✅</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Recent Bot Activity</h3>
+  <table>
+    <thead><tr><th>User</th><th>Bot</th><th>Action</th><th>Time</th></tr></thead>
+    <tbody>
+      <tr><td>Jane</td><td>FormFillerX</td><td>✅ Approved</td><td>10:25 AM</td></tr>
+      <tr><td>John</td><td>SheetSync</td><td>🕓 Pending</td><td>9:10 AM</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Manual Actions</h3>
+  <button>Approve Pending Bot</button>
+  <button style="background:#f44336">Delete User</button>
+</div>
+
+  </div>  <script>
+    function exportCSV() {
+      const csv = "Name,Email,Plan,Status\nJane Doe,jane@domain.com,Pro,Active\nJohn Smith,john@domain.com,Starter,Active";
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'users.csv';
+      a.click();
+    }
+    function exportJSON() {
+      const data = [
+        { name: "Jane Doe", email: "jane@domain.com", plan: "Pro", status: "Active" },
+        { name: "John Smith", email: "john@domain.com", plan: "Starter", status: "Active" }
+      ];
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'users.json';
+      a.click();
+    }
+  </script></body>
+</html>
