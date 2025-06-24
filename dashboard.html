@@ -6,12 +6,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f4f5f9;
-      --text: #222;
-      --accent: #00c5c5;
-      --card: #ffffff;
-      --shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-      --radius: 20px;
+      --bg: #f2f4f8;
+      --text: #1e1e2f;
+      --accent: #00bcd4;
+      --primary: #ffffff;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      --radius: 16px;
     }
     body {
       margin: 0;
@@ -20,151 +20,154 @@
       color: var(--text);
     }
     header {
-      background: white;
-      padding: 1rem 2rem;
+      background: var(--primary);
+      padding: 1.25rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       box-shadow: var(--shadow);
     }
     .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
+      font-size: 1.75rem;
+      font-weight: 700;
       color: var(--accent);
     }
-    .grid {
-      max-width: 1440px;
+    .btn {
+      background: var(--accent);
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    main {
+      max-width: 1400px;
       margin: 2rem auto;
-      padding: 0 1rem;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .card {
+      background: var(--primary);
+      padding: 2rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 2rem;
     }
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 1.5rem;
-    }
-    .profile {
-      text-align: center;
-      position: relative;
-    }
-    .avatar-container {
-      position: relative;
-      display: inline-block;
-    }
-    .avatar-edit {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      background: var(--accent);
-      border-radius: 50%;
-      padding: 4px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      color: white;
-    }
-    .profile img, .profile canvas {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
+    h2 {
       margin-bottom: 1rem;
-      border: 3px solid var(--accent);
+      font-size: 1.5rem;
     }
-    .profile input[type="file"] {
-      display: none;
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
-    .title {
-      font-size: 1.1rem;
-      font-weight: 600;
+    .profile-header img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+    }
+    .summary {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .summary-box {
+      flex: 1;
+      min-width: 200px;
+      background: #f9fbfc;
+      border-radius: var(--radius);
+      padding: 1rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .summary-box h3 {
+      font-size: 1.2rem;
       margin-bottom: 0.5rem;
     }
-    .bot-activity-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .bot-activity-table th, .bot-activity-table td {
-      padding: 0.75rem;
-      border-bottom: 1px solid #e0e0e0;
-      text-align: left;
-    }
-    .bot-request-form input, .bot-request-form textarea, .bot-request-form button {
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.5rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-    .bot-request-form button {
-      background: var(--accent);
-      color: white;
-      border: none;
-      font-weight: bold;
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
       margin-top: 1rem;
     }
-    @media (max-width: 768px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+    input, textarea {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    .analytics-chart {
+      height: 250px;
+      background: repeating-linear-gradient(90deg, #e0f7fa 0 10%, #fff 10% 20%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #888;
+      border-radius: 12px;
     }
   </style>
 </head>
 <body>
   <header>
     <div class="logo">Fast Fill AI</div>
-    <div><button onclick="logout()">Logout</button></div>
-  </header>
-  <section class="grid">
-    <div class="card profile">
-      <div class="avatar-container">
-        <canvas id="initialCanvas" width="100" height="100"></canvas>
-        <img id="profileImg" style="display: none;" />
-        <label for="uploadImage" class="avatar-edit">✎</label>
-        <input type="file" id="uploadImage" accept="image/*" />
+    <button class="btn" onclick="logout()">Logout</button>
+  </header>  <main>
+    <section class="card">
+      <div class="profile-header">
+        <img src="https://via.placeholder.com/80" alt="Profile" id="profilePhoto" />
+        <div>
+          <h2 id="userName">Welcome, User</h2>
+          <p id="userRole">Role: Loading...</p>
+        </div>
       </div>
-      <h3 id="userName">User</h3>
-      <p id="userRole">Loading...</p>
-    </div><div class="card">
-  <div class="title">Bot Usage Log</div>
-  <table class="bot-activity-table">
-    <thead>
-      <tr><th>Date</th><th>Bot</th><th>Activity</th></tr>
-    </thead>
-    <tbody id="botLogBody">
-      <tr><td>Today</td><td>Invoice Bot</td><td>Generated 15 entries</td></tr>
-      <tr><td>Yesterday</td><td>CRM Bot</td><td>Updated 9 records</td></tr>
-    </tbody>
-  </table>
-</div>
+    </section><section class="card">
+  <h2>Usage Overview</h2>
+  <div class="summary">
+    <div class="summary-box">
+      <h3 id="botCount">0</h3>
+      <p>Bots Created</p>
+    </div>
+    <div class="summary-box">
+      <h3 id="formCount">0</h3>
+      <p>Forms Submitted</p>
+    </div>
+    <div class="summary-box">
+      <h3 id="supportTickets">0</h3>
+      <p>Support Tickets</p>
+    </div>
+  </div>
+</section>
 
-<div class="card">
-  <div class="title">Request Custom Bot</div>
-  <form class="bot-request-form">
-    <input type="text" placeholder="Bot Name" required />
-    <textarea placeholder="Describe what the bot should do..." required></textarea>
-    <button type="submit">Send Request</button>
+<section class="card">
+  <h2>Request a Custom Bot</h2>
+  <form id="customBotForm">
+    <input type="text" placeholder="Bot Title" required />
+    <textarea rows="4" placeholder="Describe what your bot should do..." required></textarea>
+    <button type="submit" class="btn">Submit Request</button>
   </form>
-</div>
+</section>
 
-<div class="card">
-  <div class="title">Quick Actions</div>
-  <ul>
-    <li><a href="#">Download Latest Bot</a></li>
-    <li><a href="#">Open Setup Guide</a></li>
-    <li><a href="#">View Analytics</a></li>
-    <li><a href="#">Edit Profile</a></li>
-  </ul>
-</div>
+<section class="card">
+  <h2>Recent Activity</h2>
+  <div class="analytics-chart">Chart Integration Coming Soon</div>
+</section>
 
-  </section>  <script>
+  </main>  <script>
     function logout() {
-      location.href = 'login.html';
+      alert("Logged out successfully.");
     }
-    document.querySelector('.bot-request-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Request submitted! We will reach out shortly.');
-    });
   </script></body>
 </html>
