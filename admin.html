@@ -1,172 +1,188 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Dashboard – Fast Fill AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --primary: #0a0a23;
-      --accent: #00d1b2;
-      --bg: #f9fafb;
+      --bg: #f5f8ff;
+      --text: #1a1a1a;
+      --primary: #007bff;
       --card: #ffffff;
-      --text: #111;
-      --shadow: 0 2px 8px rgba(0,0,0,0.05);
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      --radius: 14px;
     }
-    body {
+
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+    }
+
+    body {
       font-family: 'Inter', sans-serif;
       background: var(--bg);
-      display: flex;
       color: var(--text);
     }
+
+    header {
+      background: white;
+      padding: 1rem 2rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary);
+      box-shadow: var(--shadow);
+    }
+
+    .container {
+      display: flex;
+    }
+
     aside {
-      width: 220px;
-      background: var(--primary);
-      color: white;
+      width: 250px;
+      background: #ffffff;
       min-height: 100vh;
-      padding: 1rem 0;
+      padding: 1rem;
+      box-shadow: var(--shadow);
     }
-    aside h2 {
-      text-align: center;
-      font-size: 1.4rem;
-      margin-bottom: 2rem;
+
+    aside h3 {
+      margin-bottom: 1rem;
     }
-    aside nav a {
-      display: block;
-      color: white;
+
+    aside ul {
+      list-style: none;
+    }
+
+    aside li {
+      margin: 0.8rem 0;
+    }
+
+    aside a {
       text-decoration: none;
-      padding: 1rem 1.5rem;
-      transition: 0.2s;
+      color: var(--text);
     }
-    aside nav a:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
+
     main {
       flex: 1;
       padding: 2rem;
     }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-    }
-    .header h1 {
-      font-size: 1.75rem;
-    }
+
     .card {
       background: var(--card);
-      box-shadow: var(--shadow);
-      border-radius: 10px;
+      border-radius: var(--radius);
       padding: 1.5rem;
       margin-bottom: 2rem;
+      box-shadow: var(--shadow);
     }
+
+    .card h2 {
+      margin-bottom: 1rem;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 1rem;
     }
+
     th, td {
+      border: 1px solid #ddd;
       padding: 0.75rem;
-      border-bottom: 1px solid #eaeaea;
       text-align: left;
     }
+
     th {
-      background: #f0f0f5;
+      background: #f0f0f0;
     }
-    .btn {
-      padding: 0.4rem 0.75rem;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9rem;
+
+    .hidden {
+      display: none;
     }
-    .btn:hover {
-      opacity: 0.9;
-    }
-    .detail-panel {
-      padding: 1rem;
-      background: #f4f4f4;
-      border-left: 4px solid var(--accent);
-      margin-top: 1rem;
+
+    .user-card {
+      border: 1px solid #ccc;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      border-radius: var(--radius);
     }
   </style>
 </head>
 <body>
-  <aside>
-    <h2>Admin</h2>
-    <nav>
-      <a href="#">Dashboard</a>
-      <a href="#users">Users</a>
-      <a href="#bots">Bots</a>
-      <a href="#requests">Requests</a>
-      <a href="#referrals">Referrals</a>
-      <a href="#settings">Settings</a>
-    </nav>
-  </aside>
-  <main>
-    <div class="header">
-      <h1>Admin Dashboard</h1>
-      <button class="btn" onclick="logout()">Logout</button>
-    </div><div class="card">
-  <h2>User Accounts</h2>
-  <table>
-    <thead>
-      <tr><th>Email</th><th>Name</th><th>Joined</th><th>Role</th><th>Bots</th><th>Referrals</th><th></th></tr>
-    </thead>
-    <tbody id="userTable"></tbody>
-  </table>
-</div>
+  <header>Admin Dashboard</header>
+  <div class="container">
+    <aside>
+      <h3>Controls</h3>
+      <ul>
+        <li><a href="#" onclick="loadUsers()">👤 View Users</a></li>
+        <li><a href="#" onclick="loadAnalytics()">📊 Metrics</a></li>
+        <li><a href="#" onclick="loadBots()">🤖 Bots</a></li>
+        <li><a href="index.html">← Back to Site</a></li>
+      </ul>
+    </aside>
+    <main id="dashboard">
+      <div class="card">
+        <h2>Welcome, Admin</h2>
+        <p>Choose an option from the sidebar to manage your platform.</p>
+      </div>
+    </main>
+  </div>
 
-<div class="card">
-  <h2>Pending Bot Requests</h2>
-  <ul id="requestList"><li>Loading...</li></ul>
-</div>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    import { getFirestore, collection, getDocs, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
-  </main><script>
-  const adminEmail = "fastfillaiautomation@gmail.com";
-  function logout() { window.location.href = 'login.html'; }
-  window.onload = () => {
-    const email = localStorage.getItem("adminEmail");
-    if (email !== adminEmail) {
-      alert("Unauthorized Access");
-      window.location.href = "login.html";
-    }
-    // Simulated Data (Replace with Firebase fetch in real use)
-    const users = [
-      { email: "john@example.com", name: "John", joined: "2025-06-01", role: "Pro", bots: 2, referrals: 3 },
-      { email: "jane@example.com", name: "Jane", joined: "2025-06-03", role: "Starter", bots: 1, referrals: 1 }
-    ];
-    const userTable = document.getElementById("userTable");
-    users.forEach(u => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${u.email}</td>
-        <td>${u.name}</td>
-        <td>${u.joined}</td>
-        <td>${u.role}</td>
-        <td>${u.bots}</td>
-        <td>${u.referrals}</td>
-        <td><button class="btn" onclick='viewDetails(${JSON.stringify(u)})'>View</button></td>`;
-      userTable.appendChild(row);
+    const firebaseConfig = {
+      apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
+      authDomain: "fastfill-ai-f229b.firebaseapp.com",
+      projectId: "fastfill-ai-f229b",
+      storageBucket: "fastfill-ai-f229b.appspot.com",
+      messagingSenderId: "639658574105",
+      appId: "1:639658574105:web:afd78a1698e72eb1628588"
+    };
+
+    const adminUID = "XWEJrNBLZmZZlv1mwRegOg61H0y2";
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const dashboard = document.getElementById('dashboard');
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user || user.uid !== adminUID) {
+        alert("Access denied");
+        window.location.href = "login.html";
+      }
     });
-  }
 
-  function viewDetails(user) {
-    const panel = document.createElement("div");
-    panel.className = 'detail-panel';
-    panel.innerHTML = `
-      <strong>${user.name}'s Details</strong><br>
-      Email: ${user.email}<br>
-      Role: ${user.role}<br>
-      Bots Purchased: ${user.bots}<br>
-      Referrals: ${user.referrals}<br>
-      Status: Active<br><br>
-      <button class='btn'>Disable Account</button>
-      <button class='btn'>Send Message</button>`;
-    document.body.appendChild(panel);
-  }
-</script></body>
+    window.loadUsers = async () => {
+      dashboard.innerHTML = `<div class="card"><h2>Users</h2><div id="userList">Loading...</div></div>`;
+      const usersSnapshot = await getDocs(collection(db, "profiles"));
+      let output = "";
+      for (const docSnap of usersSnapshot.docs) {
+        const data = docSnap.data();
+        const details = await getDoc(doc(db, "usage", docSnap.id));
+        const u = details.exists() ? details.data() : {};
+        output += `<div class="user-card">
+          <strong>${data.name || 'Unnamed'}</strong><br>
+          Bots Purchased: ${u.bots || 0}<br>
+          Bots Deployed: ${u.deploys || 0}
+        </div>`;
+      }
+      document.getElementById('userList').innerHTML = output;
+    };
+
+    window.loadAnalytics = async () => {
+      dashboard.innerHTML = `<div class="card"><h2>Metrics</h2><p>Coming soon: full platform analytics.</p></div>`;
+    };
+
+    window.loadBots = async () => {
+      dashboard.innerHTML = `<div class="card"><h2>Bots Overview</h2><p>Coming soon: list of all deployed bots + controls.</p></div>`;
+    };
+  </script>
+</body>
 </html>
