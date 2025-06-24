@@ -1,152 +1,178 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel – Fast Fill AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard – Fast Fill AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f9fafa;
-      --text: #1a1a1a;
-      --accent: #00c9a7;
-      --card: #ffffff;
-      --shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-      --radius: 16px;
+      --bg: #f0f2f5;
+      --primary: #0a0a23;
+      --accent: #00c5c5;
+      --card: #fff;
+      --text: #111;
+      --radius: 12px;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     }
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
       background: var(--bg);
+      margin: 0;
       color: var(--text);
     }
     header {
-      background: white;
-      padding: 1.2rem 2rem;
+      background: var(--primary);
+      padding: 1rem 2rem;
+      color: #fff;
+      font-size: 1.25rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: var(--shadow);
     }
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--accent);
-    }
-    .grid {
-      max-width: 1400px;
+    .container {
+      max-width: 1200px;
       margin: 2rem auto;
       padding: 0 1rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2rem;
     }
     .card {
       background: var(--card);
       border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
       box-shadow: var(--shadow);
-      padding: 2rem;
     }
-    .card h3 {
+    h2 {
       margin-bottom: 1rem;
-      font-size: 1.2rem;
-      font-weight: 600;
     }
-    textarea, input[type="text"], select, button {
+    table {
       width: 100%;
-      margin-top: 0.5rem;
-      padding: 0.75rem;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-family: 'Inter', sans-serif;
+      border-collapse: collapse;
+      margin-top: 1rem;
     }
-    button {
-      background-color: var(--accent);
+    table th, table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    table tr:hover {
+      background: #f9f9f9;
+    }
+    .btn {
+      background: var(--accent);
       color: white;
+      padding: 0.5rem 1rem;
       border: none;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
     }
-    .settings-section {
+    .user-detail-panel {
+      margin-top: 1rem;
+      background: #fefefe;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .metrics-grid {
       display: grid;
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    .metric-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1rem;
+      text-align: center;
+      box-shadow: var(--shadow);
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">Admin – Fast Fill AI</div>
-    <button onclick="logout()">Logout</button>
-  </header>  <section class="grid">
+    <div>Admin Dashboard – Fast Fill AI</div>
+    <button class="btn" onclick="logout()">Logout</button>
+  </header>
+  <div class="container">
     <div class="card">
-      <h3>Send User Alert</h3>
-      <input type="text" placeholder="Subject">
-      <textarea rows="4" placeholder="Message to all users..."></textarea>
-      <button>Send Notification</button>
-    </div><div class="card">
-  <h3>User Management</h3>
-  <select>
-    <option>Search user by email</option>
-  </select>
-  <button>View User</button>
-  <button>Suspend User</button>
-  <button>Reset Password</button>
-</div>
-
-<div class="card">
-  <h3>Bot Monitoring</h3>
-  <div class="settings-section">
-    <button>View Active Bots</button>
-    <button>Restart Failed Bots</button>
-    <button>Check Usage Logs</button>
+      <h2>Top Metrics</h2>
+      <div class="metrics-grid">
+        <div class="metric-card"><strong id="totalUsers">0</strong><br>Total Users</div>
+        <div class="metric-card"><strong id="activeBots">0</strong><br>Active Bots</div>
+        <div class="metric-card"><strong id="botsDeployed">0</strong><br>Bots Deployed</div>
+        <div class="metric-card"><strong id="emailsSent">0</strong><br>Emails Sent</div>
+        <div class="metric-card"><strong id="referrals">0</strong><br>Referrals</div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Registered Users</h2>
+      <table id="userTable">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Sign-up Date</th>
+            <th>Status</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="user-detail-panel" id="userDetails" style="display:none;"></div>
+    </div>
   </div>
-</div>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getFirestore, collection, getDocs, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { getAuth, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';const firebaseConfig = {
+  apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
+  authDomain: "fastfill-ai-f229b.firebaseapp.com",
+  projectId: "fastfill-ai-f229b",
+  storageBucket: "fastfill-ai-f229b.appspot.com",
+  messagingSenderId: "639658574105",
+  appId: "1:639658574105:web:afd78a1698e72eb1628588"
+};
 
-<div class="card">
-  <h3>Data Export & Backup</h3>
-  <div class="settings-section">
-    <button>Export All Users (CSV)</button>
-    <button>Export Bots (JSON)</button>
-    <button>Download System Logs</button>
-    <button>Generate Usage Report</button>
-  </div>
-</div>
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-<div class="card">
-  <h3>Platform Settings</h3>
-  <div class="settings-section">
-    <button>Toggle Dark Mode (Global)</button>
-    <button>Update Pricing</button>
-    <button>Manage API Keys</button>
-    <button>Feature Flags</button>
-    <button>Maintenance Mode</button>
-    <button>Upgrade Database</button>
-    <button>Force Refresh Bots</button>
-  </div>
-</div>
+window.logout = () => signOut(auth).then(() => location.href = 'login.html');
 
-<div class="card">
-  <h3>Referral & Feedback</h3>
-  <div class="settings-section">
-    <button>View Referral Stats</button>
-    <button>Download Feedback</button>
-    <button>Reply to Ticket</button>
-    <button>Mark Ticket as Resolved</button>
-  </div>
-</div>
+const loadUsers = async () => {
+  const usersSnap = await getDocs(collection(db, 'users'));
+  const table = document.querySelector('#userTable tbody');
+  let total = 0;
+  usersSnap.forEach(docSnap => {
+    const data = docSnap.data();
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${data.email}</td>
+      <td>${data.created || '—'}</td>
+      <td>${data.status || 'Active'}</td>
+      <td><button class="btn" onclick="viewDetails('${docSnap.id}')">View</button></td>
+    `;
+    table.appendChild(row);
+    total++;
+  });
+  document.getElementById('totalUsers').textContent = total;
+};
 
-<div class="card">
-  <h3>Developer Tools</h3>
-  <div class="settings-section">
-    <button>Toggle Dev Logs</button>
-    <button>Simulate Bot Request</button>
-    <button>Run Health Check</button>
-    <button>Clear All Caches</button>
-  </div>
-</div>
+window.viewDetails = async (id) => {
+  const ref = doc(db, 'users', id);
+  const snap = await getDoc(ref);
+  const detailDiv = document.getElementById('userDetails');
+  if (!snap.exists()) return;
+  const data = snap.data();
+  detailDiv.style.display = 'block';
+  detailDiv.innerHTML = `
+    <strong>Email:</strong> ${data.email}<br>
+    <strong>Status:</strong> ${data.status || 'Active'}<br>
+    <strong>Bots Purchased:</strong> ${data.botsPurchased || 0}<br>
+    <strong>Bots Active:</strong> ${data.botsActive || 0}<br>
+    <strong>Signup Date:</strong> ${data.created || 'N/A'}<br>
+  `;
+};
 
-  </section>  <script>
-    function logout() {
-      alert("Logging out...");
-    }
-  </script></body>
+loadUsers();
+
+  </script>
+</body>
 </html>
