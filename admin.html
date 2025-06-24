@@ -1,128 +1,132 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fast Fill AI – Admin</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fast Fill AI – Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: #f8f9fb;
+      background: #f7f9fc;
       margin: 0;
-      padding: 0;
-      color: #222;
+      color: #1a1a1a;
     }
     header {
-      background: white;
+      background: #ffffff;
       padding: 1rem 2rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
-    .title {
+    .logo {
       font-size: 1.5rem;
       font-weight: bold;
-      color: #00c5c5;
+      color: #0066ff;
     }
     .grid {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem;
-      max-width: 1440px;
-      margin: auto;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
     }
     .card {
-      background: white;
+      background: #ffffff;
       padding: 1.5rem;
-      border-radius: 16px;
+      border-radius: 15px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
-    .card h3 {
-      margin-top: 0;
+    .title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
     }
-    .btn {
-      background: #00c5c5;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin: 0.5rem 0;
       border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+    }
+    button {
+      background: #0066ff;
+      color: white;
+      font-weight: 600;
       cursor: pointer;
-      margin-top: 1rem;
+    }
+    button:hover {
+      background: #004dcc;
     }
     table {
       width: 100%;
       border-collapse: collapse;
     }
     th, td {
-      padding: 0.75rem;
-      text-align: left;
+      padding: 10px;
       border-bottom: 1px solid #eee;
+      text-align: left;
     }
     th {
-      background: #f0f0f0;
+      background: #f0f2f5;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="title">Fast Fill AI – Admin</div>
-    <button class="btn" onclick="logout()">Logout</button>
-  </header>
-  <section class="grid">
+    <div class="logo">Fast Fill AI – Admin</div>
+    <button onclick="logout()">Logout</button>
+  </header>  <section class="grid">
     <div class="card">
-      <h3>Search Users</h3>
+      <div class="title">Search Users</div>
       <input type="text" placeholder="Search by name or email...">
       <table>
-        <thead><tr><th>Name</th><th>Email</th><th>Bots</th></tr></thead>
-        <tbody id="userTable">
-          <tr><td>--</td><td>--</td><td>--</td></tr>
-        </tbody>
+        <thead>
+          <tr><th>Name</th><th>Email</th><th>Bots</th></tr>
+        </thead>
+        <tbody id="userList"></tbody>
       </table>
-    </div>
-    <div class="card">
-      <h3>Referral Tracker</h3>
-      <p>Total Referrals: <strong id="referralCount">0</strong></p>
-    </div>
-    <div class="card">
-      <h3>Custom Bot Requests</h3>
-      <ul id="botRequests">
-        <li>No requests yet.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>All Bots Deployed</h3>
-      <ul id="botDeployments">
-        <li>No bots deployed.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Email Log</h3>
-      <table>
-        <thead><tr><th>Email</th><th>Status</th><th>Details</th></tr></thead>
-        <tbody>
-          <tr><td>example@email.com</td><td>Active</td><td><a href="#">View</a></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card">
-      <h3>Platform Stats</h3>
-      <p>Total Users: <strong>0</strong></p>
-      <p>Bots Active: <strong>0</strong></p>
-      <p>Support Tickets: <strong>0</strong></p>
-    </div>
-    <div class="card">
-      <h3>Admin Actions</h3>
-      <button class="btn">Export All User Data</button>
-      <button class="btn">Clear Inactive Accounts</button>
-      <button class="btn">View All Submissions</button>
-    </div>
-  </section>
-  <script>
+    </div><div class="card">
+  <div class="title">Referral Tracker</div>
+  <p>Total Referrals: <strong id="referrals">0</strong></p>
+</div>
+
+<div class="card">
+  <div class="title">Custom Bot Requests</div>
+  <ul id="botRequests"><li>No requests yet.</li></ul>
+</div>
+
+<div class="card">
+  <div class="title">All Bots Deployed</div>
+  <ul id="allBots"><li>No bots deployed.</li></ul>
+</div>
+
+<div class="card">
+  <div class="title">Email List Export</div>
+  <button onclick="exportEmails()">Export All Emails (CSV)</button>
+</div>
+
+<div class="card">
+  <div class="title">System Controls</div>
+  <button onclick="resetTrial()">Reset Free Trial Timers</button>
+  <button onclick="broadcastMessage()">Broadcast Message to Users</button>
+  <textarea placeholder="Enter your message..."></textarea>
+</div>
+
+  </section>  <script>
     function logout() {
-      window.location.href = 'login.html';
+      location.href = 'login.html';
     }
-  </script>
-</body>
+    function exportEmails() {
+      alert('Simulated export. Replace with Firebase logic.');
+    }
+    function resetTrial() {
+      alert('Trial timers reset. Replace with database write.');
+    }
+    function broadcastMessage() {
+      alert('Broadcast sent. Replace with notification logic.');
+    }
+  </script></body>
 </html>
