@@ -1,188 +1,166 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Dashboard – Fast Fill AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fast Fill AI – Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f5f8ff;
+      --bg: #f0f2f5;
       --text: #1a1a1a;
-      --primary: #007bff;
       --card: #ffffff;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-      --radius: 14px;
+      --accent: #00c5c5;
+      --radius: 16px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
+      margin: 0;
       font-family: 'Inter', sans-serif;
       background: var(--bg);
       color: var(--text);
     }
-
     header {
-      background: white;
+      background: var(--card);
+      box-shadow: var(--shadow);
       padding: 1rem 2rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--primary);
-      box-shadow: var(--shadow);
-    }
-
-    .container {
       display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-
-    aside {
-      width: 250px;
-      background: #ffffff;
-      min-height: 100vh;
-      padding: 1rem;
-      box-shadow: var(--shadow);
+    .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--accent);
     }
-
-    aside h3 {
-      margin-bottom: 1rem;
+    .container {
+      max-width: 1440px;
+      margin: 2rem auto;
+      padding: 0 2rem;
     }
-
-    aside ul {
-      list-style: none;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
     }
-
-    aside li {
-      margin: 0.8rem 0;
-    }
-
-    aside a {
-      text-decoration: none;
-      color: var(--text);
-    }
-
-    main {
-      flex: 1;
-      padding: 2rem;
-    }
-
     .card {
       background: var(--card);
       border-radius: var(--radius);
       padding: 1.5rem;
-      margin-bottom: 2rem;
       box-shadow: var(--shadow);
     }
-
-    .card h2 {
+    .card h3 {
       margin-bottom: 1rem;
+      font-size: 1.2rem;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
+    }
+    table th, table td {
+      text-align: left;
+      padding: 0.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+    .button {
+      background: var(--accent);
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
       margin-top: 1rem;
     }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 0.75rem;
-      text-align: left;
-    }
-
-    th {
-      background: #f0f0f0;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .user-card {
-      border: 1px solid #ccc;
-      margin: 0.5rem 0;
-      padding: 0.5rem;
-      border-radius: var(--radius);
+    .button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
-  <header>Admin Dashboard</header>
-  <div class="container">
-    <aside>
-      <h3>Controls</h3>
-      <ul>
-        <li><a href="#" onclick="loadUsers()">👤 View Users</a></li>
-        <li><a href="#" onclick="loadAnalytics()">📊 Metrics</a></li>
-        <li><a href="#" onclick="loadBots()">🤖 Bots</a></li>
-        <li><a href="index.html">← Back to Site</a></li>
-      </ul>
-    </aside>
-    <main id="dashboard">
+  <header>
+    <div class="logo">Fast Fill AI – Admin</div>
+    <div><button onclick="logout()" class="button">Logout</button></div>
+  </header>
+  <main class="container">
+    <div class="grid">
       <div class="card">
-        <h2>Welcome, Admin</h2>
-        <p>Choose an option from the sidebar to manage your platform.</p>
+        <h3>Total Stats</h3>
+        <p><strong id="userCount">0</strong> Users</p>
+        <p><strong id="botCount">0</strong> Bots Deployed</p>
+        <p><strong id="orderCount">0</strong> Orders</p>
       </div>
-    </main>
-  </div>
-
+      <div class="card">
+        <h3>Recent Signups</h3>
+        <table id="userTable">
+          <thead><tr><th>Email</th><th>Date</th><th>Details</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Request Logs</h3>
+        <ul id="requestList"></ul>
+      </div>
+      <div class="card">
+        <h3>Send Announcement</h3>
+        <textarea id="announcement" rows="4" style="width:100%"></textarea>
+        <button class="button" onclick="sendAnnouncement()">Send</button>
+      </div>
+    </div>
+  </main>
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-    import { getFirestore, collection, getDocs, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";const firebaseConfig = {
+  apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
+  authDomain: "fastfill-ai-f229b.firebaseapp.com",
+  projectId: "fastfill-ai-f229b",
+  storageBucket: "fastfill-ai-f229b.appspot.com",
+  messagingSenderId: "639658574105",
+  appId: "1:639658574105:web:afd78a1698e72eb1628588"
+};
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
-      authDomain: "fastfill-ai-f229b.firebaseapp.com",
-      projectId: "fastfill-ai-f229b",
-      storageBucket: "fastfill-ai-f229b.appspot.com",
-      messagingSenderId: "639658574105",
-      appId: "1:639658574105:web:afd78a1698e72eb1628588"
-    };
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-    const adminUID = "XWEJrNBLZmZZlv1mwRegOg61H0y2";
+function logout() {
+  signOut(auth).then(() => location.href = 'login.html');
+}
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+onAuthStateChanged(auth, async user => {
+  if (!user || user.uid !== "YA6SZjezglPPZmB9CE71YQ2UP572") return location.href = 'login.html';
 
-    const dashboard = document.getElementById('dashboard');
+  const meta = await getDoc(doc(db, 'metrics', 'summary'));
+  if (meta.exists()) {
+    const d = meta.data();
+    document.getElementById('userCount').textContent = d.users || 0;
+    document.getElementById('botCount').textContent = d.bots || 0;
+    document.getElementById('orderCount').textContent = d.orders || 0;
+  }
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user || user.uid !== adminUID) {
-        alert("Access denied");
-        window.location.href = "login.html";
-      }
-    });
+  const users = await getDocs(collection(db, 'users'));
+  const table = document.querySelector('#userTable tbody');
+  users.forEach(doc => {
+    const d = doc.data();
+    const row = `<tr><td>${d.email}</td><td>${d.signupDate || 'N/A'}</td><td><a href="user.html?id=${doc.id}">View</a></td></tr>`;
+    table.innerHTML += row;
+  });
 
-    window.loadUsers = async () => {
-      dashboard.innerHTML = `<div class="card"><h2>Users</h2><div id="userList">Loading...</div></div>`;
-      const usersSnapshot = await getDocs(collection(db, "profiles"));
-      let output = "";
-      for (const docSnap of usersSnapshot.docs) {
-        const data = docSnap.data();
-        const details = await getDoc(doc(db, "usage", docSnap.id));
-        const u = details.exists() ? details.data() : {};
-        output += `<div class="user-card">
-          <strong>${data.name || 'Unnamed'}</strong><br>
-          Bots Purchased: ${u.bots || 0}<br>
-          Bots Deployed: ${u.deploys || 0}
-        </div>`;
-      }
-      document.getElementById('userList').innerHTML = output;
-    };
+  const requests = await getDocs(collection(db, 'requests'));
+  const list = document.getElementById('requestList');
+  requests.forEach(doc => {
+    const r = doc.data();
+    list.innerHTML += `<li>${r.message || 'No message'} – ${r.timestamp || ''}</li>`;
+  });
+});
 
-    window.loadAnalytics = async () => {
-      dashboard.innerHTML = `<div class="card"><h2>Metrics</h2><p>Coming soon: full platform analytics.</p></div>`;
-    };
+window.sendAnnouncement = async function() {
+  const msg = document.getElementById('announcement').value.trim();
+  if (!msg) return alert('Enter message');
+  await setDoc(doc(db, 'announcements', 'latest'), { text: msg, time: new Date().toISOString() });
+  alert('Announcement sent');
+}
 
-    window.loadBots = async () => {
-      dashboard.innerHTML = `<div class="card"><h2>Bots Overview</h2><p>Coming soon: list of all deployed bots + controls.</p></div>`;
-    };
   </script>
 </body>
 </html>
