@@ -2,143 +2,171 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fast Fill AI – Admin Panel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <title>Admin Dashboard – Fast Fill AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #0a0a23;
+      --accent: #00d1b2;
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --text: #111;
+      --shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background-color: #f4f6fb;
-      color: #333;
+      background: var(--bg);
+      display: flex;
+      color: var(--text);
     }
-    header {
-      background: #fff;
-      padding: 1rem 2rem;
+    aside {
+      width: 220px;
+      background: var(--primary);
+      color: white;
+      min-height: 100vh;
+      padding: 1rem 0;
+    }
+    aside h2 {
+      text-align: center;
+      font-size: 1.4rem;
+      margin-bottom: 2rem;
+    }
+    aside nav a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 1rem 1.5rem;
+      transition: 0.2s;
+    }
+    aside nav a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+    }
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
     }
-    .container {
-      padding: 2rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.5rem;
+    .header h1 {
+      font-size: 1.75rem;
     }
     .card {
-      background: #fff;
-      border-radius: 16px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      border-radius: 10px;
       padding: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
     }
-    .card h2 {
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
+    table {
+      width: 100%;
+      border-collapse: collapse;
     }
-    .user-row {
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid #eee;
-      padding: 0.5rem 0;
+    th, td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #eaeaea;
+      text-align: left;
     }
-    .user-row:last-child {
-      border-bottom: none;
+    th {
+      background: #f0f0f5;
     }
     .btn {
-      background: #007bff;
-      color: #fff;
-      padding: 0.4rem 0.8rem;
+      padding: 0.4rem 0.75rem;
+      background: var(--accent);
+      color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      font-weight: 600;
+      font-size: 0.9rem;
     }
-    .btn:disabled {
-      background: #ccc;
+    .btn:hover {
+      opacity: 0.9;
     }
-    input[type="text"] {
-      width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-bottom: 1rem;
+    .detail-panel {
+      padding: 1rem;
+      background: #f4f4f4;
+      border-left: 4px solid var(--accent);
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div><strong>Fast Fill AI – Admin</strong></div>
-    <button onclick="logout()" class="btn">Logout</button>
-  </header>
-  <main class="container">
-    <div class="card">
-      <h2>Search Users</h2>
-      <input type="text" placeholder="Search by name or email..." id="searchInput" oninput="filterUsers()">
-      <div id="userList"></div>
-    </div>
-    <div class="card">
-      <h2>Referral Tracker</h2>
-      <p>Total Referrals: <span id="referralCount">0</span></p>
-    </div>
-    <div class="card">
-      <h2>Custom Bot Requests</h2>
-      <ul id="customRequests">No requests yet.</ul>
-    </div>
-    <div class="card">
-      <h2>All Bots Deployed</h2>
-      <ul id="botDeployments">No bots deployed.</ul>
-    </div>
-  </main>
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-    import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';const firebaseConfig = {
-  apiKey: "AIzaSyBrzypW2nDfPTNMJjqL7GsfBhoWOO9oXsw",
-  authDomain: "fastfill-ai-f229b.firebaseapp.com",
-  projectId: "fastfill-ai-f229b",
-  storageBucket: "fastfill-ai-f229b.appspot.com",
-  messagingSenderId: "639658574105",
-  appId: "1:639658574105:web:afd78a1698e72eb1628588"
-};
+  <aside>
+    <h2>Admin</h2>
+    <nav>
+      <a href="#">Dashboard</a>
+      <a href="#users">Users</a>
+      <a href="#bots">Bots</a>
+      <a href="#requests">Requests</a>
+      <a href="#referrals">Referrals</a>
+      <a href="#settings">Settings</a>
+    </nav>
+  </aside>
+  <main>
+    <div class="header">
+      <h1>Admin Dashboard</h1>
+      <button class="btn" onclick="logout()">Logout</button>
+    </div><div class="card">
+  <h2>User Accounts</h2>
+  <table>
+    <thead>
+      <tr><th>Email</th><th>Name</th><th>Joined</th><th>Role</th><th>Bots</th><th>Referrals</th><th></th></tr>
+    </thead>
+    <tbody id="userTable"></tbody>
+  </table>
+</div>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+<div class="card">
+  <h2>Pending Bot Requests</h2>
+  <ul id="requestList"><li>Loading...</li></ul>
+</div>
 
-function logout() {
-  signOut(auth).then(() => location.href = 'login.html');
-}
-window.logout = logout;
+  </main><script>
+  const adminEmail = "fastfillaiautomation@gmail.com";
+  function logout() { window.location.href = 'login.html'; }
+  window.onload = () => {
+    const email = localStorage.getItem("adminEmail");
+    if (email !== adminEmail) {
+      alert("Unauthorized Access");
+      window.location.href = "login.html";
+    }
+    // Simulated Data (Replace with Firebase fetch in real use)
+    const users = [
+      { email: "john@example.com", name: "John", joined: "2025-06-01", role: "Pro", bots: 2, referrals: 3 },
+      { email: "jane@example.com", name: "Jane", joined: "2025-06-03", role: "Starter", bots: 1, referrals: 1 }
+    ];
+    const userTable = document.getElementById("userTable");
+    users.forEach(u => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${u.email}</td>
+        <td>${u.name}</td>
+        <td>${u.joined}</td>
+        <td>${u.role}</td>
+        <td>${u.bots}</td>
+        <td>${u.referrals}</td>
+        <td><button class="btn" onclick='viewDetails(${JSON.stringify(u)})'>View</button></td>`;
+      userTable.appendChild(row);
+    });
+  }
 
-function filterUsers() {
-  const input = document.getElementById('searchInput').value.toLowerCase();
-  const rows = document.querySelectorAll('.user-row');
-  rows.forEach(row => {
-    row.style.display = row.textContent.toLowerCase().includes(input) ? 'flex' : 'none';
-  });
-}
-
-onAuthStateChanged(auth, async user => {
-  if (!user || user.email !== 'admin@fastfillai.com') return location.href = 'login.html';
-  const usersSnap = await getDocs(collection(db, 'users'));
-  const userList = document.getElementById('userList');
-  userList.innerHTML = '';
-  usersSnap.forEach(doc => {
-    const u = doc.data();
-    const div = document.createElement('div');
-    div.className = 'user-row';
-    div.innerHTML = `
-      <div>${u.name || 'N/A'}</div>
-      <div>${u.email || 'N/A'}</div>
-      <button class="btn">View</button>
-    `;
-    userList.appendChild(div);
-  });
-
-  // Add actual custom bot request and bot deployment rendering here...
-  // Add referral tracking logic based on Firestore data
-});
-
-  </script>
-</body>
+  function viewDetails(user) {
+    const panel = document.createElement("div");
+    panel.className = 'detail-panel';
+    panel.innerHTML = `
+      <strong>${user.name}'s Details</strong><br>
+      Email: ${user.email}<br>
+      Role: ${user.role}<br>
+      Bots Purchased: ${user.bots}<br>
+      Referrals: ${user.referrals}<br>
+      Status: Active<br><br>
+      <button class='btn'>Disable Account</button>
+      <button class='btn'>Send Message</button>`;
+    document.body.appendChild(panel);
+  }
+</script></body>
 </html>
